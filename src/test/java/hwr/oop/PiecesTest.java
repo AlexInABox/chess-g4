@@ -257,11 +257,13 @@ class PiecesTest {
     Position position = new Position(3, 3);
     Piece rook1 = new Piece(PieceType.ROOK, Color.WHITE, position);
     Piece rook2 = new Piece(PieceType.ROOK, Color.WHITE, position);
+    Piece queen = new Piece(PieceType.QUEEN, Color.WHITE, position);
     ChessBoard chessBoard = new ChessBoard();
 
     assertThat(rook1.equals(rook2)).isTrue();
     assertThat(rook1.equals(rook1)).isTrue();
     assertThat(rook1.equals(null)).isFalse();
+    assertThat(rook1.equals(queen)).isFalse();
     assertThat(rook1.equals(chessBoard)).isFalse();
 }
   @Test
