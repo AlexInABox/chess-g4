@@ -3,6 +3,9 @@ package hwr.oop;
 import hwr.oop.pieces.Piece;
 import hwr.oop.pieces.PieceType;
 import org.junit.jupiter.api.Test;
+
+import java.util.Objects;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PiecesTest {
@@ -247,5 +250,27 @@ class PiecesTest {
     Piece rook = new Piece(PieceType.ROOK, Color.WHITE, position);
     assertThat(rook.toString())
             .hasToString("Piece{type=ROOK, color=WHITE, position=Position[row=3, column=3], symbol=R}");
+  }
+  //equals?
+  @Test
+  void testRookEquals() {
+    Position position = new Position(3, 3);
+    Piece rook1 = new Piece(PieceType.ROOK, Color.WHITE, position);
+    Piece rook2 = new Piece(PieceType.ROOK, Color.WHITE, position);
+    ChessBoard chessBoard = new ChessBoard();
+
+    assertThat(rook1.equals(rook2)).isTrue();
+    assertThat(rook1.equals(rook1)).isTrue();
+    assertThat(rook1.equals(null)).isFalse();
+    assertThat(rook1.equals(chessBoard)).isFalse();
+}
+  @Test
+  void testRookHash() {
+    Position position = new Position(3, 3);
+    Piece rook1 = new Piece(PieceType.ROOK, Color.WHITE, position);
+    Piece rook2 = new Piece(PieceType.ROOK, Color.WHITE, position);
+
+    //assertThat(rook1.hashCode()).isEqualTo(rook2.hashCode()); //ändert nichts an Line/Mutation Coverage
+    assertThat(rook1.hashCode()).isEqualTo(Objects.hash(Color.WHITE, position, rook1.getSymbol(), PieceType.ROOK));
   }
 }
