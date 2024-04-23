@@ -3,7 +3,6 @@ package hwr.oop;
 import hwr.oop.exceptions.ChessBoardException;
 import hwr.oop.exceptions.MovePieceException;
 import hwr.oop.pieces.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -20,6 +19,23 @@ public class ChessBoard {
               board.add(row);
             });
     setupPieces();
+  }
+
+  public static Position convertInputToPosition(String input) throws ChessBoardException {
+    if (input.length() != 2
+        || !Character.isLetter(input.charAt(0))
+        || !Character.isDigit(input.charAt(1))) {
+      throw new ChessBoardException(
+          "Invalid input format. Please provide a valid position (e.g., 'a1').");
+    }
+    int column = input.charAt(0) - 'a';
+    int row = Character.getNumericValue(input.charAt(1)) - 1;
+
+    if (column < 0 || column >= 8 || row < 0 || row >= 8) {
+      throw new ChessBoardException("Invalid position. Position must be within the chessboard.");
+    }
+
+    return new Position(row, column);
   }
 
   private void setupPieces() {
@@ -59,10 +75,6 @@ public class ChessBoard {
     return board.get(position.row()).get(position.column());
   }
 
-  public void setPieceAtPosition(Position position, Piece piece) {
-    board.get(position.row()).set(position.column(), piece);
-  }
-
   //  public static void printChessBoard(List<List<Piece>> board) {
   //    System.out.println("   a b c d e f g h");
   //    System.out.println(" +-----------------+");
@@ -82,21 +94,8 @@ public class ChessBoard {
   //    System.out.println(" +-----------------+");
   //  }
 
-  public static Position convertInputToPosition(String input) throws ChessBoardException {
-    if (input.length() != 2
-        || !Character.isLetter(input.charAt(0))
-        || !Character.isDigit(input.charAt(1))) {
-      throw new ChessBoardException(
-          "Invalid input format. Please provide a valid position (e.g., 'a1').");
-    }
-    int column = input.charAt(0) - 'a';
-    int row = Character.getNumericValue(input.charAt(1)) - 1;
-
-    if (column < 0 || column >= 8 || row < 0 || row >= 8) {
-      throw new ChessBoardException("Invalid position. Position must be within the chessboard.");
-    }
-
-    return new Position(row, column);
+  public void setPieceAtPosition(Position position, Piece piece) {
+    board.get(position.row()).set(position.column(), piece);
   }
 
   public boolean movePiece(Position from, Position to) throws MovePieceException {

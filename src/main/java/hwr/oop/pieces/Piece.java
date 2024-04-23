@@ -1,18 +1,17 @@
 package hwr.oop.pieces;
 
+import hwr.oop.ChessBoard;
 import hwr.oop.Color;
 import hwr.oop.Position;
-import hwr.oop.ChessBoard;
-
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Piece {
   private final Color color;
-  private Position position;
   private final char symbol;
   private final PieceType type;
   private final ChessBoard chessBoard;
+  private Position position;
 
   public Piece(PieceType type, Color color, Position position, ChessBoard chessBoard){
     this.type = type;
@@ -160,18 +159,15 @@ public class Piece {
   }
   private ArrayList<Position> possiblePawnMoves() {
     ArrayList<Position> possibleMoves = new ArrayList<>();
-    int rowDirection = (color == Color.WHITE) ? 1 : -1; // White pawns move up (incrementing row), black pawns move down (decrementing row)
+    int rowDirection = (color == Color.WHITE) ? 1 : -1;
 
-    // Get current position
     int currentRow = position.row();
     int currentColumn = position.column();
 
-    // Move one square forward
     int newRow = currentRow + rowDirection;
     if (isValidPosition(newRow, currentColumn) && chessBoard.getPieceAtPosition(new Position(newRow, currentColumn)) == null) {
       possibleMoves.add(new Position(newRow, currentColumn));
 
-      // Check if pawn is in its initial position to possibly move two squares forward
       if ((color == Color.WHITE && currentRow == 1) || (color == Color.BLACK && currentRow == 6)) {
         int jumpRow = currentRow + 2 * rowDirection;
         if (chessBoard.getPieceAtPosition(new Position(jumpRow, currentColumn)) == null) {
@@ -180,7 +176,6 @@ public class Piece {
       }
     }
 
-    // Capturing moves: pawns capture diagonally
     int[] captureColumns = {currentColumn - 1, currentColumn + 1};
     for (int col : captureColumns) {
       if (isValidPosition(newRow, col)) {
@@ -231,15 +226,6 @@ public class Piece {
   private boolean isValidPosition(int row, int column) {
     return row >= 0 && row < 8 && column >= 0 && column < 8;
   }
-
-
-
-
-
-
-
-
-
 
   @Override
   public String toString() {
