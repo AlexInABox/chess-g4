@@ -48,7 +48,7 @@ public class Piece {
         return 'r';
       }
     }
-    return 'X';
+    return 0;
   }
   public Color getColor() {
     return color;
@@ -66,6 +66,10 @@ public class Piece {
 
   public char getSymbol() {
     return symbol;
+  }
+
+  public PieceType getType() {
+    return type;
   }
 
   public void moveTo(Position target) {
@@ -228,7 +232,7 @@ public class Piece {
 
   @Override
   public String toString() {
-    return "Piece{" + "color=" + color + ", position=" + position + ", symbol=" + symbol + '}';
+    return "Piece{type=" + type + ", color=" + color + ", position=" + position + ", symbol=" + symbol + '}';
   }
 
   @Override
@@ -236,13 +240,14 @@ public class Piece {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Piece piece = (Piece) o;
-    return symbol == piece.symbol
+    return type == piece.type
+        && symbol == piece.symbol
         && color == piece.color
         && Objects.equals(position, piece.position);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(color, position, symbol);
+    return Objects.hash(type, color, position, symbol);
   }
 }
