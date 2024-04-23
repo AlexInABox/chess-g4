@@ -271,6 +271,6 @@ class PiecesTest {
     Piece rook2 = new Piece(PieceType.ROOK, Color.WHITE, position);
 
     //assertThat(rook1.hashCode()).isEqualTo(rook2.hashCode()); //ändert nichts an Line/Mutation Coverage
-    assertThat(rook1.hashCode()).isEqualTo(Objects.hash(Color.WHITE, position, rook1.getSymbol(), PieceType.ROOK));
+    assertThat(rook1.hashCode()).isEqualTo(Objects.hash(PieceType.ROOK, Color.WHITE, position, rook1.getSymbol()));
   }
 }
