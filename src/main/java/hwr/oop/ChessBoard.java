@@ -1,7 +1,6 @@
 package hwr.oop;
 
 import hwr.oop.exceptions.ChessBoardException;
-import hwr.oop.exceptions.MovePieceException;
 import hwr.oop.pieces.*;
 import java.util.ArrayList;
 import java.util.List;

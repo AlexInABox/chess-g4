@@ -1,16 +1,13 @@
 package hwr.oop;
 
-import hwr.oop.exceptions.MovePieceException;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import hwr.oop.pieces.IllegalMoveException;
 import hwr.oop.pieces.Piece;
 import hwr.oop.pieces.PieceType;
-import org.junit.jupiter.api.Test;
-
-import javax.print.attribute.standard.PDLOverrideSupported;
 import java.util.Objects;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
 
 class PiecesTest {
   //KING

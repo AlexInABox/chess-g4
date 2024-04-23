@@ -6,8 +6,6 @@ import hwr.oop.Position;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import hwr.oop.pieces.IllegalMoveException;
-
 public class Piece {
   private final Color color;
   private final char symbol;
