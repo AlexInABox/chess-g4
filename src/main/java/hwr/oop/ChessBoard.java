@@ -98,26 +98,6 @@ public class ChessBoard {
     board.get(position.row()).set(position.column(), piece);
   }
 
-  public boolean movePiece(Position from, Position to) throws MovePieceException {
-    Piece piece = board.get(from.row()).get(from.column());
-    if (piece == null) {
-      throw new MovePieceException("No piece at the specified position!");
-    }
-
-    if (to.row() < 0 || to.row() >= 8 || to.column() < 0 || to.column() >= 8) {
-      throw new MovePieceException("Invalid destination position!");
-    }
-
-    if (board.get(to.row()).get(to.column()) != null
-        && board.get(to.row()).get(to.column()).getColor() == piece.getColor()) {
-      throw new MovePieceException("Destination position occupied by own piece!");
-    }
-
-    board.get(to.row()).set(to.column(), piece);
-    board.get(from.row()).set(from.column(), null);
-    piece.setPosition(to);
-    return true;
-  }
   public boolean isValidPosition(int row, int column) {
     return row >= 0 && row < 8 && column >= 0 && column < 8;
   }

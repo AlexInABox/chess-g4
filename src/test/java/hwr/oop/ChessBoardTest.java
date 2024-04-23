@@ -119,84 +119,17 @@ class ChessBoardTest {
     assertThrows(ChessBoardException.class, () -> convertInputToPosition("a9"));
     assertThrows(ChessBoardException.class, () -> convertInputToPosition("h9"));
   }
-
-  @Test
-  void movePiece_Successful() throws MovePieceException {
-    Position from = new Position(1,0);
-    Position to = new Position(2,0);
-    assertThat(board.movePiece(from, to)).isTrue();
-    assertThat(actualBoard.get(1).getFirst()).isNull();
-    assertThat(actualBoard.get(2).getFirst()).isEqualTo(new Piece(PieceType.PAWN, Color.WHITE, new Position(2,0), board));
-  }
-
-  @Test
-  void movePiece_Fail_OutsideBoardNegativeColumn(){
-    Position from = new Position(1,0); //a2
-    Position to = new Position(2,-1); //Outside Board
-    MovePieceException exception = assertThrows(MovePieceException.class, () -> board.movePiece(from, to));
-    String expectedMessage = "Invalid destination position!";
-    assertThat(exception.getMessage()).contains(expectedMessage);
-    assertThat(actualBoard.get(1).getFirst()).isEqualTo(new Piece(PieceType.PAWN, Color.WHITE, new Position(1,0), board));
-  }
-
-  @Test
-  void movePiece_Fail_OutsideBoardNegativeRow(){
-    Position from = new Position(0,0); //a1
-    Position to = new Position(-1,0); //Outside Board
-    MovePieceException exception = assertThrows(MovePieceException.class, () -> board.movePiece(from, to));
-    String expectedMessage = "Invalid destination position!";
-    assertThat(exception.getMessage()).contains(expectedMessage);
-    assertThat(actualBoard.getFirst().getFirst()).isEqualTo(new Piece(PieceType.ROOK, Color.WHITE, new Position(0,0), board));
-  }
-
-  @Test
-  void movePiece_Fail_ColumnOutOfBounds(){
-    Position from = new Position(1,7); //h2
-    Position to = new Position(2,8); //Outside Board (i3)
-    MovePieceException exception = assertThrows(MovePieceException.class, () -> board.movePiece(from, to));
-    String expectedMessage = "Invalid destination position!";
-    assertThat(exception.getMessage()).contains(expectedMessage);
-    assertThat(actualBoard.get(1).get(7)).isEqualTo(new Piece(PieceType.PAWN, Color.WHITE, new Position(1,7), board));
-  }
-
-  @Test
-  void movePiece_Fail_RowOutOfBounds(){
-    Position from = new Position(7,0); //a8
-    Position to = new Position(8,0); //Outside Board (a9)
-    MovePieceException exception = assertThrows(MovePieceException.class, () -> board.movePiece(from, to));
-    String expectedMessage = "Invalid destination position!";
-    assertThat(exception.getMessage()).contains(expectedMessage);
-    assertThat(actualBoard.get(7).getFirst()).isEqualTo(new Piece(PieceType.ROOK, Color.BLACK, new Position(7,0), board));
-  }
-
-  @Test
-  void movePiece_Fail_OccupiedPositionByOwnPiece(){
-    Position from = new Position(0,0); //a1
-    Position to = new Position(1,0); //a2
-    MovePieceException exception = assertThrows(MovePieceException.class, () -> board.movePiece(from, to));
-    String expectedMessage = "Destination position occupied by own piece!";
-    assertThat(exception.getMessage()).contains(expectedMessage);
-  }
-
-  @Test
-  void movePiece_Fail_NoPieceOnFromPosition(){
-    Position from = new Position(3,0); //a3
-    Position to = new Position(4,0); //a4
-    MovePieceException exception = assertThrows(MovePieceException.class, () -> board.movePiece(from, to));
-    String expectedMessage = "No piece at the specified position!";
-    assertThat(exception.getMessage()).contains(expectedMessage);
-  }
   @Test
   void testIsPositionValid() {
     ChessBoard board = new ChessBoard();
 
     Position position_inBounds = new Position(2, 2);
     Position position_tooLowRow = new Position(-1, 2);
-    Position position_tooHighRow = new Position(9, 2);
+    Position position_tooHighRow = new Position(8, 2);
     Position position_tooLowColumn = new Position(2, -1);
-    Position position_tooHighColumn = new Position(2, 9);
+    Position position_tooHighColumn = new Position(2, 8);
     Position position_tooLowAll = new Position(-1, -1);
-    Position position_tooHighAll = new Position(9, 9);
+    Position position_tooHighAll = new Position(8, 8);
 
     assertThat(board.isValidPosition(position_inBounds.row(), position_inBounds.column())).isTrue();
     assertThat(board.isValidPosition(position_tooLowRow.row(), position_tooLowRow.column())).isFalse();
@@ -205,6 +138,17 @@ class ChessBoardTest {
     assertThat(board.isValidPosition(position_tooHighColumn.row(), position_tooHighColumn.column())).isFalse();
     assertThat(board.isValidPosition(position_tooLowAll.row(), position_tooLowAll.column())).isFalse();
     assertThat(board.isValidPosition(position_tooHighAll.row(), position_tooHighAll.column())).isFalse();
+
+    // Edge cases: testing upper bounds
+    assertThat(board.isValidPosition(7, 7)).isTrue(); // Upper-right corner
+    assertThat(board.isValidPosition(7, 0)).isTrue(); // Lower-right corner
+    assertThat(board.isValidPosition(0, 7)).isTrue(); // Upper-left corner
+    assertThat(board.isValidPosition(0, 0)).isTrue(); // Lower-left corner
+
+    // Testing positions one step outside bounds
+    assertThat(board.isValidPosition(8, 7)).isFalse(); // Row out of bounds
+    assertThat(board.isValidPosition(7, 8)).isFalse(); // Column out of bounds
+    assertThat(board.isValidPosition(8, 8)).isFalse(); // Both row and column out of bounds
   }
 
 }
