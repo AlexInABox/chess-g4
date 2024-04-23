@@ -13,7 +13,7 @@ public class Piece {
   private final ChessBoard chessBoard;
   private Position position;
 
-  public Piece(PieceType type, Color color, Position position, ChessBoard chessBoard){
+  public Piece(PieceType type, Color color, Position position, ChessBoard chessBoard) {
     this.type = type;
     this.color = color;
     this.position = position;
