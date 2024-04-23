@@ -68,32 +68,18 @@ public class Piece {
   }
 
   public void moveTo(Position target) {
+
+    ArrayList<Position> possibleMoves = null;
     switch (type) {
-      case KING -> {
-        moveKingTo(target);
-      }
-      case BISHOP -> {
-        //moveBishopTo(target);
-      }
-      case KNIGHT -> {
-        //moveKnightTo(target);
-      }
-      case PAWN -> {
-        //movePawnTo(target);
-      }
-      case QUEEN -> {
-        //moveQueenTo(target);
-      }
-      case ROOK -> {
-        //moveRookTo(target);
-      }
+      case KING   -> possibleMoves = possibleKingMoves();
+      case BISHOP -> possibleMoves = possibleBishopMoves();
+      case KNIGHT -> possibleMoves = possibleKnightMoves();
+      case PAWN   -> possibleMoves = possiblePawnMoves();
+      case QUEEN  -> possibleMoves = possibleQueenMoves();
+      case ROOK   -> possibleMoves = possibleRookMoves();
     }
-  }
-
-  private void moveKingTo(Position target) {
-    ArrayList<Position> possibleMoves = possibleKingMoves();
-
     if (possibleMoves.contains(target)){
+      //TODO: Check if a piece was captured
       chessBoard.setPieceAtPosition(position, null);
       position = target;
       chessBoard.setPieceAtPosition(target, this);
@@ -101,15 +87,154 @@ public class Piece {
   }
   private ArrayList<Position> possibleKingMoves() {
     ArrayList<Position> possibleMoves = new ArrayList<>();
-    for (int i = -1; i <= 1; i++) {
-      for (int j = -1; j <= 1; j++) {
-        if ((chessBoard.getPieceAtPosition(new Position(j + position.row(), i + position.column())).getColor() != Color.WHITE) && (chessBoard.getPieceAtPosition(new Position(j + position.row(), i + position.column())) != null)){
-          possibleMoves.add(new Position(j + position.row(), i + position.column()));
+    int[] directions = {-1, 0, 1};
+
+    for (int rowChange : directions) {
+      for (int colChange : directions) {
+        int newRow = position.row() + rowChange;
+        int newCol = position.column() + colChange;
+
+        if (newRow < 0 || newRow >= 8 || newCol < 0 || newCol >= 8) {
+          continue;
+        }
+        Position newPosition = new Position(newRow, newCol);
+        Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
+
+        if (pieceAtNewPosition == null || pieceAtNewPosition.getColor() != color) {
+          possibleMoves.add(newPosition);
         }
       }
     }
     return possibleMoves;
   }
+  private ArrayList<Position> possibleBishopMoves() {
+    ArrayList<Position> possibleMoves = new ArrayList<>();
+    int[][] directions = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+
+    for (int[] direction : directions) {
+      int newRow = position.row();
+      int newCol = position.column();
+
+      while (true) {
+        newRow += direction[0];
+        newCol += direction[1];
+
+        if (newRow < 0 || newRow >= 8 || newCol < 0 || newCol >= 8) {
+          break;
+        }
+
+        Position newPosition = new Position(newRow, newCol);
+        Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
+
+        if (pieceAtNewPosition == null || pieceAtNewPosition.getColor() != color) {
+          possibleMoves.add(newPosition);
+        } else break;
+      }
+    }
+    return possibleMoves;
+  }
+  private ArrayList<Position> possibleKnightMoves() {
+    ArrayList<Position> possibleMoves = new ArrayList<>();
+    int[][] moveOffsets = {
+            {2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2}
+    };
+
+    int currentRow = position.row();
+    int currentCol = position.column();
+
+    for (int[] offset : moveOffsets) {
+      int newRow = currentRow + offset[0];
+      int newCol = currentCol + offset[1];
+
+      if (newRow < 0 || newRow >= 8 || newCol < 0 || newCol >= 8) {
+        continue;
+      }
+      Position newPosition = new Position(newRow, newCol);
+      Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
+
+      if (pieceAtNewPosition == null || pieceAtNewPosition.getColor() != color) {
+        possibleMoves.add(newPosition);
+      }
+    }
+    return possibleMoves;
+  }
+  private ArrayList<Position> possiblePawnMoves() {
+    ArrayList<Position> possibleMoves = new ArrayList<>();
+    int rowDirection = (color == Color.WHITE) ? 1 : -1; // White pawns move up (incrementing row), black pawns move down (decrementing row)
+
+    // Get current position
+    int currentRow = position.row();
+    int currentColumn = position.column();
+
+    // Move one square forward
+    int newRow = currentRow + rowDirection;
+    if (isValidPosition(newRow, currentColumn) && chessBoard.getPieceAtPosition(new Position(newRow, currentColumn)) == null) {
+      possibleMoves.add(new Position(newRow, currentColumn));
+
+      // Check if pawn is in its initial position to possibly move two squares forward
+      if ((color == Color.WHITE && currentRow == 1) || (color == Color.BLACK && currentRow == 6)) {
+        int jumpRow = currentRow + 2 * rowDirection;
+        if (chessBoard.getPieceAtPosition(new Position(jumpRow, currentColumn)) == null) {
+          possibleMoves.add(new Position(jumpRow, currentColumn));
+        }
+      }
+    }
+
+    // Capturing moves: pawns capture diagonally
+    int[] captureColumns = {currentColumn - 1, currentColumn + 1};
+    for (int col : captureColumns) {
+      if (isValidPosition(newRow, col)) {
+        Piece capturePiece = chessBoard.getPieceAtPosition(new Position(newRow, col));
+        if (capturePiece != null && capturePiece.getColor() != color) {
+          possibleMoves.add(new Position(newRow, col));
+        }
+      }
+    }
+
+    return possibleMoves;
+  }
+  private ArrayList<Position> possibleRookMoves() {
+    ArrayList<Position> possibleMoves = new ArrayList<>();
+    int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+
+    for (int[] direction : directions) {
+      int newRow = position.row();
+      int newCol = position.column();
+
+      while (true) {
+        newRow += direction[0];
+        newCol += direction[1];
+
+        if (newRow < 0 || newRow >= 8 || newCol < 0 || newCol >= 8) {
+          break;
+        }
+
+        Position newPosition = new Position(newRow, newCol);
+        Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
+
+        if (pieceAtNewPosition == null || pieceAtNewPosition.getColor() != color) {
+          possibleMoves.add(newPosition);
+        } else break;
+      }
+    }
+    return possibleMoves;
+  }
+  private ArrayList<Position> possibleQueenMoves() {
+    ArrayList<Position> possibleMoves = new ArrayList<>();
+
+    possibleMoves.addAll(possibleRookMoves());
+    possibleMoves.addAll(possibleBishopMoves());
+
+    return possibleMoves;
+  }
+
+  private boolean isValidPosition(int row, int column) {
+    return row >= 0 && row < 8 && column >= 0 && column < 8;
+  }
+
+
+
+
 
 
 
