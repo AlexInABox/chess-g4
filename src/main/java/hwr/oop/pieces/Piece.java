@@ -45,7 +45,7 @@ public class Piece {
         return 'r';
       }
     }
-    return 'X';
+    return 0;
   }
   public Color getColor() {
     return color;
