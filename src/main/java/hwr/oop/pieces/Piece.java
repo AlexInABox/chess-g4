@@ -58,8 +58,10 @@ public class Piece {
     return position;
   }
 
-  public void setPosition(Position position) {
-    this.position = position;
+  public void setPosition(Position target) {
+    chessBoard.setPieceAtPosition(position, null);
+    this.position = target;
+    chessBoard.setPieceAtPosition(target, this);
   }
 
   public char getSymbol() {
@@ -68,7 +70,7 @@ public class Piece {
 
   public void moveTo(Position target) {
 
-    ArrayList<Position> possibleMoves = null;
+    ArrayList<Position> possibleMoves = new ArrayList<>();
     switch (type) {
       case KING   -> possibleMoves = possibleKingMoves();
       case BISHOP -> possibleMoves = possibleBishopMoves();
@@ -79,9 +81,7 @@ public class Piece {
     }
     if (possibleMoves.contains(target)){
       //TODO: Check if a piece was captured
-      chessBoard.setPieceAtPosition(position, null);
-      position = target;
-      chessBoard.setPieceAtPosition(target, this);
+      setPosition(target);
     }
   }
   private ArrayList<Position> possibleKingMoves() {
@@ -93,7 +93,7 @@ public class Piece {
         int newRow = position.row() + rowChange;
         int newCol = position.column() + colChange;
 
-        if (newRow < 0 || newRow >= 8 || newCol < 0 || newCol >= 8) {
+        if (!isValidPosition(newRow, newCol)) {
           continue;
         }
         Position newPosition = new Position(newRow, newCol);
@@ -118,7 +118,7 @@ public class Piece {
         newRow += direction[0];
         newCol += direction[1];
 
-        if (newRow < 0 || newRow >= 8 || newCol < 0 || newCol >= 8) {
+        if (!isValidPosition(newRow, newCol)) {
           break;
         }
 
@@ -145,7 +145,7 @@ public class Piece {
       int newRow = currentRow + offset[0];
       int newCol = currentCol + offset[1];
 
-      if (newRow < 0 || newRow >= 8 || newCol < 0 || newCol >= 8) {
+      if (!isValidPosition(newRow, newCol)) {
         continue;
       }
       Position newPosition = new Position(newRow, newCol);
@@ -200,7 +200,7 @@ public class Piece {
         newRow += direction[0];
         newCol += direction[1];
 
-        if (newRow < 0 || newRow >= 8 || newCol < 0 || newCol >= 8) {
+        if (!isValidPosition(newRow, newCol)) {
           break;
         }
 
@@ -222,7 +222,6 @@ public class Piece {
 
     return possibleMoves;
   }
-
   private boolean isValidPosition(int row, int column) {
     return row >= 0 && row < 8 && column >= 0 && column < 8;
   }
