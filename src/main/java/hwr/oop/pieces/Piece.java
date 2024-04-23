@@ -6,6 +6,8 @@ import hwr.oop.Position;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import hwr.oop.pieces.IllegalMoveException;
+
 public class Piece {
   private final Color color;
   private final char symbol;
@@ -72,7 +74,7 @@ public class Piece {
     return type;
   }
 
-  public void moveTo(Position target) {
+  public void moveTo(Position target) throws IllegalMoveException {
 
     ArrayList<Position> possibleMoves = new ArrayList<>();
     switch (type) {
@@ -86,7 +88,7 @@ public class Piece {
     if (possibleMoves.contains(target)){
       //TODO: Check if a piece was captured
       setPosition(target);
-    }
+    } else throw new IllegalMoveException("Illegal move");
   }
   private ArrayList<Position> possibleKingMoves() {
     ArrayList<Position> possibleMoves = new ArrayList<>();
@@ -97,7 +99,7 @@ public class Piece {
         int newRow = position.row() + rowChange;
         int newCol = position.column() + colChange;
 
-        if (!isValidPosition(newRow, newCol)) {
+        if (!chessBoard.isValidPosition(newRow, newCol)) {
           continue;
         }
         Position newPosition = new Position(newRow, newCol);
@@ -122,7 +124,7 @@ public class Piece {
         newRow += direction[0];
         newCol += direction[1];
 
-        if (!isValidPosition(newRow, newCol)) {
+        if (!chessBoard.isValidPosition(newRow, newCol)) {
           break;
         }
 
@@ -149,7 +151,7 @@ public class Piece {
       int newRow = currentRow + offset[0];
       int newCol = currentCol + offset[1];
 
-      if (!isValidPosition(newRow, newCol)) {
+      if (!chessBoard.isValidPosition(newRow, newCol)) {
         continue;
       }
       Position newPosition = new Position(newRow, newCol);
@@ -169,7 +171,7 @@ public class Piece {
     int currentColumn = position.column();
 
     int newRow = currentRow + rowDirection;
-    if (isValidPosition(newRow, currentColumn) && chessBoard.getPieceAtPosition(new Position(newRow, currentColumn)) == null) {
+    if (chessBoard.isValidPosition(newRow, currentColumn) && chessBoard.getPieceAtPosition(new Position(newRow, currentColumn)) == null) {
       possibleMoves.add(new Position(newRow, currentColumn));
 
       if ((color == Color.WHITE && currentRow == 1) || (color == Color.BLACK && currentRow == 6)) {
@@ -182,7 +184,7 @@ public class Piece {
 
     int[] captureColumns = {currentColumn - 1, currentColumn + 1};
     for (int col : captureColumns) {
-      if (isValidPosition(newRow, col)) {
+      if (chessBoard.isValidPosition(newRow, col)) {
         Piece capturePiece = chessBoard.getPieceAtPosition(new Position(newRow, col));
         if (capturePiece != null && capturePiece.getColor() != color) {
           possibleMoves.add(new Position(newRow, col));
@@ -204,7 +206,7 @@ public class Piece {
         newRow += direction[0];
         newCol += direction[1];
 
-        if (!isValidPosition(newRow, newCol)) {
+        if (!chessBoard.isValidPosition(newRow, newCol)) {
           break;
         }
 
@@ -226,9 +228,7 @@ public class Piece {
 
     return possibleMoves;
   }
-  private boolean isValidPosition(int row, int column) {
-    return row >= 0 && row < 8 && column >= 0 && column < 8;
-  }
+
 
   @Override
   public boolean equals(Object o) {

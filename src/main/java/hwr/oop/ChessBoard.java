@@ -118,4 +118,7 @@ public class ChessBoard {
     piece.setPosition(to);
     return true;
   }
+  public boolean isValidPosition(int row, int column) {
+    return row >= 0 && row < 8 && column >= 0 && column < 8;
+  }
 }

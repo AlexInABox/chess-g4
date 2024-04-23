@@ -1,20 +1,64 @@
 package hwr.oop;
 
+import hwr.oop.exceptions.MovePieceException;
+import hwr.oop.pieces.IllegalMoveException;
 import hwr.oop.pieces.Piece;
 import hwr.oop.pieces.PieceType;
 import org.junit.jupiter.api.Test;
 
+import javax.print.attribute.standard.PDLOverrideSupported;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PiecesTest {
+  //KING
+  @Test
+  void testKingConstructor() {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(0, 0);
+    Piece whiteKing = new Piece(PieceType.KING, Color.WHITE, position, board);
+    Piece blackKing = new Piece(PieceType.KING, Color.BLACK, position, board);
+    assertThat(whiteKing.getColor()).isEqualTo(Color.WHITE);
+    assertThat(whiteKing.getPosition()).isEqualTo(position);
+    assertThat(whiteKing.getSymbol()).isEqualTo('K');
+
+    assertThat(blackKing.getColor()).isEqualTo(Color.BLACK);
+    assertThat(blackKing.getPosition()).isEqualTo(position);
+    assertThat(blackKing.getSymbol()).isEqualTo('k');
+  }
+  @Test
+  void testKingMove_successful() throws IllegalMoveException {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(2, 2);
+    Position targetPosition = new Position(3, 2);
+    Piece king = new Piece(PieceType.KING, Color.WHITE, position, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    king.moveTo(targetPosition);
+    assertThat(king.getPosition()).isEqualTo(targetPosition);
+  }
+  @Test
+  void testKingMove_fail() {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(2, 2);
+    Position targetPosition = new Position(1, 2);
+    Piece king = new Piece(PieceType.KING, Color.WHITE, position, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> king.moveTo(targetPosition));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(king.getPosition()).isEqualTo(position);
+  }
   //BISHOP
   @Test
   void testBishopConstructor() {
+    ChessBoard board = new ChessBoard();
     Position position = new Position(0, 0);
-    Piece whiteBishop = new Piece(PieceType.BISHOP, Color.WHITE, position);
-    Piece blackBishop = new Piece(PieceType.BISHOP, Color.BLACK, position);
+    Piece whiteBishop = new Piece(PieceType.BISHOP, Color.WHITE, position, board);
+    Piece blackBishop = new Piece(PieceType.BISHOP, Color.BLACK, position, board);
     assertThat(whiteBishop.getType()).isEqualTo(PieceType.BISHOP);
     assertThat(whiteBishop.getColor()).isEqualTo(Color.WHITE);
     assertThat(whiteBishop.getPosition()).isEqualTo(position);
@@ -25,78 +69,37 @@ class PiecesTest {
     assertThat(blackBishop.getPosition()).isEqualTo(position);
     assertThat(blackBishop.getSymbol()).isEqualTo('b');
   }
-
   @Test
-  void testGetBishopPosition() {
-    Position position = new Position(3, 4);
-    Piece bishop = new Piece(PieceType.BISHOP, Color.WHITE, position);
+  void testBishopMove_successful() throws IllegalMoveException {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(2, 2);
+    Position targetPosition = new Position(5, 5);
+    Piece bishop = new Piece(PieceType.BISHOP, Color.WHITE, position, board);
+    board.setPieceAtPosition(bishop.getPosition(), bishop);
+
+    bishop.moveTo(targetPosition);
+    assertThat(bishop.getPosition()).isEqualTo(targetPosition);
+  }
+  @Test
+  void testBishopMove_fail() {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(2, 2);
+    Position targetPosition = new Position(1, 1);
+    Piece bishop = new Piece(PieceType.BISHOP, Color.WHITE, position, board);
+    board.setPieceAtPosition(bishop.getPosition(), bishop);
+
+    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> bishop.moveTo(targetPosition));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(bishop.getPosition()).isEqualTo(position);
-  }
-
-  @Test
-  void testSetBishopPosition() {
-    Position position = new Position(7, 8);
-    Piece bishop = new Piece(PieceType.BISHOP, Color.WHITE, position);
-    assertThat(bishop.getPosition()).isEqualTo(position);
-
-    Position newPosition = new Position(1, 1);
-    bishop.setPosition(newPosition);
-    assertThat(bishop.getPosition()).isEqualTo(newPosition);
-  }
-
-  @Test
-  void testBishopToString() {
-    Position position = new Position(3, 3);
-    Piece bishop = new Piece(PieceType.BISHOP, Color.WHITE, position);
-    assertThat(bishop.toString())
-            .hasToString("Piece{type=BISHOP, color=WHITE, position=Position[row=3, column=3], symbol=B}");
-  }
-  //KING
-  @Test
-  void testKingConstructor() {
-    Position position = new Position(0, 0);
-    Piece whiteKing = new Piece(PieceType.KING, Color.WHITE, position);
-    Piece blackKing = new Piece(PieceType.KING, Color.BLACK, position);
-    assertThat(whiteKing.getColor()).isEqualTo(Color.WHITE);
-    assertThat(whiteKing.getPosition()).isEqualTo(position);
-    assertThat(whiteKing.getSymbol()).isEqualTo('K');
-
-    assertThat(blackKing.getColor()).isEqualTo(Color.BLACK);
-    assertThat(blackKing.getPosition()).isEqualTo(position);
-    assertThat(blackKing.getSymbol()).isEqualTo('k');
-  }
-
-  @Test
-  void testGetKingPosition() {
-    Position position = new Position(3, 4);
-    Piece king = new Piece(PieceType.KING, Color.WHITE, position);
-    assertThat(king.getPosition()).isEqualTo(position);
-  }
-
-  @Test
-  void testSetKingPosition() {
-    Position position = new Position(7, 8);
-    Piece king = new Piece(PieceType.KING, Color.WHITE, position);
-    assertThat(king.getPosition()).isEqualTo(position);
-
-    Position newPosition = new Position(1, 1);
-    king.setPosition(newPosition);
-    assertThat(king.getPosition()).isEqualTo(newPosition);
-  }
-
-  @Test
-  void testKingToString() {
-    Position position = new Position(3, 3);
-    Piece king = new Piece(PieceType.KING, Color.WHITE, position);
-    assertThat(king.toString())
-            .hasToString("Piece{type=KING, color=WHITE, position=Position[row=3, column=3], symbol=K}");
   }
   //KNIGHT
   @Test
   void testKnightConstructor() {
+    ChessBoard board = new ChessBoard();
     Position position = new Position(0, 0);
-    Piece whiteKnight = new Piece(PieceType.KNIGHT, Color.WHITE, position);
-    Piece blackKnight = new Piece(PieceType.KNIGHT, Color.BLACK, position);
+    Piece whiteKnight = new Piece(PieceType.KNIGHT, Color.WHITE, position, board);
+    Piece blackKnight = new Piece(PieceType.KNIGHT, Color.BLACK, position, board);
     assertThat(whiteKnight.getColor()).isEqualTo(Color.WHITE);
     assertThat(whiteKnight.getPosition()).isEqualTo(position);
     assertThat(whiteKnight.getSymbol()).isEqualTo('N');
@@ -105,38 +108,37 @@ class PiecesTest {
     assertThat(blackKnight.getPosition()).isEqualTo(position);
     assertThat(blackKnight.getSymbol()).isEqualTo('n');
   }
-
   @Test
-  void testGetKnightPosition() {
-    Position position = new Position(3, 4);
-    Piece knight = new Piece(PieceType.KNIGHT, Color.WHITE, position);
-    assertThat(knight.getPosition()).isEqualTo(position);
+  void testKnightMove_successful() throws IllegalMoveException {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(2, 2);
+    Position targetPosition = new Position(3, 4);
+    Piece knight = new Piece(PieceType.KNIGHT, Color.WHITE, position, board);
+    board.setPieceAtPosition(knight.getPosition(), knight);
+
+    knight.moveTo(targetPosition);
+    assertThat(knight.getPosition()).isEqualTo(targetPosition);
   }
-
   @Test
-  void testSetKnightPosition() {
-    Position position = new Position(7, 8);
-    Piece knight = new Piece(PieceType.KNIGHT, Color.WHITE, position);
+  void testKnightMove_fail() {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(2, 2);
+    Position targetPosition = new Position(1, 4);
+    Piece knight = new Piece(PieceType.KNIGHT, Color.WHITE, position, board);
+    board.setPieceAtPosition(knight.getPosition(), knight);
+
+    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> knight.moveTo(targetPosition));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(knight.getPosition()).isEqualTo(position);
-
-    Position newPosition = new Position(1, 1);
-    knight.setPosition(newPosition);
-    assertThat(knight.getPosition()).isEqualTo(newPosition);
-  }
-
-  @Test
-  void testKnightToString() {
-    Position position = new Position(3, 3);
-    Piece knight = new Piece(PieceType.KNIGHT, Color.WHITE, position);
-    assertThat(knight.toString())
-            .hasToString("Piece{type=KNIGHT, color=WHITE, position=Position[row=3, column=3], symbol=N}");
   }
   //PAWN
   @Test
   void testPawnConstructor() {
+    ChessBoard board = new ChessBoard();
     Position position = new Position(0, 0);
-    Piece whitePawn = new Piece(PieceType.PAWN, Color.WHITE, position);
-    Piece blackPawn = new Piece(PieceType.PAWN, Color.BLACK, position);
+    Piece whitePawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
+    Piece blackPawn = new Piece(PieceType.PAWN, Color.BLACK, position, board);
     assertThat(whitePawn.getColor()).isEqualTo(Color.WHITE);
     assertThat(whitePawn.getPosition()).isEqualTo(position);
     assertThat(whitePawn.getSymbol()).isEqualTo('P');
@@ -145,38 +147,122 @@ class PiecesTest {
     assertThat(blackPawn.getPosition()).isEqualTo(position);
     assertThat(blackPawn.getSymbol()).isEqualTo('p');
   }
-
   @Test
-  void testGetPawnPosition() {
-    Position position = new Position(3, 4);
-    Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position);
+  void testWhitePawnMove_successful() throws IllegalMoveException {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(1, 2);
+    Position targetPosition = new Position(2, 2);
+    Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
+    board.setPieceAtPosition(pawn.getPosition(), pawn);
+
+    pawn.moveTo(targetPosition);
+    assertThat(pawn.getPosition()).isEqualTo(targetPosition);
+  }
+  @Test
+  void testWhitePawnMoveDoubleAdvance_successful() throws IllegalMoveException {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(1, 2);
+    Position targetPosition = new Position(3, 2);
+    Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
+    board.setPieceAtPosition(pawn.getPosition(), pawn);
+
+    pawn.moveTo(targetPosition);
+    assertThat(pawn.getPosition()).isEqualTo(targetPosition);
+  }
+  @Test
+  void testWhitePawnCapture_successful() throws IllegalMoveException {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(1, 2);
+    Position targetPosition = new Position(2, 3);
+    Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
+    Piece knight = new Piece(PieceType.KNIGHT, Color.BLACK, targetPosition, board);
+    board.setPieceAtPosition(knight.getPosition(), knight);
+    board.setPieceAtPosition(pawn.getPosition(), pawn);
+
+    pawn.moveTo(targetPosition);
+    assertThat(pawn.getPosition()).isEqualTo(targetPosition);
+  }
+  @Test
+  void testBlackPawnMove_successful() throws IllegalMoveException {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(6, 2);
+    Position targetPosition = new Position(5, 2);
+    Piece pawn = new Piece(PieceType.PAWN, Color.BLACK, position, board);
+    board.setPieceAtPosition(pawn.getPosition(), pawn);
+
+    pawn.moveTo(targetPosition);
+    assertThat(pawn.getPosition()).isEqualTo(targetPosition);
+  }
+  @Test
+  void testBlackPawnMoveDoubleAdvance_successful() throws IllegalMoveException {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(6, 2);
+    Position targetPosition = new Position(4, 2);
+    Piece pawn = new Piece(PieceType.PAWN, Color.BLACK, position, board);
+    board.setPieceAtPosition(pawn.getPosition(), pawn);
+
+    pawn.moveTo(targetPosition);
+    assertThat(pawn.getPosition()).isEqualTo(targetPosition);
+  }
+  @Test
+  void testBlackPawnCapture_successful() throws IllegalMoveException {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(6, 2);
+    Position targetPosition = new Position(5, 3);
+    Piece pawn = new Piece(PieceType.PAWN, Color.BLACK, position, board);
+    Piece knight = new Piece(PieceType.KNIGHT, Color.WHITE, targetPosition, board);
+    board.setPieceAtPosition(knight.getPosition(), knight);
+    board.setPieceAtPosition(pawn.getPosition(), pawn);
+
+    pawn.moveTo(targetPosition);
+    assertThat(pawn.getPosition()).isEqualTo(targetPosition);
+  }
+  @Test
+  void testWhitePawnMove_fail() {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(1, 2);
+    Position targetPosition = new Position(0, 2);
+    Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
+    board.setPieceAtPosition(pawn.getPosition(), pawn);
+
+    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> pawn.moveTo(targetPosition));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(pawn.getPosition()).isEqualTo(position);
   }
-
   @Test
-  void testSetPawnPosition() {
-    Position position = new Position(7, 8);
-    Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position);
+  void testWhitePawnCapture_fail() {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(1, 2);
+    Position targetPosition = new Position(2, 3);
+    Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
+    board.setPieceAtPosition(pawn.getPosition(), pawn);
+
+    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> pawn.moveTo(targetPosition));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(pawn.getPosition()).isEqualTo(position);
-
-    Position newPosition = new Position(1, 1);
-    pawn.setPosition(newPosition);
-    assertThat(pawn.getPosition()).isEqualTo(newPosition);
   }
-
   @Test
-  void testPawnToString() {
-    Position position = new Position(3, 3);
-    Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position);
-    assertThat(pawn.toString())
-            .hasToString("Piece{type=PAWN, color=WHITE, position=Position[row=3, column=3], symbol=P}");
+  void testBlackPawnCapture_fail() {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(6, 2);
+    Position targetPosition = new Position(5, 3);
+    Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
+    board.setPieceAtPosition(pawn.getPosition(), pawn);
+
+    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> pawn.moveTo(targetPosition));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(pawn.getPosition()).isEqualTo(position);
   }
   //QUEEN
   @Test
   void testQueenConstructor() {
+    ChessBoard board = new ChessBoard();
     Position position = new Position(0, 0);
-    Piece whiteQueen = new Piece(PieceType.QUEEN, Color.WHITE, position);
-    Piece blackQueen = new Piece(PieceType.QUEEN, Color.BLACK, position);
+    Piece whiteQueen = new Piece(PieceType.QUEEN, Color.WHITE, position, board);
+    Piece blackQueen = new Piece(PieceType.QUEEN, Color.BLACK, position, board);
     assertThat(whiteQueen.getColor()).isEqualTo(Color.WHITE);
     assertThat(whiteQueen.getPosition()).isEqualTo(position);
     assertThat(whiteQueen.getSymbol()).isEqualTo('Q');
@@ -185,38 +271,37 @@ class PiecesTest {
     assertThat(blackQueen.getPosition()).isEqualTo(position);
     assertThat(blackQueen.getSymbol()).isEqualTo('q');
   }
-
   @Test
-  void testGetQueenPosition() {
-    Position position = new Position(3, 4);
-    Piece queen = new Piece(PieceType.QUEEN, Color.WHITE, position);
-    assertThat(queen.getPosition()).isEqualTo(position);
+  void testQueenMove_successful() throws IllegalMoveException {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(2, 2);
+    Position targetPosition = new Position(5, 5);
+    Piece queen = new Piece(PieceType.QUEEN, Color.WHITE, position, board);
+    board.setPieceAtPosition(queen.getPosition(), queen);
+
+    queen.moveTo(targetPosition);
+    assertThat(queen.getPosition()).isEqualTo(targetPosition);
   }
-
   @Test
-  void testSetQueenPosition() {
-    Position position = new Position(7, 8);
-    Piece queen = new Piece(PieceType.QUEEN, Color.WHITE, position);
+  void testQueenMove_fail() {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(2, 2);
+    Position targetPosition = new Position(1, 1);
+    Piece queen = new Piece(PieceType.QUEEN, Color.WHITE, position, board);
+    board.setPieceAtPosition(queen.getPosition(), queen);
+
+    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> queen.moveTo(targetPosition));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(queen.getPosition()).isEqualTo(position);
-
-    Position newPosition = new Position(1, 1);
-    queen.setPosition(newPosition);
-    assertThat(queen.getPosition()).isEqualTo(newPosition);
-  }
-
-  @Test
-  void testQueenToString() {
-    Position position = new Position(3, 3);
-    Piece queen = new Piece(PieceType.QUEEN, Color.WHITE, position);
-    assertThat(queen.toString())
-            .hasToString("Piece{type=QUEEN, color=WHITE, position=Position[row=3, column=3], symbol=Q}");
   }
   //ROOK
   @Test
   void testRookConstructor() {
+    ChessBoard board = new ChessBoard();
     Position position = new Position(0, 0);
-    Piece whiteRook = new Piece(PieceType.ROOK, Color.WHITE, position);
-    Piece blackRook = new Piece(PieceType.ROOK, Color.BLACK, position);
+    Piece whiteRook = new Piece(PieceType.ROOK, Color.WHITE, position, board);
+    Piece blackRook = new Piece(PieceType.ROOK, Color.BLACK, position, board);
     assertThat(whiteRook.getColor()).isEqualTo(Color.WHITE);
     assertThat(whiteRook.getPosition()).isEqualTo(position);
     assertThat(whiteRook.getSymbol()).isEqualTo('R');
@@ -225,39 +310,39 @@ class PiecesTest {
     assertThat(blackRook.getPosition()).isEqualTo(position);
     assertThat(blackRook.getSymbol()).isEqualTo('r');
   }
-
   @Test
-  void testGetRookPosition() {
-    Position position = new Position(3, 4);
-    Piece rook = new Piece(PieceType.ROOK, Color.WHITE, position);
+  void testRookMove_successful() throws IllegalMoveException {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(2, 2);
+    Position targetPosition = new Position(5, 2);
+    Piece rook = new Piece(PieceType.ROOK, Color.WHITE, position, board);
+    board.setPieceAtPosition(rook.getPosition(), rook);
+
+    rook.moveTo(targetPosition);
+    assertThat(rook.getPosition()).isEqualTo(targetPosition);
+  }
+  @Test
+  void testRookMove_fail() {
+    ChessBoard board = new ChessBoard();
+    Position position = new Position(2, 2);
+    Position targetPosition = new Position(1, 1);
+    Piece rook = new Piece(PieceType.ROOK, Color.WHITE, position, board);
+    board.setPieceAtPosition(rook.getPosition(), rook);
+
+    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> rook.moveTo(targetPosition));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(rook.getPosition()).isEqualTo(position);
   }
 
-  @Test
-  void testSetRookPosition() {
-    Position position = new Position(7, 8);
-    Piece rook = new Piece(PieceType.ROOK, Color.WHITE, position);
-    assertThat(rook.getPosition()).isEqualTo(position);
-
-    Position newPosition = new Position(1, 1);
-    rook.setPosition(newPosition);
-    assertThat(rook.getPosition()).isEqualTo(newPosition);
-  }
-
-  @Test
-  void testRookToString() {
-    Position position = new Position(3, 3);
-    Piece rook = new Piece(PieceType.ROOK, Color.WHITE, position);
-    assertThat(rook.toString())
-            .hasToString("Piece{type=ROOK, color=WHITE, position=Position[row=3, column=3], symbol=R}");
-  }
   //equals?
   @Test
-  void testRookEquals() {
+  void testPieceEquals() {
+    ChessBoard board = new ChessBoard();
     Position position = new Position(3, 3);
-    Piece rook1 = new Piece(PieceType.ROOK, Color.WHITE, position);
-    Piece rook2 = new Piece(PieceType.ROOK, Color.WHITE, position);
-    Piece queen = new Piece(PieceType.QUEEN, Color.WHITE, position);
+    Piece rook1 = new Piece(PieceType.ROOK, Color.WHITE, position, board);
+    Piece rook2 = new Piece(PieceType.ROOK, Color.WHITE, position, board);
+    Piece queen = new Piece(PieceType.QUEEN, Color.WHITE, position, board);
     ChessBoard chessBoard = new ChessBoard();
 
     assertThat(rook1.equals(rook2)).isTrue();
@@ -267,12 +352,24 @@ class PiecesTest {
     assertThat(rook1.equals(chessBoard)).isFalse();
 }
   @Test
-  void testRookHash() {
+  void testPieceHash() {
+    ChessBoard board = new ChessBoard();
     Position position = new Position(3, 3);
-    Piece rook1 = new Piece(PieceType.ROOK, Color.WHITE, position);
-    Piece rook2 = new Piece(PieceType.ROOK, Color.WHITE, position);
+    Piece rook1 = new Piece(PieceType.ROOK, Color.WHITE, position, board);
+    Piece rook2 = new Piece(PieceType.ROOK, Color.WHITE, position, board);
 
     //assertThat(rook1.hashCode()).isEqualTo(rook2.hashCode()); //ändert nichts an Line/Mutation Coverage
     assertThat(rook1.hashCode()).isEqualTo(Objects.hash(PieceType.ROOK, Color.WHITE, position, rook1.getSymbol()));
+  }
+  @Test
+  void testPieceSetPosition() {
+    ChessBoard board = new ChessBoard();
+    Position oldposition = new Position(0, 0);
+    Position newPosition = new Position(5, 0);
+    Piece rook = new Piece(PieceType.ROOK, Color.WHITE, oldposition, board);
+    rook.setPosition(newPosition);
+    assertThat(board.getPieceAtPosition(oldposition)).isNull();
+    assertThat(rook.getPosition()).isEqualTo(newPosition);
+    assertThat(board.getPieceAtPosition(newPosition)).isEqualTo(rook);
   }
 }

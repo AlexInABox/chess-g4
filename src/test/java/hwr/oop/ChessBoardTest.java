@@ -186,5 +186,25 @@ class ChessBoardTest {
     String expectedMessage = "No piece at the specified position!";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
+  @Test
+  void testIsPositionValid() {
+    ChessBoard board = new ChessBoard();
+
+    Position position_inBounds = new Position(2, 2);
+    Position position_tooLowRow = new Position(-1, 2);
+    Position position_tooHighRow = new Position(9, 2);
+    Position position_tooLowColumn = new Position(2, -1);
+    Position position_tooHighColumn = new Position(2, 9);
+    Position position_tooLowAll = new Position(-1, -1);
+    Position position_tooHighAll = new Position(9, 9);
+
+    assertThat(board.isValidPosition(position_inBounds.row(), position_inBounds.column())).isTrue();
+    assertThat(board.isValidPosition(position_tooLowRow.row(), position_tooLowRow.column())).isFalse();
+    assertThat(board.isValidPosition(position_tooHighRow.row(), position_tooHighRow.column())).isFalse();
+    assertThat(board.isValidPosition(position_tooLowColumn.row(), position_tooLowColumn.column())).isFalse();
+    assertThat(board.isValidPosition(position_tooHighColumn.row(), position_tooHighColumn.column())).isFalse();
+    assertThat(board.isValidPosition(position_tooLowAll.row(), position_tooLowAll.column())).isFalse();
+    assertThat(board.isValidPosition(position_tooHighAll.row(), position_tooHighAll.column())).isFalse();
+  }
 
 }
