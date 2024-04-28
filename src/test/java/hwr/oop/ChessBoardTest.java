@@ -1,6 +1,5 @@
 package hwr.oop;
 
-import hwr.oop.exceptions.ChessBoardException;
 import hwr.oop.pieces.*;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;

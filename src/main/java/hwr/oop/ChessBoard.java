@@ -1,6 +1,5 @@
 package hwr.oop;
 
-import hwr.oop.exceptions.ChessBoardException;
 import hwr.oop.pieces.*;
 
 import java.io.Serializable;

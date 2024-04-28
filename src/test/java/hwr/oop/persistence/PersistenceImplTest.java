@@ -1,14 +1,10 @@
 package hwr.oop.persistence;
 
 import hwr.oop.ChessBoard;
-import hwr.oop.exceptions.ChessBoardException;
-import hwr.oop.pieces.IllegalMoveException;
-import hwr.oop.pieces.Piece;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
-import static hwr.oop.ChessBoard.convertInputToPosition;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
