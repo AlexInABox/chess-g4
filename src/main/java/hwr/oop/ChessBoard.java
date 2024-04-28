@@ -2,11 +2,14 @@ package hwr.oop;
 
 import hwr.oop.exceptions.ChessBoardException;
 import hwr.oop.pieces.*;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
-public class ChessBoard {
+public class ChessBoard implements Serializable {
   private final List<List<Piece>> board = new ArrayList<>();
 
   public ChessBoard() {
@@ -99,5 +102,18 @@ public class ChessBoard {
 
   public boolean isValidPosition(int row, int column) {
     return row >= 0 && row < 8 && column >= 0 && column < 8;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ChessBoard that = (ChessBoard) o;
+    return Objects.equals(board, that.board);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(board);
   }
 }
