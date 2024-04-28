@@ -188,4 +188,44 @@ class ChessBoardTest {
     assertThat(board.isValidPosition(7, 8)).isFalse(); // Column out of bounds
     assertThat(board.isValidPosition(8, 8)).isFalse(); // Both row and column out of bounds
   }
+
+  @Test
+  void equals_IdenticalInstances(){
+    ChessBoard board2 = new ChessBoard();
+    assertThat(board.equals(board2)).isTrue();
+  }
+  @Test
+  void equals_sameInstance(){
+    assertThat(board.equals(board)).isTrue();
+  }
+  @Test
+  void equals_InstanceNull(){
+    assertThat(board.equals(null)).isFalse();
+  }
+  @Test
+  void equals_DifferentClass(){
+    Piece piece = new Piece(PieceType.BISHOP, Color.BLACK, new Position(7, 5), board);
+    assertThat(board.equals(piece)).isFalse();
+  }
+
+  @Test
+  void equals_DifferentInstances(){
+    board.setPieceAtPosition(new Position(4,4), new Piece(PieceType.BISHOP, Color.BLACK, new Position(7, 5), board));
+    ChessBoard board2 = new ChessBoard();
+    assertThat(board.equals(board2)).isFalse();
+  }
+
+  @Test
+  void hashCode_IdenticalHashCode(){
+    ChessBoard board2 = new ChessBoard();
+    assertThat(board.hashCode()).isEqualTo(board2.hashCode());
+  }
+
+  @Test
+  void hashCode_DifferentHashCode(){
+    board.setPieceAtPosition(new Position(4,4), new Piece(PieceType.BISHOP, Color.BLACK, new Position(7, 5), board));
+    ChessBoard board2 = new ChessBoard();
+    assertThat(board.hashCode()).isNotEqualTo(board2.hashCode());
+  }
+
 }
