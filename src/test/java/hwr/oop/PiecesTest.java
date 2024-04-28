@@ -7,13 +7,20 @@ import hwr.oop.pieces.IllegalMoveException;
 import hwr.oop.pieces.Piece;
 import hwr.oop.pieces.PieceType;
 import java.util.Objects;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class PiecesTest {
+
+  private ChessBoard board;
+  @BeforeEach
+  void setup() {
+    board = new ChessBoard();
+  }
   //KING
   @Test
   void testKingConstructor() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(0, 0);
     Piece whiteKing = new Piece(PieceType.KING, Color.WHITE, position, board);
     Piece blackKing = new Piece(PieceType.KING, Color.BLACK, position, board);
@@ -27,7 +34,6 @@ class PiecesTest {
   }
   @Test
   void testKingMove_successful() throws IllegalMoveException {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(2, 2);
     Position targetPosition = new Position(3, 2);
     Piece king = new Piece(PieceType.KING, Color.WHITE, position, board);
@@ -38,7 +44,6 @@ class PiecesTest {
   }
   @Test
   void testKingMove_fail() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(2, 2);
     Position targetPosition = new Position(1, 2);
     Piece king = new Piece(PieceType.KING, Color.WHITE, position, board);
@@ -52,7 +57,6 @@ class PiecesTest {
   //BISHOP
   @Test
   void testBishopConstructor() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(0, 0);
     Piece whiteBishop = new Piece(PieceType.BISHOP, Color.WHITE, position, board);
     Piece blackBishop = new Piece(PieceType.BISHOP, Color.BLACK, position, board);
@@ -68,7 +72,6 @@ class PiecesTest {
   }
   @Test
   void testBishopMove_successful() throws IllegalMoveException {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(2, 2);
     Position targetPosition = new Position(5, 5);
     Piece bishop = new Piece(PieceType.BISHOP, Color.WHITE, position, board);
@@ -79,7 +82,6 @@ class PiecesTest {
   }
   @Test
   void testBishopMove_fail() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(2, 2);
     Position targetPosition = new Position(1, 1);
     Piece bishop = new Piece(PieceType.BISHOP, Color.WHITE, position, board);
@@ -93,7 +95,6 @@ class PiecesTest {
   //KNIGHT
   @Test
   void testKnightConstructor() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(0, 0);
     Piece whiteKnight = new Piece(PieceType.KNIGHT, Color.WHITE, position, board);
     Piece blackKnight = new Piece(PieceType.KNIGHT, Color.BLACK, position, board);
@@ -107,7 +108,6 @@ class PiecesTest {
   }
   @Test
   void testKnightMove_successful() throws IllegalMoveException {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(2, 2);
     Position targetPosition = new Position(3, 4);
     Piece knight = new Piece(PieceType.KNIGHT, Color.WHITE, position, board);
@@ -118,7 +118,6 @@ class PiecesTest {
   }
   @Test
   void testKnightMove_fail() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(2, 2);
     Position targetPosition = new Position(1, 4);
     Piece knight = new Piece(PieceType.KNIGHT, Color.WHITE, position, board);
@@ -132,7 +131,6 @@ class PiecesTest {
   //PAWN
   @Test
   void testPawnConstructor() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(0, 0);
     Piece whitePawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
     Piece blackPawn = new Piece(PieceType.PAWN, Color.BLACK, position, board);
@@ -146,7 +144,6 @@ class PiecesTest {
   }
   @Test
   void testWhitePawnMove_successful() throws IllegalMoveException {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(1, 2);
     Position targetPosition = new Position(2, 2);
     Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
@@ -157,7 +154,6 @@ class PiecesTest {
   }
   @Test
   void testWhitePawnMoveDoubleAdvance_successful() throws IllegalMoveException {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(1, 2);
     Position targetPosition = new Position(3, 2);
     Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
@@ -168,7 +164,6 @@ class PiecesTest {
   }
   @Test
   void testWhitePawnCapture_successful() throws IllegalMoveException {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(1, 2);
     Position targetPosition = new Position(2, 3);
     Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
@@ -181,7 +176,6 @@ class PiecesTest {
   }
   @Test
   void testBlackPawnMove_successful() throws IllegalMoveException {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(6, 2);
     Position targetPosition = new Position(5, 2);
     Piece pawn = new Piece(PieceType.PAWN, Color.BLACK, position, board);
@@ -192,7 +186,6 @@ class PiecesTest {
   }
   @Test
   void testBlackPawnMoveDoubleAdvance_successful() throws IllegalMoveException {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(6, 2);
     Position targetPosition = new Position(4, 2);
     Piece pawn = new Piece(PieceType.PAWN, Color.BLACK, position, board);
@@ -203,7 +196,6 @@ class PiecesTest {
   }
   @Test
   void testBlackPawnCapture_successful() throws IllegalMoveException {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(6, 2);
     Position targetPosition = new Position(5, 3);
     Piece pawn = new Piece(PieceType.PAWN, Color.BLACK, position, board);
@@ -216,7 +208,6 @@ class PiecesTest {
   }
   @Test
   void testWhitePawnMove_fail() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(1, 2);
     Position targetPosition = new Position(0, 2);
     Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
@@ -229,7 +220,6 @@ class PiecesTest {
   }
   @Test
   void testWhitePawnCapture_fail() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(1, 2);
     Position targetPosition = new Position(2, 3);
     Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
@@ -242,7 +232,6 @@ class PiecesTest {
   }
   @Test
   void testBlackPawnCapture_fail() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(6, 2);
     Position targetPosition = new Position(5, 3);
     Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
@@ -256,7 +245,6 @@ class PiecesTest {
   //QUEEN
   @Test
   void testQueenConstructor() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(0, 0);
     Piece whiteQueen = new Piece(PieceType.QUEEN, Color.WHITE, position, board);
     Piece blackQueen = new Piece(PieceType.QUEEN, Color.BLACK, position, board);
@@ -270,7 +258,6 @@ class PiecesTest {
   }
   @Test
   void testQueenMove_successful() throws IllegalMoveException {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(2, 2);
     Position targetPosition = new Position(5, 5);
     Piece queen = new Piece(PieceType.QUEEN, Color.WHITE, position, board);
@@ -281,7 +268,6 @@ class PiecesTest {
   }
   @Test
   void testQueenMove_fail() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(2, 2);
     Position targetPosition = new Position(1, 1);
     Piece queen = new Piece(PieceType.QUEEN, Color.WHITE, position, board);
@@ -295,7 +281,6 @@ class PiecesTest {
   //ROOK
   @Test
   void testRookConstructor() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(0, 0);
     Piece whiteRook = new Piece(PieceType.ROOK, Color.WHITE, position, board);
     Piece blackRook = new Piece(PieceType.ROOK, Color.BLACK, position, board);
@@ -309,7 +294,6 @@ class PiecesTest {
   }
   @Test
   void testRookMove_successful() throws IllegalMoveException {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(2, 2);
     Position targetPosition = new Position(5, 2);
     Piece rook = new Piece(PieceType.ROOK, Color.WHITE, position, board);
@@ -320,7 +304,6 @@ class PiecesTest {
   }
   @Test
   void testRookMove_fail() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(2, 2);
     Position targetPosition = new Position(1, 1);
     Piece rook = new Piece(PieceType.ROOK, Color.WHITE, position, board);
@@ -334,8 +317,8 @@ class PiecesTest {
 
   //equals?
   @Test
+  @SuppressWarnings({"EqualsWithItself", "ConstantConditions", "EqualsBetweenInconvertibleTypes"})
   void testPieceEquals() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(3, 3);
     Piece rook1 = new Piece(PieceType.ROOK, Color.WHITE, position, board);
     Piece rook2 = new Piece(PieceType.ROOK, Color.WHITE, position, board);
@@ -350,7 +333,6 @@ class PiecesTest {
 }
   @Test
   void testPieceHash() {
-    ChessBoard board = new ChessBoard();
     Position position = new Position(3, 3);
     Piece rook1 = new Piece(PieceType.ROOK, Color.WHITE, position, board);
     Piece rook2 = new Piece(PieceType.ROOK, Color.WHITE, position, board);
@@ -360,7 +342,6 @@ class PiecesTest {
   }
   @Test
   void testPieceSetPosition() {
-    ChessBoard board = new ChessBoard();
     Position oldposition = new Position(0, 0);
     Position newPosition = new Position(5, 0);
     Piece rook = new Piece(PieceType.ROOK, Color.WHITE, oldposition, board);
