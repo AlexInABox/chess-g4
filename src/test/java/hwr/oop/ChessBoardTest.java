@@ -4,95 +4,92 @@ import hwr.oop.pieces.*;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.List;
-
 import static hwr.oop.ChessBoard.convertInputToPosition;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ChessBoardTest {
-  List<List<Piece>> actualBoard;
   private ChessBoard board;
 
   @BeforeEach
   void setup() {
     board = new ChessBoard();
-    actualBoard = board.getBoard();
   }
 
   @Test
   void testInitialBoardSetup() {
     SoftAssertions.assertSoftly(
-        softly -> {
-          // Test for Rooks
-          softly
-              .assertThat(actualBoard.get(0).get(0))
-              .isEqualTo(new Piece(PieceType.ROOK, Color.WHITE, new Position(0, 0), board));
-          softly
-              .assertThat(actualBoard.get(0).get(7))
-              .isEqualTo(new Piece(PieceType.ROOK, Color.WHITE, new Position(0, 7), board));
-          softly
-              .assertThat(actualBoard.get(7).get(0))
-              .isEqualTo(new Piece(PieceType.ROOK, Color.BLACK, new Position(7, 0), board));
-          softly
-              .assertThat(actualBoard.get(7).get(7))
-              .isEqualTo(new Piece(PieceType.ROOK, Color.BLACK, new Position(7, 7), board));
+            softly -> {
+              // Test for Rooks
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(0,0)))
+                      .isEqualTo(new Piece(PieceType.ROOK, Color.WHITE, new Position(0, 0), board));
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(0,7)))
+                      .isEqualTo(new Piece(PieceType.ROOK, Color.WHITE, new Position(0, 7), board));
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(7,0)))
+                      .isEqualTo(new Piece(PieceType.ROOK, Color.BLACK, new Position(7, 0), board));
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(7,7)))
+                      .isEqualTo(new Piece(PieceType.ROOK, Color.BLACK, new Position(7, 7), board));
 
-          // Test for Knights
-          softly
-              .assertThat(actualBoard.get(0).get(1))
-              .isEqualTo(new Piece(PieceType.KNIGHT, Color.WHITE, new Position(0, 1), board));
-          softly
-              .assertThat(actualBoard.get(0).get(6))
-              .isEqualTo(new Piece(PieceType.KNIGHT, Color.WHITE, new Position(0, 6), board));
-          softly
-              .assertThat(actualBoard.get(7).get(1))
-              .isEqualTo(new Piece(PieceType.KNIGHT, Color.BLACK, new Position(7, 1), board));
-          softly
-              .assertThat(actualBoard.get(7).get(6))
-              .isEqualTo(new Piece(PieceType.KNIGHT, Color.BLACK, new Position(7, 6), board));
+              // Test for Knights
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(0,1)))
+                      .isEqualTo(new Piece(PieceType.KNIGHT, Color.WHITE, new Position(0, 1), board));
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(0,6)))
+                      .isEqualTo(new Piece(PieceType.KNIGHT, Color.WHITE, new Position(0, 6), board));
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(7,1)))
+                      .isEqualTo(new Piece(PieceType.KNIGHT, Color.BLACK, new Position(7, 1), board));
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(7,6)))
+                      .isEqualTo(new Piece(PieceType.KNIGHT, Color.BLACK, new Position(7, 6), board));
 
-          // Test for Bishops
-          softly
-              .assertThat(actualBoard.get(0).get(2))
-              .isEqualTo(new Piece(PieceType.BISHOP, Color.WHITE, new Position(0, 2), board));
-          softly
-              .assertThat(actualBoard.get(0).get(5))
-              .isEqualTo(new Piece(PieceType.BISHOP, Color.WHITE, new Position(0, 5), board));
-          softly
-              .assertThat(actualBoard.get(7).get(2))
-              .isEqualTo(new Piece(PieceType.BISHOP, Color.BLACK, new Position(7, 2), board));
-          softly
-              .assertThat(actualBoard.get(7).get(5))
-              .isEqualTo(new Piece(PieceType.BISHOP, Color.BLACK, new Position(7, 5), board));
+              // Test for Bishops
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(0,2)))
+                      .isEqualTo(new Piece(PieceType.BISHOP, Color.WHITE, new Position(0, 2), board));
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(0,5)))
+                      .isEqualTo(new Piece(PieceType.BISHOP, Color.WHITE, new Position(0, 5), board));
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(7,2)))
+                      .isEqualTo(new Piece(PieceType.BISHOP, Color.BLACK, new Position(7, 2), board));
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(7,5)))
+                      .isEqualTo(new Piece(PieceType.BISHOP, Color.BLACK, new Position(7, 5), board));
 
-          // Test for Queens
-          softly
-              .assertThat(actualBoard.get(0).get(3))
-              .isEqualTo(new Piece(PieceType.QUEEN, Color.WHITE, new Position(0, 3), board));
-          softly
-              .assertThat(actualBoard.get(7).get(3))
-              .isEqualTo(new Piece(PieceType.QUEEN, Color.BLACK, new Position(7, 3), board));
+              // Test for Queens
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(0,3)))
+                      .isEqualTo(new Piece(PieceType.QUEEN, Color.WHITE, new Position(0, 3), board));
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(7,3)))
+                      .isEqualTo(new Piece(PieceType.QUEEN, Color.BLACK, new Position(7, 3), board));
 
-          // Test for Kings
-          softly
-              .assertThat(actualBoard.get(0).get(4))
-              .isEqualTo(new Piece(PieceType.KING, Color.WHITE, new Position(0, 4), board));
-          softly
-              .assertThat(actualBoard.get(7).get(4))
-              .isEqualTo(new Piece(PieceType.KING, Color.BLACK, new Position(7, 4), board));
+              // Test for Kings
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(0,4)))
+                      .isEqualTo(new Piece(PieceType.KING, Color.WHITE, new Position(0, 4), board));
+              softly
+                      .assertThat(board.getPieceAtPosition(new Position(7,4)))
+                      .isEqualTo(new Piece(PieceType.KING, Color.BLACK, new Position(7, 4), board));
 
-          // Test for Pawns
-          for (int i = 0; i < 8; i++) {
-            softly
-                .assertThat(actualBoard.get(1).get(i))
-                .isEqualTo(new Piece(PieceType.PAWN, Color.WHITE, new Position(1, i), board));
-            softly
-                .assertThat(actualBoard.get(6).get(i))
-                .isEqualTo(new Piece(PieceType.PAWN, Color.BLACK, new Position(6, i), board));
-          }
-        });
+              // Test for Pawns
+              for (int i = 0; i < 8; i++) {
+                softly
+                        .assertThat(board.getPieceAtPosition(new Position(1,i)))
+                        .isEqualTo(new Piece(PieceType.PAWN, Color.WHITE, new Position(1, i), board));
+                softly
+                        .assertThat(board.getPieceAtPosition(new Position(6,i)))
+                        .isEqualTo(new Piece(PieceType.PAWN, Color.BLACK, new Position(6, i), board));
+              }
+            });
   }
+
 
   //  @Test
   //  void testPrintChessBoard() {
