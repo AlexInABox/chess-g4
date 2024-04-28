@@ -195,14 +195,17 @@ class ChessBoardTest {
     assertThat(board.equals(board2)).isTrue();
   }
   @Test
+  @SuppressWarnings("EqualsWithItself")
   void equals_sameInstance(){
     assertThat(board.equals(board)).isTrue();
   }
   @Test
+  @SuppressWarnings("ConstantConditions")
   void equals_InstanceNull(){
     assertThat(board.equals(null)).isFalse();
   }
   @Test
+  @SuppressWarnings("EqualsBetweenInconvertibleTypes")
   void equals_DifferentClass(){
     Piece piece = new Piece(PieceType.BISHOP, Color.BLACK, new Position(7, 5), board);
     assertThat(board.equals(piece)).isFalse();
