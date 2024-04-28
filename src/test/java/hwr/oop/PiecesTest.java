@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import hwr.oop.pieces.IllegalMoveException;
 import hwr.oop.pieces.Piece;
 import hwr.oop.pieces.PieceType;
-import java.util.Objects;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,17 +22,27 @@ class PiecesTest {
 
   // KING
   @Test
-  void testKingConstructor() {
+  void testWhiteKingConstructor() {
     Position position = new Position(0, 0);
     Piece whiteKing = new Piece(PieceType.KING, Color.WHITE, position, board);
-    Piece blackKing = new Piece(PieceType.KING, Color.BLACK, position, board);
-    assertThat(whiteKing.getColor()).isEqualTo(Color.WHITE);
-    assertThat(whiteKing.getPosition()).isEqualTo(position);
-    assertThat(whiteKing.getSymbol()).isEqualTo('K');
+    SoftAssertions.assertSoftly(
+        softly -> {
+          softly.assertThat(whiteKing.getColor()).isEqualTo(Color.WHITE);
+          softly.assertThat(whiteKing.getPosition()).isEqualTo(position);
+          softly.assertThat(whiteKing.getSymbol()).isEqualTo('K');
+        });
+  }
 
-    assertThat(blackKing.getColor()).isEqualTo(Color.BLACK);
-    assertThat(blackKing.getPosition()).isEqualTo(position);
-    assertThat(blackKing.getSymbol()).isEqualTo('k');
+  @Test
+  void testBlackKingConstructor() {
+    Position position = new Position(0, 0);
+    Piece blackKing = new Piece(PieceType.KING, Color.BLACK, position, board);
+    SoftAssertions.assertSoftly(
+        softly -> {
+          softly.assertThat(blackKing.getColor()).isEqualTo(Color.BLACK);
+          softly.assertThat(blackKing.getPosition()).isEqualTo(position);
+          softly.assertThat(blackKing.getSymbol()).isEqualTo('k');
+        });
   }
 
   @Test
@@ -62,19 +72,29 @@ class PiecesTest {
 
   // BISHOP
   @Test
-  void testBishopConstructor() {
+  void testWhiteBishopConstructor() {
     Position position = new Position(0, 0);
     Piece whiteBishop = new Piece(PieceType.BISHOP, Color.WHITE, position, board);
-    Piece blackBishop = new Piece(PieceType.BISHOP, Color.BLACK, position, board);
-    assertThat(whiteBishop.getType()).isEqualTo(PieceType.BISHOP);
-    assertThat(whiteBishop.getColor()).isEqualTo(Color.WHITE);
-    assertThat(whiteBishop.getPosition()).isEqualTo(position);
-    assertThat(whiteBishop.getSymbol()).isEqualTo('B');
+    SoftAssertions.assertSoftly(
+        softly -> {
+          softly.assertThat(whiteBishop.getType()).isEqualTo(PieceType.BISHOP);
+          softly.assertThat(whiteBishop.getColor()).isEqualTo(Color.WHITE);
+          softly.assertThat(whiteBishop.getPosition()).isEqualTo(position);
+          softly.assertThat(whiteBishop.getSymbol()).isEqualTo('B');
+        });
+  }
 
-    assertThat(blackBishop.getType()).isEqualTo(PieceType.BISHOP);
-    assertThat(blackBishop.getColor()).isEqualTo(Color.BLACK);
-    assertThat(blackBishop.getPosition()).isEqualTo(position);
-    assertThat(blackBishop.getSymbol()).isEqualTo('b');
+  @Test
+  void testBlackBishopConstructor() {
+    Position position = new Position(0, 0);
+    Piece blackBishop = new Piece(PieceType.BISHOP, Color.BLACK, position, board);
+    SoftAssertions.assertSoftly(
+        softly -> {
+          softly.assertThat(blackBishop.getType()).isEqualTo(PieceType.BISHOP);
+          softly.assertThat(blackBishop.getColor()).isEqualTo(Color.BLACK);
+          softly.assertThat(blackBishop.getPosition()).isEqualTo(position);
+          softly.assertThat(blackBishop.getSymbol()).isEqualTo('b');
+        });
   }
 
   @Test
@@ -104,17 +124,27 @@ class PiecesTest {
 
   // KNIGHT
   @Test
-  void testKnightConstructor() {
+  void testWhiteKnightConstructor() {
     Position position = new Position(0, 0);
     Piece whiteKnight = new Piece(PieceType.KNIGHT, Color.WHITE, position, board);
-    Piece blackKnight = new Piece(PieceType.KNIGHT, Color.BLACK, position, board);
-    assertThat(whiteKnight.getColor()).isEqualTo(Color.WHITE);
-    assertThat(whiteKnight.getPosition()).isEqualTo(position);
-    assertThat(whiteKnight.getSymbol()).isEqualTo('N');
+    SoftAssertions.assertSoftly(
+        softly -> {
+          softly.assertThat(whiteKnight.getColor()).isEqualTo(Color.WHITE);
+          softly.assertThat(whiteKnight.getPosition()).isEqualTo(position);
+          softly.assertThat(whiteKnight.getSymbol()).isEqualTo('N');
+        });
+  }
 
-    assertThat(blackKnight.getColor()).isEqualTo(Color.BLACK);
-    assertThat(blackKnight.getPosition()).isEqualTo(position);
-    assertThat(blackKnight.getSymbol()).isEqualTo('n');
+  @Test
+  void testBlackKnightConstructor() {
+    Position position = new Position(0, 0);
+    Piece blackKnight = new Piece(PieceType.KNIGHT, Color.BLACK, position, board);
+    SoftAssertions.assertSoftly(
+        softly -> {
+          softly.assertThat(blackKnight.getColor()).isEqualTo(Color.BLACK);
+          softly.assertThat(blackKnight.getPosition()).isEqualTo(position);
+          softly.assertThat(blackKnight.getSymbol()).isEqualTo('n');
+        });
   }
 
   @Test
@@ -144,17 +174,27 @@ class PiecesTest {
 
   // PAWN
   @Test
-  void testPawnConstructor() {
+  void testWhitePawnConstructor() {
     Position position = new Position(0, 0);
     Piece whitePawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
-    Piece blackPawn = new Piece(PieceType.PAWN, Color.BLACK, position, board);
-    assertThat(whitePawn.getColor()).isEqualTo(Color.WHITE);
-    assertThat(whitePawn.getPosition()).isEqualTo(position);
-    assertThat(whitePawn.getSymbol()).isEqualTo('P');
+    SoftAssertions.assertSoftly(
+        softly -> {
+          softly.assertThat(whitePawn.getColor()).isEqualTo(Color.WHITE);
+          softly.assertThat(whitePawn.getPosition()).isEqualTo(position);
+          softly.assertThat(whitePawn.getSymbol()).isEqualTo('P');
+        });
+  }
 
-    assertThat(blackPawn.getColor()).isEqualTo(Color.BLACK);
-    assertThat(blackPawn.getPosition()).isEqualTo(position);
-    assertThat(blackPawn.getSymbol()).isEqualTo('p');
+  @Test
+  void testBlackPawnConstructor() {
+    Position position = new Position(0, 0);
+    Piece blackPawn = new Piece(PieceType.PAWN, Color.BLACK, position, board);
+    SoftAssertions.assertSoftly(
+        softly -> {
+          softly.assertThat(blackPawn.getColor()).isEqualTo(Color.BLACK);
+          softly.assertThat(blackPawn.getPosition()).isEqualTo(position);
+          softly.assertThat(blackPawn.getSymbol()).isEqualTo('p');
+        });
   }
 
   @Test
@@ -271,17 +311,27 @@ class PiecesTest {
 
   // QUEEN
   @Test
-  void testQueenConstructor() {
+  void testWhiteQueenConstructor() {
     Position position = new Position(0, 0);
     Piece whiteQueen = new Piece(PieceType.QUEEN, Color.WHITE, position, board);
-    Piece blackQueen = new Piece(PieceType.QUEEN, Color.BLACK, position, board);
-    assertThat(whiteQueen.getColor()).isEqualTo(Color.WHITE);
-    assertThat(whiteQueen.getPosition()).isEqualTo(position);
-    assertThat(whiteQueen.getSymbol()).isEqualTo('Q');
+    SoftAssertions.assertSoftly(
+        softly -> {
+          softly.assertThat(whiteQueen.getColor()).isEqualTo(Color.WHITE);
+          softly.assertThat(whiteQueen.getPosition()).isEqualTo(position);
+          softly.assertThat(whiteQueen.getSymbol()).isEqualTo('Q');
+        });
+  }
 
-    assertThat(blackQueen.getColor()).isEqualTo(Color.BLACK);
-    assertThat(blackQueen.getPosition()).isEqualTo(position);
-    assertThat(blackQueen.getSymbol()).isEqualTo('q');
+  @Test
+  void testBlackQueenConstructor() {
+    Position position = new Position(0, 0);
+    Piece blackQueen = new Piece(PieceType.QUEEN, Color.BLACK, position, board);
+    SoftAssertions.assertSoftly(
+        softly -> {
+          softly.assertThat(blackQueen.getColor()).isEqualTo(Color.BLACK);
+          softly.assertThat(blackQueen.getPosition()).isEqualTo(position);
+          softly.assertThat(blackQueen.getSymbol()).isEqualTo('q');
+        });
   }
 
   @Test
@@ -311,17 +361,27 @@ class PiecesTest {
 
   // ROOK
   @Test
-  void testRookConstructor() {
+  void testWhiteRookConstructor() {
     Position position = new Position(0, 0);
     Piece whiteRook = new Piece(PieceType.ROOK, Color.WHITE, position, board);
-    Piece blackRook = new Piece(PieceType.ROOK, Color.BLACK, position, board);
-    assertThat(whiteRook.getColor()).isEqualTo(Color.WHITE);
-    assertThat(whiteRook.getPosition()).isEqualTo(position);
-    assertThat(whiteRook.getSymbol()).isEqualTo('R');
+    SoftAssertions.assertSoftly(
+        softly -> {
+          softly.assertThat(whiteRook.getColor()).isEqualTo(Color.WHITE);
+          softly.assertThat(whiteRook.getPosition()).isEqualTo(position);
+          softly.assertThat(whiteRook.getSymbol()).isEqualTo('R');
+        });
+  }
 
-    assertThat(blackRook.getColor()).isEqualTo(Color.BLACK);
-    assertThat(blackRook.getPosition()).isEqualTo(position);
-    assertThat(blackRook.getSymbol()).isEqualTo('r');
+  @Test
+  void testBlackRookConstructor() {
+    Position position = new Position(0, 0);
+    Piece blackRook = new Piece(PieceType.ROOK, Color.BLACK, position, board);
+    SoftAssertions.assertSoftly(
+        softly -> {
+          softly.assertThat(blackRook.getColor()).isEqualTo(Color.BLACK);
+          softly.assertThat(blackRook.getPosition()).isEqualTo(position);
+          softly.assertThat(blackRook.getSymbol()).isEqualTo('r');
+        });
   }
 
   @Test
@@ -351,30 +411,50 @@ class PiecesTest {
 
   // equals?
   @Test
-  @SuppressWarnings({"EqualsWithItself", "ConstantConditions", "EqualsBetweenInconvertibleTypes"})
-  void testPieceEquals() {
-    Position position = new Position(3, 3);
-    Piece rook1 = new Piece(PieceType.ROOK, Color.WHITE, position, board);
-    Piece rook2 = new Piece(PieceType.ROOK, Color.WHITE, position, board);
-    Piece queen = new Piece(PieceType.QUEEN, Color.WHITE, position, board);
-    ChessBoard chessBoard = new ChessBoard();
-
-    assertThat(rook1.equals(rook2)).isTrue();
-    assertThat(rook1.equals(rook1)).isTrue();
-    assertThat(rook1.equals(null)).isFalse();
-    assertThat(rook1.equals(queen)).isFalse();
-    assertThat(rook1.equals(chessBoard)).isFalse();
+  void equals_IdenticalInstances() {
+    ChessBoard board2 = new ChessBoard();
+    assertThat(board.equals(board2)).isTrue();
   }
 
   @Test
-  void testPieceHash() {
-    Position position = new Position(3, 3);
-    Piece rook1 = new Piece(PieceType.ROOK, Color.WHITE, position, board);
-    Piece rook2 = new Piece(PieceType.ROOK, Color.WHITE, position, board);
+  @SuppressWarnings("EqualsWithItself")
+  void equals_sameInstance() {
+    assertThat(board.equals(board)).isTrue();
+  }
 
-    assertThat(rook1.hashCode()).isEqualTo(rook2.hashCode());
-    assertThat(rook1.hashCode())
-        .isEqualTo(Objects.hash(PieceType.ROOK, Color.WHITE, position, rook1.getSymbol()));
+  @Test
+  @SuppressWarnings("ConstantConditions")
+  void equals_InstanceNull() {
+    assertThat(board.equals(null)).isFalse();
+  }
+
+  @Test
+  @SuppressWarnings("EqualsBetweenInconvertibleTypes")
+  void equals_DifferentClass() {
+    Piece piece = new Piece(PieceType.BISHOP, Color.BLACK, new Position(7, 5), board);
+    assertThat(board.equals(piece)).isFalse();
+  }
+
+  @Test
+  void equals_DifferentInstances() {
+    board.setPieceAtPosition(
+        new Position(4, 4), new Piece(PieceType.BISHOP, Color.BLACK, new Position(7, 5), board));
+    ChessBoard board2 = new ChessBoard();
+    assertThat(board.equals(board2)).isFalse();
+  }
+
+  @Test
+  void hashCode_IdenticalHashCode() {
+    ChessBoard board2 = new ChessBoard();
+    assertThat(board.hashCode()).isEqualTo(board2.hashCode());
+  }
+
+  @Test
+  void hashCode_DifferentHashCode() {
+    board.setPieceAtPosition(
+        new Position(4, 4), new Piece(PieceType.BISHOP, Color.BLACK, new Position(7, 5), board));
+    ChessBoard board2 = new ChessBoard();
+    assertThat(board.hashCode()).isNotEqualTo(board2.hashCode());
   }
 
   @Test
