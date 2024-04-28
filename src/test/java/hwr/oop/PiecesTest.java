@@ -14,11 +14,13 @@ import org.junit.jupiter.api.Test;
 class PiecesTest {
 
   private ChessBoard board;
+
   @BeforeEach
   void setup() {
     board = new ChessBoard();
   }
-  //KING
+
+  // KING
   @Test
   void testKingConstructor() {
     Position position = new Position(0, 0);
@@ -32,6 +34,7 @@ class PiecesTest {
     assertThat(blackKing.getPosition()).isEqualTo(position);
     assertThat(blackKing.getSymbol()).isEqualTo('k');
   }
+
   @Test
   void testKingMove_successful() throws IllegalMoveException {
     Position position = new Position(2, 2);
@@ -42,6 +45,7 @@ class PiecesTest {
     king.moveTo(targetPosition);
     assertThat(king.getPosition()).isEqualTo(targetPosition);
   }
+
   @Test
   void testKingMove_fail() {
     Position position = new Position(2, 2);
@@ -49,12 +53,14 @@ class PiecesTest {
     Piece king = new Piece(PieceType.KING, Color.WHITE, position, board);
     board.setPieceAtPosition(king.getPosition(), king);
 
-    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> king.moveTo(targetPosition));
+    IllegalMoveException exception =
+        assertThrows(IllegalMoveException.class, () -> king.moveTo(targetPosition));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(king.getPosition()).isEqualTo(position);
   }
-  //BISHOP
+
+  // BISHOP
   @Test
   void testBishopConstructor() {
     Position position = new Position(0, 0);
@@ -70,6 +76,7 @@ class PiecesTest {
     assertThat(blackBishop.getPosition()).isEqualTo(position);
     assertThat(blackBishop.getSymbol()).isEqualTo('b');
   }
+
   @Test
   void testBishopMove_successful() throws IllegalMoveException {
     Position position = new Position(2, 2);
@@ -80,6 +87,7 @@ class PiecesTest {
     bishop.moveTo(targetPosition);
     assertThat(bishop.getPosition()).isEqualTo(targetPosition);
   }
+
   @Test
   void testBishopMove_fail() {
     Position position = new Position(2, 2);
@@ -87,12 +95,14 @@ class PiecesTest {
     Piece bishop = new Piece(PieceType.BISHOP, Color.WHITE, position, board);
     board.setPieceAtPosition(bishop.getPosition(), bishop);
 
-    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> bishop.moveTo(targetPosition));
+    IllegalMoveException exception =
+        assertThrows(IllegalMoveException.class, () -> bishop.moveTo(targetPosition));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(bishop.getPosition()).isEqualTo(position);
   }
-  //KNIGHT
+
+  // KNIGHT
   @Test
   void testKnightConstructor() {
     Position position = new Position(0, 0);
@@ -106,6 +116,7 @@ class PiecesTest {
     assertThat(blackKnight.getPosition()).isEqualTo(position);
     assertThat(blackKnight.getSymbol()).isEqualTo('n');
   }
+
   @Test
   void testKnightMove_successful() throws IllegalMoveException {
     Position position = new Position(2, 2);
@@ -116,6 +127,7 @@ class PiecesTest {
     knight.moveTo(targetPosition);
     assertThat(knight.getPosition()).isEqualTo(targetPosition);
   }
+
   @Test
   void testKnightMove_fail() {
     Position position = new Position(2, 2);
@@ -123,12 +135,14 @@ class PiecesTest {
     Piece knight = new Piece(PieceType.KNIGHT, Color.WHITE, position, board);
     board.setPieceAtPosition(knight.getPosition(), knight);
 
-    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> knight.moveTo(targetPosition));
+    IllegalMoveException exception =
+        assertThrows(IllegalMoveException.class, () -> knight.moveTo(targetPosition));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(knight.getPosition()).isEqualTo(position);
   }
-  //PAWN
+
+  // PAWN
   @Test
   void testPawnConstructor() {
     Position position = new Position(0, 0);
@@ -142,6 +156,7 @@ class PiecesTest {
     assertThat(blackPawn.getPosition()).isEqualTo(position);
     assertThat(blackPawn.getSymbol()).isEqualTo('p');
   }
+
   @Test
   void testWhitePawnMove_successful() throws IllegalMoveException {
     Position position = new Position(1, 2);
@@ -152,6 +167,7 @@ class PiecesTest {
     pawn.moveTo(targetPosition);
     assertThat(pawn.getPosition()).isEqualTo(targetPosition);
   }
+
   @Test
   void testWhitePawnMoveDoubleAdvance_successful() throws IllegalMoveException {
     Position position = new Position(1, 2);
@@ -162,6 +178,7 @@ class PiecesTest {
     pawn.moveTo(targetPosition);
     assertThat(pawn.getPosition()).isEqualTo(targetPosition);
   }
+
   @Test
   void testWhitePawnCapture_successful() throws IllegalMoveException {
     Position position = new Position(1, 2);
@@ -174,6 +191,7 @@ class PiecesTest {
     pawn.moveTo(targetPosition);
     assertThat(pawn.getPosition()).isEqualTo(targetPosition);
   }
+
   @Test
   void testBlackPawnMove_successful() throws IllegalMoveException {
     Position position = new Position(6, 2);
@@ -184,6 +202,7 @@ class PiecesTest {
     pawn.moveTo(targetPosition);
     assertThat(pawn.getPosition()).isEqualTo(targetPosition);
   }
+
   @Test
   void testBlackPawnMoveDoubleAdvance_successful() throws IllegalMoveException {
     Position position = new Position(6, 2);
@@ -194,6 +213,7 @@ class PiecesTest {
     pawn.moveTo(targetPosition);
     assertThat(pawn.getPosition()).isEqualTo(targetPosition);
   }
+
   @Test
   void testBlackPawnCapture_successful() throws IllegalMoveException {
     Position position = new Position(6, 2);
@@ -206,6 +226,7 @@ class PiecesTest {
     pawn.moveTo(targetPosition);
     assertThat(pawn.getPosition()).isEqualTo(targetPosition);
   }
+
   @Test
   void testWhitePawnMove_fail() {
     Position position = new Position(1, 2);
@@ -213,11 +234,13 @@ class PiecesTest {
     Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
     board.setPieceAtPosition(pawn.getPosition(), pawn);
 
-    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> pawn.moveTo(targetPosition));
+    IllegalMoveException exception =
+        assertThrows(IllegalMoveException.class, () -> pawn.moveTo(targetPosition));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(pawn.getPosition()).isEqualTo(position);
   }
+
   @Test
   void testWhitePawnCapture_fail() {
     Position position = new Position(1, 2);
@@ -225,11 +248,13 @@ class PiecesTest {
     Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
     board.setPieceAtPosition(pawn.getPosition(), pawn);
 
-    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> pawn.moveTo(targetPosition));
+    IllegalMoveException exception =
+        assertThrows(IllegalMoveException.class, () -> pawn.moveTo(targetPosition));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(pawn.getPosition()).isEqualTo(position);
   }
+
   @Test
   void testBlackPawnCapture_fail() {
     Position position = new Position(6, 2);
@@ -237,12 +262,14 @@ class PiecesTest {
     Piece pawn = new Piece(PieceType.PAWN, Color.WHITE, position, board);
     board.setPieceAtPosition(pawn.getPosition(), pawn);
 
-    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> pawn.moveTo(targetPosition));
+    IllegalMoveException exception =
+        assertThrows(IllegalMoveException.class, () -> pawn.moveTo(targetPosition));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(pawn.getPosition()).isEqualTo(position);
   }
-  //QUEEN
+
+  // QUEEN
   @Test
   void testQueenConstructor() {
     Position position = new Position(0, 0);
@@ -256,6 +283,7 @@ class PiecesTest {
     assertThat(blackQueen.getPosition()).isEqualTo(position);
     assertThat(blackQueen.getSymbol()).isEqualTo('q');
   }
+
   @Test
   void testQueenMove_successful() throws IllegalMoveException {
     Position position = new Position(2, 2);
@@ -266,6 +294,7 @@ class PiecesTest {
     queen.moveTo(targetPosition);
     assertThat(queen.getPosition()).isEqualTo(targetPosition);
   }
+
   @Test
   void testQueenMove_fail() {
     Position position = new Position(2, 2);
@@ -273,12 +302,14 @@ class PiecesTest {
     Piece queen = new Piece(PieceType.QUEEN, Color.WHITE, position, board);
     board.setPieceAtPosition(queen.getPosition(), queen);
 
-    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> queen.moveTo(targetPosition));
+    IllegalMoveException exception =
+        assertThrows(IllegalMoveException.class, () -> queen.moveTo(targetPosition));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(queen.getPosition()).isEqualTo(position);
   }
-  //ROOK
+
+  // ROOK
   @Test
   void testRookConstructor() {
     Position position = new Position(0, 0);
@@ -292,6 +323,7 @@ class PiecesTest {
     assertThat(blackRook.getPosition()).isEqualTo(position);
     assertThat(blackRook.getSymbol()).isEqualTo('r');
   }
+
   @Test
   void testRookMove_successful() throws IllegalMoveException {
     Position position = new Position(2, 2);
@@ -302,6 +334,7 @@ class PiecesTest {
     rook.moveTo(targetPosition);
     assertThat(rook.getPosition()).isEqualTo(targetPosition);
   }
+
   @Test
   void testRookMove_fail() {
     Position position = new Position(2, 2);
@@ -309,13 +342,14 @@ class PiecesTest {
     Piece rook = new Piece(PieceType.ROOK, Color.WHITE, position, board);
     board.setPieceAtPosition(rook.getPosition(), rook);
 
-    IllegalMoveException exception = assertThrows(IllegalMoveException.class, () -> rook.moveTo(targetPosition));
+    IllegalMoveException exception =
+        assertThrows(IllegalMoveException.class, () -> rook.moveTo(targetPosition));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(rook.getPosition()).isEqualTo(position);
   }
 
-  //equals?
+  // equals?
   @Test
   @SuppressWarnings({"EqualsWithItself", "ConstantConditions", "EqualsBetweenInconvertibleTypes"})
   void testPieceEquals() {
@@ -330,7 +364,8 @@ class PiecesTest {
     assertThat(rook1.equals(null)).isFalse();
     assertThat(rook1.equals(queen)).isFalse();
     assertThat(rook1.equals(chessBoard)).isFalse();
-}
+  }
+
   @Test
   void testPieceHash() {
     Position position = new Position(3, 3);
@@ -338,8 +373,10 @@ class PiecesTest {
     Piece rook2 = new Piece(PieceType.ROOK, Color.WHITE, position, board);
 
     assertThat(rook1.hashCode()).isEqualTo(rook2.hashCode());
-    assertThat(rook1.hashCode()).isEqualTo(Objects.hash(PieceType.ROOK, Color.WHITE, position, rook1.getSymbol()));
+    assertThat(rook1.hashCode())
+        .isEqualTo(Objects.hash(PieceType.ROOK, Color.WHITE, position, rook1.getSymbol()));
   }
+
   @Test
   void testPieceSetPosition() {
     Position oldposition = new Position(0, 0);

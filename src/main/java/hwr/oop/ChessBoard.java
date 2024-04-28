@@ -72,8 +72,6 @@ public class ChessBoard implements Serializable {
     return board.get(position.row()).get(position.column());
   }
 
-
-
   public void setPieceAtPosition(Position position, Piece piece) {
     board.get(position.row()).set(position.column(), piece);
   }

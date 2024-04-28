@@ -23,7 +23,7 @@ public class Piece implements Serializable {
     this.symbol = assignPieceSymbol(type, color);
   }
 
-  private char assignPieceSymbol(PieceType type, Color color){
+  private char assignPieceSymbol(PieceType type, Color color) {
     switch (type) {
       case KING -> {
         if (color == Color.WHITE) return 'K';
@@ -52,6 +52,7 @@ public class Piece implements Serializable {
     }
     return 0;
   }
+
   public Color getColor() {
     return color;
   }
@@ -78,18 +79,19 @@ public class Piece implements Serializable {
 
     ArrayList<Position> possibleMoves = new ArrayList<>();
     switch (type) {
-      case KING   -> possibleMoves = possibleKingMoves();
+      case KING -> possibleMoves = possibleKingMoves();
       case BISHOP -> possibleMoves = possibleBishopMoves();
       case KNIGHT -> possibleMoves = possibleKnightMoves();
-      case PAWN   -> possibleMoves = possiblePawnMoves();
-      case QUEEN  -> possibleMoves = possibleQueenMoves();
-      case ROOK   -> possibleMoves = possibleRookMoves();
+      case PAWN -> possibleMoves = possiblePawnMoves();
+      case QUEEN -> possibleMoves = possibleQueenMoves();
+      case ROOK -> possibleMoves = possibleRookMoves();
     }
-    if (possibleMoves.contains(target)){
-      //TODO: Check if a piece was captured
+    if (possibleMoves.contains(target)) {
+      // TODO: Check if a piece was captured
       setPosition(target);
     } else throw new IllegalMoveException("Illegal move");
   }
+
   private ArrayList<Position> possibleKingMoves() {
     ArrayList<Position> possibleMoves = new ArrayList<>();
     int[] directions = {-1, 0, 1};
@@ -112,6 +114,7 @@ public class Piece implements Serializable {
     }
     return possibleMoves;
   }
+
   private ArrayList<Position> possibleBishopMoves() {
     ArrayList<Position> possibleMoves = new ArrayList<>();
     int[][] directions = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
@@ -138,11 +141,10 @@ public class Piece implements Serializable {
     }
     return possibleMoves;
   }
+
   private ArrayList<Position> possibleKnightMoves() {
     ArrayList<Position> possibleMoves = new ArrayList<>();
-    int[][] moveOffsets = {
-            {2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2}
-    };
+    int[][] moveOffsets = {{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2}};
 
     int currentRow = position.row();
     int currentCol = position.column();
@@ -163,6 +165,7 @@ public class Piece implements Serializable {
     }
     return possibleMoves;
   }
+
   private ArrayList<Position> possiblePawnMoves() {
     ArrayList<Position> possibleMoves = new ArrayList<>();
     int rowDirection = (color == Color.WHITE) ? 1 : -1;
@@ -171,7 +174,8 @@ public class Piece implements Serializable {
     int currentColumn = position.column();
 
     int newRow = currentRow + rowDirection;
-    if (chessBoard.isValidPosition(newRow, currentColumn) && chessBoard.getPieceAtPosition(new Position(newRow, currentColumn)) == null) {
+    if (chessBoard.isValidPosition(newRow, currentColumn)
+        && chessBoard.getPieceAtPosition(new Position(newRow, currentColumn)) == null) {
       possibleMoves.add(new Position(newRow, currentColumn));
 
       if ((color == Color.WHITE && currentRow == 1) || (color == Color.BLACK && currentRow == 6)) {
@@ -194,6 +198,7 @@ public class Piece implements Serializable {
 
     return possibleMoves;
   }
+
   private ArrayList<Position> possibleRookMoves() {
     ArrayList<Position> possibleMoves = new ArrayList<>();
     int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
@@ -220,6 +225,7 @@ public class Piece implements Serializable {
     }
     return possibleMoves;
   }
+
   private ArrayList<Position> possibleQueenMoves() {
     ArrayList<Position> possibleMoves = new ArrayList<>();
 
@@ -228,7 +234,6 @@ public class Piece implements Serializable {
 
     return possibleMoves;
   }
-
 
   @Override
   public boolean equals(Object o) {
