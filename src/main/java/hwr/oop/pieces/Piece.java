@@ -3,10 +3,12 @@ package hwr.oop.pieces;
 import hwr.oop.ChessBoard;
 import hwr.oop.Color;
 import hwr.oop.Position;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Piece {
+public class Piece implements Serializable {
   private final Color color;
   private final char symbol;
   private final PieceType type;
