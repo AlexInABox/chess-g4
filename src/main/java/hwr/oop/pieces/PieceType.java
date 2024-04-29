@@ -1,6 +1,8 @@
 package hwr.oop.pieces;
 
-public enum PieceType {
+import java.io.Serializable;
+
+public enum PieceType implements Serializable {
   KING,
   KNIGHT,
   PAWN,

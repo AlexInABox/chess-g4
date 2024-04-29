@@ -1,4 +1,4 @@
-package hwr.oop.exceptions;
+package hwr.oop;
 
 public class ChessBoardException extends Exception {
   public ChessBoardException(String message) {

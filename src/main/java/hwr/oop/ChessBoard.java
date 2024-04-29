@@ -1,12 +1,14 @@
 package hwr.oop;
 
-import hwr.oop.exceptions.ChessBoardException;
 import hwr.oop.pieces.*;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
-public class ChessBoard {
+public class ChessBoard implements Serializable {
   private final List<List<Piece>> board = new ArrayList<>();
 
   public ChessBoard() {
@@ -66,32 +68,9 @@ public class ChessBoard {
     }
   }
 
-  public List<List<Piece>> getBoard() {
-    return board;
-  }
-
   public Piece getPieceAtPosition(Position position) {
     return board.get(position.row()).get(position.column());
   }
-
-  //  public static void printChessBoard(List<List<Piece>> board) {
-  //    System.out.println("   a b c d e f g h");
-  //    System.out.println(" +-----------------+");
-  //    int rowNumber = 8;
-  //    for (List<Piece> row : board) {
-  //      System.out.print(rowNumber + "| ");
-  //      for (Piece piece : row) {
-  //        if (piece != null) {
-  //          System.out.print(piece.getSymbol() + " ");
-  //        } else {
-  //          System.out.print(". ");
-  //        }
-  //      }
-  //      System.out.println("|");
-  //      rowNumber--;
-  //    }
-  //    System.out.println(" +-----------------+");
-  //  }
 
   public void setPieceAtPosition(Position position, Piece piece) {
     board.get(position.row()).set(position.column(), piece);
@@ -99,5 +78,18 @@ public class ChessBoard {
 
   public boolean isValidPosition(int row, int column) {
     return row >= 0 && row < 8 && column >= 0 && column < 8;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ChessBoard that = (ChessBoard) o;
+    return Objects.equals(board, that.board);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(board);
   }
 }
