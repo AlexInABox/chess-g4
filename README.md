@@ -68,7 +68,7 @@ MOST INTERESTING PROBLEMS WEVE STUMBLED UPON
 | 2.4    | :heavy_check_mark: | Knight       | :heavy_check_mark: |
 | 2.5    | :heavy_check_mark: | Queen        | :heavy_check_mark: |
 | 2.6    | :heavy_check_mark: | King         | :heavy_check_mark: |
-| 3      | :x:                | Movement     | :x:                |
+| 3      | :heavy_check_mark: | Movement     | :heavy_check_mark: |
 | 4      | :x:                | Check        | :x:                |
 | 5      | :x:                | Checkmate    | :x:                |
 | 6      | :x:                | Development  | :x:                |
