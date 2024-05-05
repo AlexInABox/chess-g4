@@ -467,4 +467,32 @@ class PiecesTest {
     assertThat(rook.getPosition()).isEqualTo(newPosition);
     assertThat(board.getPieceAtPosition(newPosition)).isEqualTo(rook);
   }
+
+  @Test
+  void testToString() {
+    Position position = new Position(0, 0);
+
+    Piece piece = new Piece(PieceType.ROOK, Color.WHITE, position, board);
+    String expectedString = "Piece{color=WHITE, symbol=R, type=ROOK, position=Position[row=0, column=0]}";
+    assertThat(piece.toString()).isEqualTo(expectedString);
+  }
+
+  @Test
+  void testToStringWithDifferentPieceType() {
+    ChessBoard chessBoard = new ChessBoard();
+    Piece piece = new Piece(PieceType.PAWN, Color.BLACK, new Position(6, 1), chessBoard);
+    String expectedString = "Piece{color=BLACK, symbol=q, type=QUEEN, position=Position[row=6, column=1]}";
+
+    assertThat(piece.toString()).isNotEqualTo(expectedString);
+  }
+
+  @Test
+  void testToStringWithDifferentPosition() {
+    ChessBoard chessBoard = new ChessBoard();
+    Piece piece = new Piece(PieceType.PAWN, Color.BLACK, new Position(0, 0), chessBoard);
+    String expectedString = "Piece{color=BLACK, symbol=q, type=QUEEN, position=Position[row=6, column=1]}";
+
+    assertThat(piece.toString()).isNotEqualTo(expectedString);
+  }
+
 }
