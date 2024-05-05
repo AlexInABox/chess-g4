@@ -471,7 +471,6 @@ class PiecesTest {
   @Test
   void testToString() {
     Position position = new Position(0, 0);
-
     Piece piece = new Piece(PieceType.ROOK, Color.WHITE, position, board);
     String expectedString =
         "Piece{color=WHITE, symbol=R, type=ROOK, position=Position[row=0, column=0]}";
