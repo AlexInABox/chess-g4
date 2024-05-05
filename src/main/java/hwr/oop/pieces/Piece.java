@@ -253,11 +253,15 @@ public class Piece implements Serializable {
 
   @Override
   public String toString() {
-    return "Piece{" +
-            "color=" + color +
-            ", symbol=" + symbol +
-            ", type=" + type +
-            ", position=" + position +
-            '}';
+    return "Piece{"
+        + "color="
+        + color
+        + ", symbol="
+        + symbol
+        + ", type="
+        + type
+        + ", position="
+        + position
+        + '}';
   }
 }
