@@ -1,13 +1,14 @@
 package hwr.oop.persistence;
 
 import java.io.*;
+import java.nio.file.Path;
 
 public class PersistenceImpl implements Persistence {
 
   @Override
-  public void write(Object object, String filePath) {
+  public void write(Object object, Path filePath) {
 
-    try (FileOutputStream f = new FileOutputStream((filePath))) {
+    try (FileOutputStream f = new FileOutputStream(String.valueOf((filePath)))) {
       ObjectOutputStream o = new ObjectOutputStream(f);
       o.writeObject(object);
     } catch (IOException e) {
@@ -16,8 +17,8 @@ public class PersistenceImpl implements Persistence {
   }
 
   @Override
-  public Object read(String filePath) {
-    try (FileInputStream f = new FileInputStream(filePath)) {
+  public Object read(Path filePath) {
+    try (FileInputStream f = new FileInputStream(String.valueOf(filePath))) {
       ObjectInputStream o = new ObjectInputStream(f);
       return o.readObject();
     } catch (IOException | ClassNotFoundException e) {
