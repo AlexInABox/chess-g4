@@ -1,7 +1,9 @@
 package hwr.oop.persistence;
 
-public interface Persistence {
-  void write(Object object, String filePath);
+import java.nio.file.Path;
 
-  Object read(String filePath);
+public interface Persistence {
+  void write(Object object, Path filePath);
+
+  Object read(Path filePath);
 }
