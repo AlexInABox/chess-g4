@@ -76,7 +76,7 @@ MOST INTERESTING PROBLEMS WEVE STUMBLED UPON
 | 8      | :x:                | Game         | :x:                |
 | 9      | :x:                | Tournament   | :x:                |
 | 10     | :x:                | Rating (ELO) | :x:                |
-| 11     | :x:                | FEN Notation | :x:                |
+| 11     | :heavy_check_mark: | FEN Notation | :heavy_check_mark: |
 
 ### User Interface
 
