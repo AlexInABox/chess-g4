@@ -1,4 +1,4 @@
-# :chess_pawn: CHESS - HWR OOP Lecture Project
+# :chess_pawn: CHESS - HWR OOP Lecture Project 
 This repository contains our (Alex :shipit:, Maja :basecampy:, Felix :penguin:, Gero :octocat:, Laura :bug:) student project created for an ongoing lecture on object-oriented
 programming with Java/Kotlin at HWR Berlin (summer term 2024).
 
@@ -11,7 +11,7 @@ programming with Java/Kotlin at HWR Berlin (summer term 2024).
 3. Maven installed (e.g. through IntelliJ IDEA)
 4. Git installed
 
-## Local Development
+## Local Development :fishsticks:
 
 This project uses [Apache Maven][maven] as build tool.
 
