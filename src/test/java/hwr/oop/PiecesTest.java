@@ -56,6 +56,7 @@ class PiecesTest {
     assertThat(king.getPosition()).isEqualTo(targetPosition);
   }
 
+
   @Test
   void testKingMove_fail() {
     Position position = new Position(2, 2);
@@ -411,50 +412,52 @@ class PiecesTest {
 
   // equals?
   @Test
-  void equals_IdenticalInstances() {
-    ChessBoard board2 = new ChessBoard();
-    assertThat(board.equals(board2)).isTrue();
+  void equals_IdenticalPieces() {
+    Piece piece1 = new Piece(PieceType.KING, Color.WHITE, new Position(0, 0), board);
+    Piece piece2 = new Piece(PieceType.KING, Color.WHITE, new Position(0, 0), board);
+    assertThat(piece1.equals(piece2)).isTrue();
   }
 
   @Test
   @SuppressWarnings("EqualsWithItself")
   void equals_sameInstance() {
-    assertThat(board.equals(board)).isTrue();
+    Piece piece = new Piece(PieceType.KING, Color.WHITE, new Position(0, 0), board);
+    assertThat(piece.equals(piece)).isTrue();
   }
 
   @Test
   @SuppressWarnings("ConstantConditions")
   void equals_InstanceNull() {
-    assertThat(board.equals(null)).isFalse();
+    Piece piece = new Piece(PieceType.KING, Color.WHITE, new Position(0, 0), board);
+    assertThat(piece.equals(null)).isFalse();
   }
 
   @Test
   @SuppressWarnings("EqualsBetweenInconvertibleTypes")
   void equals_DifferentClass() {
-    Piece piece = new Piece(PieceType.BISHOP, Color.BLACK, new Position(7, 5), board);
-    assertThat(board.equals(piece)).isFalse();
+    Piece piece = new Piece(PieceType.KING, Color.WHITE, new Position(0, 0), board);
+    assertThat(piece.equals("String")).isFalse();
   }
 
   @Test
-  void equals_DifferentInstances() {
-    board.setPieceAtPosition(
-        new Position(4, 4), new Piece(PieceType.BISHOP, Color.BLACK, new Position(7, 5), board));
-    ChessBoard board2 = new ChessBoard();
-    assertThat(board.equals(board2)).isFalse();
+  void equals_DifferentPieces() {
+    Piece piece1 = new Piece(PieceType.KING, Color.WHITE, new Position(0, 0), board);
+    Piece piece2 = new Piece(PieceType.QUEEN, Color.WHITE, new Position(0, 0), board);
+    assertThat(piece1.equals(piece2)).isFalse();
   }
 
   @Test
-  void hashCode_IdenticalHashCode() {
-    ChessBoard board2 = new ChessBoard();
-    assertThat(board.hashCode()).isEqualTo(board2.hashCode());
+  void hashCode_IdenticalPieces() {
+    Piece piece1 = new Piece(PieceType.KING, Color.WHITE, new Position(0, 0), board);
+    Piece piece2 = new Piece(PieceType.KING, Color.WHITE, new Position(0, 0), board);
+    assertThat(piece1.hashCode()).isEqualTo(piece2.hashCode());
   }
 
   @Test
-  void hashCode_DifferentHashCode() {
-    board.setPieceAtPosition(
-        new Position(4, 4), new Piece(PieceType.BISHOP, Color.BLACK, new Position(7, 5), board));
-    ChessBoard board2 = new ChessBoard();
-    assertThat(board.hashCode()).isNotEqualTo(board2.hashCode());
+  void hashCode_DifferentPieces() {
+    Piece piece1 = new Piece(PieceType.KING, Color.WHITE, new Position(0, 0), board);
+    Piece piece2 = new Piece(PieceType.QUEEN, Color.WHITE, new Position(0, 0), board);
+    assertThat(piece1.hashCode()).isNotEqualTo(piece2.hashCode());
   }
 
   @Test
