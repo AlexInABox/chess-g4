@@ -1,4 +1,4 @@
-# CHESS - HWR OOP Lecture Project
+# :chess_pawn: CHESS - HWR OOP Lecture Project
 This repository contains our (Alex, Maja, Felix, Gero, Laura) student project created for an ongoing lecture on object-oriented
 programming with Java/Kotlin at HWR Berlin (summer term 2024).
 
@@ -38,7 +38,7 @@ just build
 
 Objective of this project is to implement the game Chess while learning object-oriented programming with Java/Kotlin.
 
-Chess is a game of skill for two players, each of whom moves 16 figures according to fixed rules across a board consisting 
+:chess_pawn: Chess is a game of skill for two players, each of whom moves 16 figures according to fixed rules across a board consisting 
 of an eight-by-eight pattern of squares. Victory depends on concentration and intuitive vision. It is often called the royal game.
 
 The chessboard is a miniature battlefield, and the opposing armies are called white and black. Each consists of eight 
@@ -50,33 +50,54 @@ MOST IMPORTANT FEATURES
 
 MOST INTERESTING PROBLEMS WEVE STUMBLED UPON
 
+## Commands overview (not final YET)
+
+If `chess` does not work in your terminal, try `./chess` or `.\chess` instead.
+
+| Command         | Description      | Example       |
+|-----------------|------------------|---------------|
+| `<ID>`          | Game Id (int)    | 123, 7        |
+| `<FROM>` `<TO>` | Cell coordinates | a4, c7        |
+| `<TYPE>`        | Type of figure   | queen, knight |
+
+| Command              | Description                                         |
+|----------------------|-----------------------------------------------------|
+| `chess` `chess help` | Show the list of supported commands                 |
+| `chess create <ID>`  | Create a new, fresh game (stored in game_\<ID>.csv) |
+
+### In-Game Commands `chess on <ID> [...]`
+
+| Command                               | Description                                    |
+|---------------------------------------|------------------------------------------------|
+| `chess on <ID> move <FROM> <TO>`      | Move the figure on FROM to the cell TO         |
+| `chess on <ID> promote <FROM> <TYPE>` | Promote the pawn on cell FROM                  |
+| `chess on <ID> show-moves <FROM>`     | Show where the figure on cell FROM can move to |
+
 
 ## Feature List
 
 ![Screenshot of the expected features of this project.](img.png)
 
-[TODO]: # (For each feature implemented, add a row to the table!)
-
 ### Library
 
-| Number | Implemented        | Feature      | Tests              |
-|--------|--------------------|--------------|--------------------|
-| 1      | :heavy_check_mark: | Chessboard   | :heavy_check_mark: |
-| 2.1    | :heavy_check_mark: | Pawn         | :heavy_check_mark: |
-| 2.2    | :heavy_check_mark: | Rook         | :heavy_check_mark: |
-| 2.3    | :heavy_check_mark: | Bishop       | :heavy_check_mark: |
-| 2.4    | :heavy_check_mark: | Knight       | :heavy_check_mark: |
-| 2.5    | :heavy_check_mark: | Queen        | :heavy_check_mark: |
-| 2.6    | :heavy_check_mark: | King         | :heavy_check_mark: |
-| 3      | :heavy_check_mark: | Movement     | :heavy_check_mark: |
-| 4      | :x:                | Check        | :x:                |
-| 5      | :x:                | Checkmate    | :x:                |
-| 6      | :x:                | Development  | :x:                |
-| 7      | :x:                | Player       | :x:                |
-| 8      | :x:                | Game         | :x:                |
-| 9      | :x:                | Tournament   | :x:                |
-| 10     | :x:                | Rating (ELO) | :x:                |
-| 11     | :heavy_check_mark: | FEN Notation | :heavy_check_mark: |
+| Number | Implemented        | Feature       | Tests              |
+|--------|--------------------|---------------|--------------------|
+| 1      | :heavy_check_mark: | Chessboard    | :heavy_check_mark: |
+| 2.1    | :heavy_check_mark: | ♙ Pawn        | :heavy_check_mark: |
+| 2.2    | :heavy_check_mark: | ♖ Rook        | :heavy_check_mark: |
+| 2.3    | :heavy_check_mark: | ♗ Bishop      | :heavy_check_mark: |
+| 2.4    | :heavy_check_mark: | ♘ Knight      | :heavy_check_mark: |
+| 2.5    | :heavy_check_mark: | ♕ Queen       | :heavy_check_mark: |
+| 2.6    | :heavy_check_mark: | ♔ King        | :heavy_check_mark: |
+| 3      | :heavy_check_mark: | Movement      | :heavy_check_mark: |
+| 4      | :x:                | Check         | :x:                |
+| 5      | :x:                | Checkmate     | :x:                |
+| 6      | :x:                | Development   | :x:                |
+| 7      | :x:                | Player        | :x:                |
+| 8      | :x:                | Game          | :x:                |
+| 9      | :x:                | Tournament    | :x:                |
+| 10     | :x:                | Rating (ELO)  | :x:                |
+| 11     | :heavy_check_mark: | FEN Notation  | :heavy_check_mark: |
 
 ### User Interface
 
@@ -99,11 +120,10 @@ MOST INTERESTING PROBLEMS WEVE STUMBLED UPON
 
 ## Additional Dependencies
 
-[TODO]: # (For each additional dependency your project requires- Add an additional row to the table!)
-
 | Number | Dependency Name | Dependency Description | Why is it necessary? |
 |--------|-----------------|------------------------|----------------------|
 | 1      | :x:             | :x:                    | :x:                  |
+| 2      | :x:             | :x:                    | :x:                  |
 
 
 [maven]: https://maven.apache.org/
