@@ -250,4 +250,18 @@ public class Piece implements Serializable {
   public int hashCode() {
     return Objects.hash(type, color, position, symbol);
   }
+
+  @Override
+  public String toString() {
+    return "Piece{"
+        + "color="
+        + color
+        + ", symbol="
+        + symbol
+        + ", type="
+        + type
+        + ", position="
+        + position
+        + '}';
+  }
 }
