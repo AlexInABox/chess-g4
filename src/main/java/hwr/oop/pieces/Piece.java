@@ -1,6 +1,6 @@
 package hwr.oop.pieces;
 
-import hwr.oop.ChessBoard;
+import hwr.oop.board.ChessBoard;
 import hwr.oop.Color;
 import hwr.oop.Position;
 
