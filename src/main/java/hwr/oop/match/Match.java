@@ -1,5 +1,6 @@
 package hwr.oop.match;
 
+import hwr.oop.Color;
 import hwr.oop.board.ChessBoard;
 import hwr.oop.board.ChessBoardException;
 import hwr.oop.player.Player;
@@ -10,7 +11,11 @@ public class Match implements Serializable {
   private final Player playerBlack;
 
   private final ChessBoard board;
-  private String fen_notation;
+  private String fenNotation;
+
+  private Color nextToMove = Color.WHITE;
+  private short moveCount = 0;
+  private boolean gameEnded = false;
 
   public Match(Player playerWhite, Player playerBlack) {
     this.playerWhite = playerWhite;
@@ -24,12 +29,12 @@ public class Match implements Serializable {
     this.board = board;
   }
 
-  public Match(Player playerWhite, Player playerBlack, String fen_notation)
+  public Match(Player playerWhite, Player playerBlack, String fenNotation)
       throws ChessBoardException {
     this.playerWhite = playerWhite;
     this.playerBlack = playerBlack;
-    this.fen_notation = fen_notation;
-    board = new ChessBoard(fen_notation);
+    this.fenNotation = fenNotation;
+    board = new ChessBoard(fenNotation);
   }
 
   public Player getPlayerWhite() {
@@ -41,6 +46,6 @@ public class Match implements Serializable {
   }
 
   public String getFEN() {
-    return fen_notation;
+    return fenNotation;
   }
 }
