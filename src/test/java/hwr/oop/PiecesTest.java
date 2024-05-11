@@ -3,6 +3,7 @@ package hwr.oop;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import hwr.oop.board.ChessBoard;
 import hwr.oop.pieces.IllegalMoveException;
 import hwr.oop.pieces.Piece;
 import hwr.oop.pieces.PieceType;

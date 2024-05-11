@@ -1,6 +1,6 @@
 package hwr.oop.persistence;
 
-import hwr.oop.ChessBoard;
+import hwr.oop.board.ChessBoard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
