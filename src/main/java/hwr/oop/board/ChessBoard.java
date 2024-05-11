@@ -1,5 +1,7 @@
-package hwr.oop;
+package hwr.oop.board;
 
+import hwr.oop.Color;
+import hwr.oop.Position;
 import hwr.oop.pieces.*;
 
 import java.io.Serializable;
