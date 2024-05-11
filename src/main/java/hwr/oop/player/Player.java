@@ -11,9 +11,9 @@ public class Player implements Serializable {
     this.name = name;
   }
 
-  public Player(String name, short elo) {
+  public Player(String name, short elo) throws PlayerException {
     this.name = name;
-    this.elo = elo;
+    setElo(elo);
   }
 
   public String getName() {
@@ -22,5 +22,10 @@ public class Player implements Serializable {
 
   public short getElo() {
     return elo;
+  }
+
+  public void setElo(short elo) throws PlayerException {
+    if (elo < 100) throw new PlayerException("Elo cannot be lower than 100");
+    this.elo = elo;
   }
 }
