@@ -93,8 +93,8 @@ If `chess` does not work in your terminal, try `./chess` or `.\chess` instead.
 | 4      | :x:                | Check         | :x:                |
 | 5      | :x:                | Checkmate     | :x:                |
 | 6      | :x:                | Development   | :x:                |
-| 7      | :x:                | Player        | :x:                |
-| 8      | :x:                | Game          | :x:                |
+| 7      | :heavy_check_mark: | Player        | :heavy_check_mark: |
+| 8      | :heavy_check_mark: | Game          | :heavy_check_mark: |
 | 9      | :x:                | Tournament    | :x:                |
 | 10     | :x:                | Rating (ELO)  | :x:                |
 | 11     | :heavy_check_mark: | FEN Notation  | :heavy_check_mark: |
