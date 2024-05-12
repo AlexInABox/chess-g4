@@ -1,10 +1,12 @@
 package hwr.oop;
 
+import hwr.oop.board.ChessBoard;
+import hwr.oop.board.ChessBoardException;
 import hwr.oop.pieces.*;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static hwr.oop.ChessBoard.convertInputToPosition;
+import static hwr.oop.board.ChessBoard.convertInputToPosition;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 

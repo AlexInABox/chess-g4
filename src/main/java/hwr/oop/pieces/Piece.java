@@ -1,6 +1,6 @@
 package hwr.oop.pieces;
 
-import hwr.oop.ChessBoard;
+import hwr.oop.board.ChessBoard;
 import hwr.oop.Color;
 import hwr.oop.Position;
 
@@ -24,33 +24,34 @@ public class Piece implements Serializable {
   }
 
   private char assignPieceSymbol(PieceType type, Color color) {
+    char pieceSymbol = ' ';
     switch (type) {
       case KING -> {
-        if (color == Color.WHITE) return 'K';
-        return 'k';
+        if (color == Color.WHITE) pieceSymbol = 'K';
+        else pieceSymbol = 'k';
       }
       case BISHOP -> {
-        if (color == Color.WHITE) return 'B';
-        return 'b';
+        if (color == Color.WHITE) pieceSymbol = 'B';
+        else pieceSymbol = 'b';
       }
       case KNIGHT -> {
-        if (color == Color.WHITE) return 'N';
-        return 'n';
+        if (color == Color.WHITE) pieceSymbol = 'N';
+        else pieceSymbol = 'n';
       }
       case PAWN -> {
-        if (color == Color.WHITE) return 'P';
-        return 'p';
+        if (color == Color.WHITE) pieceSymbol = 'P';
+        else pieceSymbol = 'p';
       }
       case QUEEN -> {
-        if (color == Color.WHITE) return 'Q';
-        return 'q';
+        if (color == Color.WHITE) pieceSymbol = 'Q';
+        else pieceSymbol = 'q';
       }
       case ROOK -> {
-        if (color == Color.WHITE) return 'R';
-        return 'r';
+        if (color == Color.WHITE) pieceSymbol = 'R';
+        else pieceSymbol = 'r';
       }
     }
-    return 0;
+    return pieceSymbol;
   }
 
   public Color getColor() {
