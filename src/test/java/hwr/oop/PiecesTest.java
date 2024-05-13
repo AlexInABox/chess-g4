@@ -57,7 +57,6 @@ class PiecesTest {
     assertThat(king.getPosition()).isEqualTo(targetPosition);
   }
 
-
   @Test
   void testKingMove_fail() {
     Position position = new Position(2, 2);
@@ -410,6 +409,7 @@ class PiecesTest {
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(rook.getPosition()).isEqualTo(position);
   }
+
   @Test
   void testRookMove_failObstacle() {
     Position position = new Position(2, 2);
@@ -421,13 +421,12 @@ class PiecesTest {
     board.setPieceAtPosition(obstacle.getPosition(), obstacle);
 
     IllegalMoveException exception =
-            assertThrows(IllegalMoveException.class, () -> rook.moveTo(targetPosition));
+        assertThrows(IllegalMoveException.class, () -> rook.moveTo(targetPosition));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(rook.getPosition()).isEqualTo(position);
   }
 
-  // equals?
   @Test
   void equals_IdenticalPieces() {
     Piece piece1 = new Piece(PieceType.KING, Color.WHITE, new Position(0, 0), board);
