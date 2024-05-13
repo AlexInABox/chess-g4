@@ -6,6 +6,7 @@ import hwr.oop.Position;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Piece implements Serializable {
@@ -78,7 +79,7 @@ public class Piece implements Serializable {
 
   public void moveTo(Position target) throws IllegalMoveException {
 
-    ArrayList<Position> possibleMoves = new ArrayList<>();
+    List<Position> possibleMoves = new ArrayList<>();
     switch (type) {
       case KING -> possibleMoves = possibleKingMoves();
       case BISHOP -> possibleMoves = possibleBishopMoves();
@@ -93,8 +94,8 @@ public class Piece implements Serializable {
     } else throw new IllegalMoveException("Illegal move");
   }
 
-  private ArrayList<Position> possibleKingMoves() {
-    ArrayList<Position> possibleMoves = new ArrayList<>();
+  private List<Position> possibleKingMoves() {
+    List<Position> possibleMoves = new ArrayList<>();
     int[] directions = {-1, 0, 1};
 
     for (int rowChange : directions) {
@@ -116,8 +117,8 @@ public class Piece implements Serializable {
     return possibleMoves;
   }
 
-  private ArrayList<Position> possibleBishopMoves() {
-    ArrayList<Position> possibleMoves = new ArrayList<>();
+  private List<Position> possibleBishopMoves() {
+    List<Position> possibleMoves = new ArrayList<>();
     int[][] directions = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 
     for (int[] direction : directions) {
@@ -143,8 +144,8 @@ public class Piece implements Serializable {
     return possibleMoves;
   }
 
-  private ArrayList<Position> possibleKnightMoves() {
-    ArrayList<Position> possibleMoves = new ArrayList<>();
+  private List<Position> possibleKnightMoves() {
+    List<Position> possibleMoves = new ArrayList<>();
     int[][] moveOffsets = {{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2}};
 
     int currentRow = position.row();
@@ -167,8 +168,8 @@ public class Piece implements Serializable {
     return possibleMoves;
   }
 
-  private ArrayList<Position> possiblePawnMoves() {
-    ArrayList<Position> possibleMoves = new ArrayList<>();
+  private List<Position> possiblePawnMoves() {
+    List<Position> possibleMoves = new ArrayList<>();
     int rowDirection = (color == Color.WHITE) ? 1 : -1;
 
     int currentRow = position.row();
@@ -200,8 +201,8 @@ public class Piece implements Serializable {
     return possibleMoves;
   }
 
-  private ArrayList<Position> possibleRookMoves() {
-    ArrayList<Position> possibleMoves = new ArrayList<>();
+  private List<Position> possibleRookMoves() {
+    List<Position> possibleMoves = new ArrayList<>();
     int[][] directions = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
     for (int[] direction : directions) {
@@ -227,8 +228,8 @@ public class Piece implements Serializable {
     return possibleMoves;
   }
 
-  private ArrayList<Position> possibleQueenMoves() {
-    ArrayList<Position> possibleMoves = new ArrayList<>();
+  private List<Position> possibleQueenMoves() {
+    List<Position> possibleMoves = new ArrayList<>();
 
     possibleMoves.addAll(possibleRookMoves());
     possibleMoves.addAll(possibleBishopMoves());
