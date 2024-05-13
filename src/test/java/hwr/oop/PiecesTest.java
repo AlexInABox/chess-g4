@@ -57,7 +57,6 @@ class PiecesTest {
     assertThat(king.getPosition()).isEqualTo(targetPosition);
   }
 
-
   @Test
   void testKingMove_fail() {
     Position position = new Position(2, 2);
@@ -258,12 +257,12 @@ class PiecesTest {
 
   @Test
   void testBlackPawnCapture_successful() throws IllegalMoveException {
-    Position position = new Position(6, 2);
-    Position targetPosition = new Position(5, 3);
+    Position position = new Position(4, 3);
+    Position targetPosition = new Position(3, 2);
     Piece pawn = new Piece(PieceType.PAWN, Color.BLACK, position, board);
-    Piece knight = new Piece(PieceType.KNIGHT, Color.WHITE, targetPosition, board);
-    board.setPieceAtPosition(knight.getPosition(), knight);
+    Piece enemyPiece = new Piece(PieceType.KNIGHT, Color.WHITE, targetPosition, board);
     board.setPieceAtPosition(pawn.getPosition(), pawn);
+    board.setPieceAtPosition(enemyPiece.getPosition(), enemyPiece);
 
     pawn.moveTo(targetPosition);
     assertThat(pawn.getPosition()).isEqualTo(targetPosition);
@@ -411,7 +410,23 @@ class PiecesTest {
     assertThat(rook.getPosition()).isEqualTo(position);
   }
 
-  // equals?
+  @Test
+  void testRookMove_failObstacle() {
+    Position position = new Position(2, 2);
+    Position obstaclePosition = new Position(3, 2); // Position occupied by another piece
+    Position targetPosition = new Position(5, 2);
+    Piece rook = new Piece(PieceType.ROOK, Color.WHITE, position, board);
+    Piece obstacle = new Piece(PieceType.PAWN, Color.WHITE, obstaclePosition, board);
+    board.setPieceAtPosition(rook.getPosition(), rook);
+    board.setPieceAtPosition(obstacle.getPosition(), obstacle);
+
+    IllegalMoveException exception =
+        assertThrows(IllegalMoveException.class, () -> rook.moveTo(targetPosition));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(rook.getPosition()).isEqualTo(position);
+  }
+
   @Test
   void equals_IdenticalPieces() {
     Piece piece1 = new Piece(PieceType.KING, Color.WHITE, new Position(0, 0), board);

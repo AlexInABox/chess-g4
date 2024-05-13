@@ -10,13 +10,13 @@ import java.nio.file.Path;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-class PersistenceImplTest {
+class FileBasedPersistenceTest {
 
-  private PersistenceImpl instUT;
+  private FileBasePersistence instUT;
 
   @BeforeEach
   void setUp() {
-    instUT = new PersistenceImpl();
+    instUT = new FileBasePersistence();
   }
 
   @Test
@@ -28,8 +28,8 @@ class PersistenceImplTest {
     final Path path = file.toPath();
 
     // when
-    instUT.write(expectedChessBoard, path);
-    final ChessBoard actualChessboard = (ChessBoard) instUT.read(path);
+    instUT.save(expectedChessBoard, path);
+    final ChessBoard actualChessboard = (ChessBoard) instUT.load(path);
 
     // then
     assertNotNull(actualChessboard);
@@ -44,7 +44,7 @@ class PersistenceImplTest {
     final Path path = file.toPath();
 
     PersistenceException exception =
-        assertThrows(PersistenceException.class, () -> instUT.write(chessBoard, path));
+        assertThrows(PersistenceException.class, () -> instUT.save(chessBoard, path));
     String expectedMessage = "Cannot write.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
@@ -56,7 +56,7 @@ class PersistenceImplTest {
     final Path path = file.toPath();
 
     PersistenceException exception =
-        assertThrows(PersistenceException.class, () -> instUT.read(path));
+        assertThrows(PersistenceException.class, () -> instUT.load(path));
     String expectedMessage = "Cannot read.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
