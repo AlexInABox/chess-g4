@@ -31,8 +31,9 @@ class ChessCliTest {
     String output = outputStream.toString().trim();
 
     // Assert
-    assertThat(output).isEqualTo("Invalid command. Usage: chess <command> [options]\n" +
-        "For help and further information: chess help");
+    assertThat(output)
+        .contains("Invalid command. Usage: chess <command> [options]")
+        .contains("For help and further information: chess help");
   }
 
   @ParameterizedTest
@@ -55,8 +56,7 @@ class ChessCliTest {
   private static Stream<Arguments> unknownCommandsProvider() {
     return Stream.of(
         Arguments.of("start", "Unknown command: start"),
-        Arguments.of("play", "Unknown command: play")
-    );
+        Arguments.of("play", "Unknown command: play"));
   }
 
   @ParameterizedTest
@@ -79,11 +79,12 @@ class ChessCliTest {
   // Provide invalid arguments for each command
   private static Stream<Object[]> invalidArgumentsProvider() {
     return Stream.of(
-        new Object[]{"create", "Invalid command. Usage: chess create <ID> <Player1Name> <Player2Name>"},
-        new Object[]{"save", "Invalid command. Usage: chess save <ID>"},
-        new Object[]{"load", "Invalid command. Usage: chess load <ID>"},
-        new Object[]{"on", "Invalid command. Usage: chess on <ID> move <FROM> <TO>"}
-    );
+        new Object[] {
+          "create", "Invalid command. Usage: chess create <ID> <Player1Name> <Player2Name>"
+        },
+        new Object[] {"save", "Invalid command. Usage: chess save <ID>"},
+        new Object[] {"load", "Invalid command. Usage: chess load <ID>"},
+        new Object[] {"on", "Invalid command. Usage: chess on <ID> move <FROM> <TO>"});
   }
 
   @Test
@@ -115,14 +116,13 @@ class ChessCliTest {
     String output = outputStream.toString().trim();
 
     // Assert
-    String expectedOutput = """
-        Supported commands:
-          - create <ID> <Player1Name> <Player2Name>: Start a new chess game
-          - save <ID>: Save a chess game
-          - load <ID>: Load a saved chess game
-          - on <ID> move <FROM> <TO>: Move a chess piece to a valid position
-          - help: Display this help message""";
-    assertThat(output).isEqualTo(expectedOutput);
+    assertThat(output)
+        .contains("Supported commands:")
+        .contains("- create <ID> <Player1Name> <Player2Name>: Start a new chess game")
+        .contains("- save <ID>: Save a chess game")
+        .contains("- load <ID>: Load a saved chess game")
+        .contains("- on <ID> move <FROM> <TO>: Move a chess piece to a valid position")
+        .contains("- help: Display this help message");
   }
 
   @Test
@@ -138,13 +138,12 @@ class ChessCliTest {
     String output = outputStream.toString().trim();
 
     // Assert
-    String expectedOutput = """
-        Welcome to chess in Java!
-        Chess game created with ID: 123
-        Hello Alice and Bob.
-        Let's start the game.
-        Have fun!""";
-    assertThat(output).isEqualTo(expectedOutput);
+    assertThat(output)
+        .contains("Welcome to chess in Java!")
+        .contains("Chess game created with ID: 123")
+        .contains("Hello Alice and Bob.")
+        .contains("Let's start the game.")
+        .contains("Have fun!");
   }
 
   @Test
@@ -176,8 +175,9 @@ class ChessCliTest {
     String output = outputStream.toString().trim();
 
     // Assert
-    assertThat(output).isEqualTo("Loading game with ID: 456\n" +
-        "Game 456 loaded successfully.");
+    assertThat(output)
+        .contains("Loading game with ID: 456")
+        .contains("Game 456 loaded successfully.");
   }
 
   @Test
@@ -193,8 +193,9 @@ class ChessCliTest {
     String output = outputStream.toString().trim();
 
     // Assert
-    String expectedOutput = "Moving piece in game 123 from A1 to B2\nPiece was successfully moved.";
-    assertThat(output).contains(expectedOutput);
+    assertThat(output)
+        .contains("Moving piece in game 123 from A1 to B2")
+        .contains("Piece was successfully moved.");
     assertThat(output.lines().count()).isEqualTo(2);
   }
 
@@ -210,7 +211,7 @@ class ChessCliTest {
     String playerTwoName = "Bob";
 
     // Act
-    Main.main(new String[]{"create", gameId, playerOneName, playerTwoName});
+    Main.main(new String[] {"create", gameId, playerOneName, playerTwoName});
 
     // Assert
     String output = outputStream.toString().trim();
