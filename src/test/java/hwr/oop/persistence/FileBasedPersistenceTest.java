@@ -1,6 +1,6 @@
 package hwr.oop.persistence;
 
-import hwr.oop.board.ChessBoardException;
+import hwr.oop.match.FENException;
 import hwr.oop.match.Match;
 import hwr.oop.player.Player;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,11 +41,11 @@ class FileBasedPersistenceTest {
   }
 
   @Test
-  void testPersistenceReadWriteMatchWithFenNotation() throws ChessBoardException {
+  void testPersistenceReadWriteMatchWithFenNotation() throws FENException {
     // given
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
-    final String fenNotation = "8/8/8/8/8/8/8/8";
+    final String fenNotation = "8/8/8/8/8/8/8/8 w";
     final Match expectedMatch = new Match(playerWhite, playerBlack, fenNotation);
     final String filePath = "target/persistenceTest.txt";
     final File file = new File(filePath);
