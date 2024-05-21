@@ -1,9 +1,11 @@
 package hwr.oop.persistence;
 
+import hwr.oop.match.Match;
+
 import java.nio.file.Path;
 
 public interface Persistence {
-  void save(Object object, Path filePath);
+  void save(Match match, Path filePath);
 
-  Object load(Path filePath);
+  Match load(Path filePath);
 }
