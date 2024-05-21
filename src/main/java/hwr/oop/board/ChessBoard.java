@@ -3,7 +3,6 @@ package hwr.oop.board;
 import hwr.oop.Color;
 import hwr.oop.Position;
 import hwr.oop.pieces.*;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +17,14 @@ public class ChessBoard implements Serializable {
     setupPieces();
   }
 
+  public void clearChessboard(){
+    for (int row = 0; row < 8; row++) {
+      for (int col = 0; col < 8; col++) {
+        setPieceAtPosition(new Position(row, col), null);
+      }
+    }
+  }
+
   private void setupEmptyBoard() {
     IntStream.range(0, 8)
         .forEach(
@@ -26,11 +33,6 @@ public class ChessBoard implements Serializable {
               IntStream.range(0, 8).forEach(j -> row.add(null));
               board.add(row);
             });
-  }
-
-  public ChessBoard(String fenNotation) throws ChessBoardException {
-    setupEmptyBoard();
-    convertFENToBoard(fenNotation);
   }
 
   public static Position convertInputToPosition(String input) throws ChessBoardException {
@@ -85,83 +87,6 @@ public class ChessBoard implements Serializable {
 
   public void setPieceAtPosition(Position position, Piece piece) {
     board.get(position.row()).set(position.column(), piece);
-  }
-
-  public String convertBoardToFEN() {
-    StringBuilder fen = new StringBuilder();
-
-    for (int row = 7; row >= 0; row--) {
-      int emptyCount = 0;
-      for (int col = 0; col < 8; col++) {
-        Piece piece = board.get(row).get(col);
-        if (piece == null) {
-          emptyCount++;
-        } else {
-          if (emptyCount > 0) {
-            fen.append(emptyCount);
-            emptyCount = 0;
-          }
-          fen.append(piece.getSymbol());
-        }
-      }
-      if (emptyCount > 0) {
-        fen.append(emptyCount);
-      }
-      if (row != 0) {
-        fen.append("/");
-      }
-    }
-    // TODO: Active Color
-    // TODO: Castling rights
-    // TODO: Possible en passant destinations
-    // TODO: total number of moves
-    return fen.toString();
-  }
-
-  private Piece createPieceFromFEN(char fenChar, Position position) {
-    return switch (fenChar) {
-      case 'P' -> new Piece(PieceType.PAWN, Color.WHITE, position, this);
-      case 'N' -> new Piece(PieceType.KNIGHT, Color.WHITE, position, this);
-      case 'B' -> new Piece(PieceType.BISHOP, Color.WHITE, position, this);
-      case 'R' -> new Piece(PieceType.ROOK, Color.WHITE, position, this);
-      case 'Q' -> new Piece(PieceType.QUEEN, Color.WHITE, position, this);
-      case 'K' -> new Piece(PieceType.KING, Color.WHITE, position, this);
-      case 'p' -> new Piece(PieceType.PAWN, Color.BLACK, position, this);
-      case 'n' -> new Piece(PieceType.KNIGHT, Color.BLACK, position, this);
-      case 'b' -> new Piece(PieceType.BISHOP, Color.BLACK, position, this);
-      case 'r' -> new Piece(PieceType.ROOK, Color.BLACK, position, this);
-      case 'q' -> new Piece(PieceType.QUEEN, Color.BLACK, position, this);
-      case 'k' -> new Piece(PieceType.KING, Color.BLACK, position, this);
-      default -> null;
-    };
-  }
-
-  public void convertFENToBoard(String fenNotation) throws ChessBoardException {
-    String[] rows = fenNotation.split("/");
-    if (rows.length != 8) {
-      throw new ChessBoardException("Invalid FEN format: 8 rows expected");
-    }
-
-    for (int i = 0; i < 8; i++) {
-      int col = 0;
-      for (char c : rows[7 - i].toCharArray()) {
-        if (Character.isDigit(c)) {
-          col += Character.getNumericValue(c);
-        } else {
-          Piece piece = createPieceFromFEN(c, new Position(i, col));
-          if (piece != null) {
-            setPieceAtPosition(new Position(i, col), piece);
-          } else {
-            throw new ChessBoardException("FEN notation contains invalid Piece");
-          }
-          col++;
-        }
-      }
-    }
-    // TODO: Active Color
-    // TODO: Castling rights
-    // TODO: Possible en passant destinations
-    // TODO: total number of moves
   }
 
   public boolean isValidPosition(int row, int column) {
