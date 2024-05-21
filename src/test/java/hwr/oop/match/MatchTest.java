@@ -8,7 +8,6 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 class MatchTest {
   private Match match;
 
@@ -53,8 +52,9 @@ class MatchTest {
           softly.assertThat(match.getFEN()).isEqualTo(fenNotation);
         });
   }
+
   @Test
-  void testEquals_IdenticalInstances() throws ChessBoardException {
+  void testEquals_IdenticalInstances() {
     Player playerWhite = new Player("White");
     Player playerBlack = new Player("Black");
     ChessBoard board = new ChessBoard();
@@ -65,7 +65,7 @@ class MatchTest {
 
   @SuppressWarnings("EqualsWithItself")
   @Test
-  void testEquals_SameInstance() throws ChessBoardException {
+  void testEquals_SameInstance() {
     Player playerWhite = new Player("White");
     Player playerBlack = new Player("Black");
     ChessBoard board = new ChessBoard();
@@ -75,7 +75,7 @@ class MatchTest {
 
   @SuppressWarnings("ConstantConditions")
   @Test
-  void testEquals_InstanceNull() throws ChessBoardException {
+  void testEquals_InstanceNull() {
     Player playerWhite = new Player("White");
     Player playerBlack = new Player("Black");
     ChessBoard board = new ChessBoard();
@@ -85,7 +85,7 @@ class MatchTest {
 
   @SuppressWarnings("EqualsBetweenInconvertibleTypes")
   @Test
-  void testEquals_DifferentClass() throws ChessBoardException {
+  void testEquals_DifferentClass() {
     Player playerWhite = new Player("White");
     Player playerBlack = new Player("Black");
     ChessBoard board = new ChessBoard();
@@ -94,7 +94,7 @@ class MatchTest {
   }
 
   @Test
-  void testHashCode_IdenticalHashCode() throws ChessBoardException {
+  void testHashCode_IdenticalHashCode() {
     Player playerWhite = new Player("White");
     Player playerBlack = new Player("Black");
     ChessBoard board = new ChessBoard();
@@ -104,7 +104,7 @@ class MatchTest {
   }
 
   @Test
-  void testHashCode_DifferentHashCode() throws ChessBoardException {
+  void testHashCode_DifferentHashCode() {
     Player playerWhite1 = new Player("White");
     Player playerBlack1 = new Player("Black");
     ChessBoard board1 = new ChessBoard();
@@ -119,20 +119,26 @@ class MatchTest {
   }
 
   @Test
-  void testToString() throws ChessBoardException {
+  void testToString() {
     Player playerWhite = new Player("White");
     Player playerBlack = new Player("Black");
     ChessBoard board = new ChessBoard();
     Match match = new Match(playerWhite, playerBlack, board);
-    String expectedString = "Match{" +
-            "playerWhite=" + playerWhite +
-            ", playerBlack=" + playerBlack +
-            ", board=" + board +
-            ", fenNotation='" + null + '\'' +
-            ", nextToMove=WHITE" +
-            ", moveCount=0" +
-            ", gameEnded=false" +
-            '}';
+    String expectedString =
+        "Match{"
+            + "playerWhite="
+            + playerWhite
+            + ", playerBlack="
+            + playerBlack
+            + ", board="
+            + board
+            + ", fenNotation='"
+            + null
+            + '\''
+            + ", nextToMove=WHITE"
+            + ", moveCount=0"
+            + ", gameEnded=false"
+            + '}';
     assertThat(match.toString()).isEqualTo(expectedString);
   }
 }

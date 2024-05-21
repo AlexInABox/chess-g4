@@ -25,8 +25,6 @@ public class Player implements Serializable {
     return elo;
   }
 
-
-
   public void setElo(short elo) throws PlayerException {
     if (elo < 100) throw new PlayerException("Elo cannot be lower than 100");
     this.elo = elo;
@@ -47,9 +45,6 @@ public class Player implements Serializable {
 
   @Override
   public String toString() {
-    return "Player{" +
-            "name='" + name + '\'' +
-            ", elo=" + elo +
-            '}';
+    return "Player{" + "name='" + name + '\'' + ", elo=" + elo + '}';
   }
 }
