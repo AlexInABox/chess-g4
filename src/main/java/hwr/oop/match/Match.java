@@ -26,14 +26,13 @@ public class Match implements Serializable {
     this.board = new ChessBoard();
   }
 
-//  public Match(Player playerWhite, Player playerBlack, ChessBoard board) {
-//    this.playerWhite = playerWhite;
-//    this.playerBlack = playerBlack;
-//    this.board = board;
-//  }
+  //  public Match(Player playerWhite, Player playerBlack, ChessBoard board) {
+  //    this.playerWhite = playerWhite;
+  //    this.playerBlack = playerBlack;
+  //    this.board = board;
+  //  }
 
-  public Match(Player playerWhite, Player playerBlack, String fenNotation)
-      throws FENException {
+  public Match(Player playerWhite, Player playerBlack, String fenNotation) throws FENException {
     this.playerWhite = playerWhite;
     this.playerBlack = playerBlack;
     this.fenNotation = fenNotation;
@@ -55,7 +54,6 @@ public class Match implements Serializable {
   public Color getNextToMove() {
     return nextToMove;
   }
-
 
   public String convertBoardToFEN() {
     StringBuilder fen = new StringBuilder();
@@ -117,12 +115,10 @@ public class Match implements Serializable {
           "Invalid FEN format: expected at least 2 parts (board layout and active color)");
     }
 
-    // Get the board layout part
     String[] rows = parts[0].split("/");
     if (rows.length != 8) {
       throw new FENException("Invalid FEN format: 8 rows expected");
     }
-
     // Convert the board layout part
     for (int i = 0; i < 8; i++) {
       int col = 0;
@@ -139,7 +135,6 @@ public class Match implements Serializable {
           col++;
         }
       }
-
     }
 
     // Get the active color part
