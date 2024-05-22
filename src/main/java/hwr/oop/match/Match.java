@@ -3,8 +3,7 @@ package hwr.oop.match;
 import hwr.oop.Color;
 import hwr.oop.Position;
 import hwr.oop.board.ChessBoard;
-import hwr.oop.pieces.Piece;
-import hwr.oop.pieces.PieceType;
+import hwr.oop.pieces.*;
 import hwr.oop.player.Player;
 import java.io.Serializable;
 import java.util.Objects;
@@ -89,18 +88,18 @@ public class Match implements Serializable {
 
   private Piece createPieceFromFEN(char fenChar, Position position) {
     return switch (fenChar) {
-      case 'P' -> new Piece(PieceType.PAWN, Color.WHITE, position, board);
-      case 'N' -> new Piece(PieceType.KNIGHT, Color.WHITE, position, board);
-      case 'B' -> new Piece(PieceType.BISHOP, Color.WHITE, position, board);
-      case 'R' -> new Piece(PieceType.ROOK, Color.WHITE, position, board);
-      case 'Q' -> new Piece(PieceType.QUEEN, Color.WHITE, position, board);
-      case 'K' -> new Piece(PieceType.KING, Color.WHITE, position, board);
-      case 'p' -> new Piece(PieceType.PAWN, Color.BLACK, position, board);
-      case 'n' -> new Piece(PieceType.KNIGHT, Color.BLACK, position, board);
-      case 'b' -> new Piece(PieceType.BISHOP, Color.BLACK, position, board);
-      case 'r' -> new Piece(PieceType.ROOK, Color.BLACK, position, board);
-      case 'q' -> new Piece(PieceType.QUEEN, Color.BLACK, position, board);
-      case 'k' -> new Piece(PieceType.KING, Color.BLACK, position, board);
+      case 'P' -> new Pawn(Color.WHITE, position, board);
+      case 'N' -> new Knight(Color.WHITE, position, board);
+      case 'B' -> new Bishop(Color.WHITE, position, board);
+      case 'R' -> new Rook(Color.WHITE, position, board);
+      case 'Q' -> new Queen(Color.WHITE, position, board);
+      case 'K' -> new King(Color.WHITE, position, board);
+      case 'p' -> new Pawn(Color.BLACK, position, board);
+      case 'n' -> new Knight(Color.BLACK, position, board);
+      case 'b' -> new Bishop(Color.BLACK, position, board);
+      case 'r' -> new Rook(Color.BLACK, position, board);
+      case 'q' -> new Queen(Color.BLACK, position, board);
+      case 'k' -> new King(Color.BLACK, position, board);
       default -> null;
     };
   }
