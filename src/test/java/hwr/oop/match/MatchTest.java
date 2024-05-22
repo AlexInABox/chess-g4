@@ -7,7 +7,7 @@ import hwr.oop.player.Player;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class MatchTest {
   private Match match;
@@ -210,4 +210,49 @@ class MatchTest {
         "Invalid FEN format: expected at least 2 parts (board layout and active color)";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
+
+  @Test
+  void testEquals_SameAttributes() throws FENException {
+    Player white1 = new Player("White");
+    Player black1 = new Player("Black");
+    Match match1 = new Match(white1, black1, "8/8/8/8/8/8/8/8 w");
+
+    Player white2 = new Player("White");
+    Player black2 = new Player("Black");
+    Match match2 = new Match(white2, black2, "8/8/8/8/8/8/8/8 w");
+
+    assertThat(match1).isEqualTo(match2);
+  }
+  @Test
+  void testEquals_DifferentPlayers() throws FENException {
+    Player white1 = new Player("White1");
+    Player black1 = new Player("Black1");
+    Match match1 = new Match(white1, black1, "8/8/8/8/8/8/8/8 w");
+
+    Player white2 = new Player("White2");
+    Player black2 = new Player("Black2");
+    Match match2 = new Match(white2, black2, "8/8/8/8/8/8/8/8 w");
+    assertThat(match1).isNotEqualTo(match2);
+  }
+
+  @Test
+  void testEquals_DifferentBoard() throws FENException {
+    Player white = new Player("White");
+    Player black = new Player("Black");
+    Match match1 = new Match(white, black, "8/8/8/8/8/8/8/8 w");
+    Match match2 = new Match(white, black, "8/8/8/8/8/8/8/7k w");
+
+    assertThat(match1).isNotEqualTo(match2);
+  }
+
+  @Test
+  void testEquals_DifferentNextToMove() throws FENException {
+    Player white = new Player("White");
+    Player black = new Player("Black");
+    Match match1 = new Match(white, black, "8/8/8/8/8/8/8/8 w");
+    Match match2 = new Match(white, black, "8/8/8/8/8/8/8/8 b");
+
+    assertThat(match1).isNotEqualTo(match2);
+  }
+
 }
