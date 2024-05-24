@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,18 +28,20 @@ class FileBasedPersistenceTest {
     // given
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
-    final Match expectedMatch = new Match(playerWhite, playerBlack);
+    final Match match = new Match(playerWhite, playerBlack);
+    List<Match> expectedMatches = new ArrayList<>();
+    expectedMatches.add(match);
     final String filePath = "target/persistenceTest.txt";
     final File file = new File(filePath);
     final Path path = file.toPath();
 
     // when
-    instUT.save(expectedMatch, path);
-    final Match actualMatch = instUT.load(path);
+    instUT.save(expectedMatches, path);
+    final List<Match> actualMatches = instUT.load(path);
 
     // then
-    assertNotNull(actualMatch);
-    assertThat(expectedMatch).isEqualTo(actualMatch);
+    assertNotNull(actualMatches);
+    assertThat(expectedMatches).isEqualTo(actualMatches);
   }
 
   @Test
@@ -46,18 +50,20 @@ class FileBasedPersistenceTest {
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     final String fenNotation = "8/8/8/8/8/8/8/8 w";
-    final Match expectedMatch = new Match(playerWhite, playerBlack, fenNotation);
+    final Match match = new Match(playerWhite, playerBlack, fenNotation);
+    List<Match> expectedMatches = new ArrayList<>();
+    expectedMatches.add(match);
     final String filePath = "target/persistenceTest.txt";
     final File file = new File(filePath);
     final Path path = file.toPath();
 
     // when
-    instUT.save(expectedMatch, path);
-    final Match actualMatch = instUT.load(path);
+    instUT.save(expectedMatches, path);
+    final List<Match> actualMatches = instUT.load(path);
 
     // then
-    assertNotNull(actualMatch);
-    assertThat(expectedMatch).isEqualTo(actualMatch);
+    assertNotNull(actualMatches);
+    assertThat(expectedMatches).isEqualTo(actualMatches);
   }
 
   @Test
@@ -65,12 +71,14 @@ class FileBasedPersistenceTest {
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     final Match match = new Match(playerWhite, playerBlack);
+    List<Match> expectedMatches = new ArrayList<>();
+    expectedMatches.add(match);
     final String filePath = "not-existing-directory/persistenceTest.txt";
     final File file = new File(filePath);
     final Path path = file.toPath();
 
     PersistenceException exception =
-        assertThrows(PersistenceException.class, () -> instUT.save(match, path));
+        assertThrows(PersistenceException.class, () -> instUT.save(expectedMatches, path));
     String expectedMessage = "Cannot write.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }

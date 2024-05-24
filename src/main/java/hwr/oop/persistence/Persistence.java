@@ -3,9 +3,10 @@ package hwr.oop.persistence;
 import hwr.oop.match.Match;
 
 import java.nio.file.Path;
+import java.util.List;
 
 public interface Persistence {
-  void save(Match match, Path filePath);
+  void save(List<Match> match, Path filePath);
 
-  Match load(Path filePath);
+  List<Match> load(Path filePath);
 }

@@ -4,11 +4,12 @@ import hwr.oop.match.Match;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.util.List;
 
 public class FileBasePersistence implements Persistence {
 
   @Override
-  public void save(Match match, Path filePath) {
+  public void save(List<Match> match, Path filePath) {
 
     try (FileOutputStream f = new FileOutputStream(String.valueOf((filePath)))) {
       ObjectOutputStream o = new ObjectOutputStream(f);
@@ -19,10 +20,10 @@ public class FileBasePersistence implements Persistence {
   }
 
   @Override
-  public Match load(Path filePath) {
+  public List<Match> load(Path filePath) {
     try (FileInputStream f = new FileInputStream(String.valueOf(filePath))) {
       ObjectInputStream o = new ObjectInputStream(f);
-      return (Match) o.readObject();
+      return (List<Match>) o.readObject();
     } catch (IOException | ClassNotFoundException e) {
       throw new PersistenceException("Cannot read.");
     }
