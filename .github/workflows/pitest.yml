@@ -41,12 +41,12 @@ jobs:
           for comment_id in $comments; do
             gh api repos/${{ github.repository }}/issues/comments/$comment_id -X DELETE
           done
-      - name: Post coverage report link
-        uses: peter-evans/create-or-update-comment@v3
+      - name: Post or update coverage report link
+        uses: thollander/actions-comment-pull-request@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
+          message: |
             **Mutation Coverage Report**
-            The mutation coverage report is available [here](https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ github.event.pull_request.number }}/index.html).
+            The mutation coverage report is available <a href="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ github.event.pull_request.number }}/index.html" target="_blank">here</a>.
+          comment_tag: mutation-coverage-report
+          mode: upsert
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
