@@ -1,7 +1,7 @@
 name: Mutation
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [ "main" ]
 
 jobs:
@@ -22,3 +22,25 @@ jobs:
         with:
           name: pitest-report
           path: target/pit-reports/
+      - name: Deploy to GitHub Pages
+        if: success()
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git fetch origin +refs/heads/gh-pages:refs/remotes/origin/gh-pages || git checkout --orphan gh-pages
+          git checkout gh-pages
+          pr_id=${{ github.event.pull_request.number }}
+          mkdir -p $pr_id
+          cp -r target/pit-reports/* $pr_id/
+          git add $pr_id
+          git commit -m "Update mutation coverage report for PR #$pr_id"
+          git push origin gh-pages
+      - name: Post coverage report link
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            **Mutation Coverage Report**
+            The mutation coverage report is available [here](https://${{ github.repository_owner }}.github.io/${{ github.repository }}/${{ github.event.pull_request.number }}/index.html).
