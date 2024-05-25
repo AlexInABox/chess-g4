@@ -1,7 +1,9 @@
 package hwr.oop.pieces;
+
 import hwr.oop.board.ChessBoard;
 import hwr.oop.Color;
 import hwr.oop.Position;
+import hwr.oop.pieces.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -51,12 +53,53 @@ public class King implements Piece, Serializable {
 
   @Override
   public void moveTo(Position target) throws IllegalMoveException {
-    List<Position> possibleMoves = possibleMoves();
-    if (possibleMoves.contains(target)) {
-      setPosition(target);
-    } else {
+    if (!isNonContestedPosition(target)) {
       throw new IllegalMoveException("Illegal move");
     }
+
+    List<Position> possibleMoves = possibleMoves();
+    if (!possibleMoves.contains(target)) {
+      throw new IllegalMoveException("Illegal move");
+    }
+    setPosition(target);
+  }
+
+  private boolean isNonContestedPosition(Position target) {
+    // Check for enemy knights
+    Knight dummyKnight = new Knight(color, target, chessBoard);
+    for (Position visiblePosition : dummyKnight.possibleMoves()) {
+      Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
+      if ((pieceAtPosition.getColor() != color)
+          && (pieceAtPosition.getType() == PieceType.KNIGHT)) {
+        return false;
+      }
+    }
+
+    // Check for enemy Pawns
+    Pawn dummyPawn = new Pawn(color, target, chessBoard);
+    for (Position visiblePosition : dummyPawn.possibleMoves()) {
+      Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
+      if ((pieceAtPosition.getColor() != color) && (pieceAtPosition.getType() == PieceType.PAWN)) {
+        return false;
+      }
+      // TODO: Don't respect double moving pawns. They dont threaten the target position!!
+    }
+
+    // Check for enemy Queens, Rooks, Bishops and King
+    Queen dummyQueen = new Queen(color, target, chessBoard);
+    for (Position visiblePosition : dummyQueen.possibleMoves()) {
+      Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
+      if ((pieceAtPosition.getColor() != color)
+          && (pieceAtPosition.getType() == PieceType.QUEEN
+              || pieceAtPosition.getType() == PieceType.ROOK
+              || pieceAtPosition.getType() == PieceType.BISHOP
+              || pieceAtPosition.getType() == PieceType.KING)) {
+        return false;
+      }
+    }
+    //TODO: Manually check if any of the sourrounding positons has an enemy king on them, since the king cannot be captured and therefore is not included in any of the prior visiblePositions.
+
+    return true;
   }
 
   @Override
@@ -98,10 +141,6 @@ public class King implements Piece, Serializable {
 
   @Override
   public String toString() {
-    return "King{" +
-            "color=" + color +
-            ", symbol=" + symbol +
-            ", position=" + position +
-            '}';
+    return "King{" + "color=" + color + ", symbol=" + symbol + ", position=" + position + '}';
   }
 }
