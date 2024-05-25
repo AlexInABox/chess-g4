@@ -98,7 +98,19 @@ public class King implements Piece, Serializable {
     }
     //TODO: Manually check if any of the sourrounding positons has an enemy king on them, since the king cannot be captured and therefore is not included in any of the prior visiblePositions.
 
-    return true;
+  private boolean kingThreatensPosition(Position target) {
+    Position oldPosition = position;
+    position = target;
+    for (Position visiblePosition : possibleMoves()) {
+      Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
+      if (pieceAtPosition == null) continue;
+      if ((pieceAtPosition.getColor() != color) && (pieceAtPosition.getType() == PieceType.KING)) {
+        position = oldPosition;
+        return true;
+      }
+    }
+    position = oldPosition;
+    return false;
   }
 
   @Override
