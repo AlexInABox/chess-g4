@@ -4,7 +4,6 @@ import hwr.oop.board.ChessBoard;
 import hwr.oop.Color;
 import hwr.oop.Position;
 
-import javax.management.loading.ClassLoaderRepository;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.Objects;
 public class King implements Piece, Serializable {
   private final Color color;
   private final char symbol;
-  private final PieceType type = PieceType.KING;
+  private static final PieceType type = PieceType.KING;
   private final ChessBoard chessBoard;
   private Position position;
 
