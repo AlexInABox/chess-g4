@@ -79,7 +79,7 @@ public class Rook implements Piece, Serializable {
         Position newPosition = new Position(newRow, newCol);
         Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
 
-        if (pieceAtNewPosition == null){
+        if (pieceAtNewPosition == null) {
           possibleMoves.add(newPosition);
         } else if (pieceAtNewPosition.getColor() != color) {
           possibleMoves.add(newPosition);
@@ -107,10 +107,6 @@ public class Rook implements Piece, Serializable {
 
   @Override
   public String toString() {
-    return "Rook{" +
-            "color=" + color +
-            ", position=" + position +
-            ", symbol=" + symbol +
-            '}';
+    return "Rook{" + "color=" + color + ", position=" + position + ", symbol=" + symbol + '}';
   }
 }

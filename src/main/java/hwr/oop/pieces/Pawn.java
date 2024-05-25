@@ -14,6 +14,7 @@ public class Pawn implements Piece, Serializable {
   private Position position;
   private final ChessBoard chessBoard;
   private final char symbol;
+  private Position twoStepsAhead;
 
   public Pawn(Color color, Position position, ChessBoard chessBoard) {
     this.color = color;
@@ -66,13 +67,16 @@ public class Pawn implements Piece, Serializable {
     int startRow = color == Color.WHITE ? 1 : 6;
 
     Position oneStepAhead = new Position(position.row() + direction, position.column());
-    if (chessBoard.isValidPosition(oneStepAhead.row(), oneStepAhead.column()) &&
-            chessBoard.getPieceAtPosition(oneStepAhead) == null) {
+    if (chessBoard.isValidPosition(oneStepAhead.row(), oneStepAhead.column())
+        && chessBoard.getPieceAtPosition(oneStepAhead) == null) {
       possibleMoves.add(oneStepAhead);
 
-      Position twoStepsAhead = new Position(position.row() + 2 * direction, position.column());
-      if (position.row() == startRow &&
-              chessBoard.getPieceAtPosition(twoStepsAhead) == null) {
+      Position twoStepsAhead;
+      if (color == Color.WHITE) {
+        twoStepsAhead = new Position(position.row() + 2, position.column());
+      } else twoStepsAhead = new Position(position.row() - 2, position.column());
+
+      if (position.row() == startRow && chessBoard.getPieceAtPosition(twoStepsAhead) == null) {
         possibleMoves.add(twoStepsAhead);
       }
     }
@@ -107,10 +111,6 @@ public class Pawn implements Piece, Serializable {
 
   @Override
   public String toString() {
-    return "Pawn{" +
-            "color=" + color +
-            ", position=" + position +
-            ", symbol=" + symbol +
-            '}';
+    return "Pawn{" + "color=" + color + ", position=" + position + ", symbol=" + symbol + '}';
   }
 }

@@ -1,6 +1,7 @@
 package hwr.oop.pieces;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hwr.oop.Color;
@@ -10,6 +11,9 @@ import hwr.oop.board.ChessBoard;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 class QueenTest {
 
@@ -109,7 +113,7 @@ class QueenTest {
   }
 
   @Test
-  void testQueenMoveRestricted_fail(){
+  void testQueenMoveRestricted_fail() {
     board.clearChessboard();
 
     Position queenPosition = new Position(0, 0);
@@ -126,7 +130,7 @@ class QueenTest {
     board.setPieceAtPosition(secondPawn.getPosition(), secondPawn);
 
     IllegalMoveException exception =
-            assertThrows(IllegalMoveException.class, () -> queen.moveTo(queenTargetPosition));
+        assertThrows(IllegalMoveException.class, () -> queen.moveTo(queenTargetPosition));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(queen.getPosition()).isEqualTo(queenPosition);
@@ -238,6 +242,7 @@ class QueenTest {
     Queen queen2 = new Queen(Color.WHITE, new Position(4, 4), board);
     assertThat(queen1.hashCode()).isNotEqualTo(queen2.hashCode());
   }
+
   @Test
   void equals_DifferentQueens() {
     Position position1 = new Position(4, 4);
@@ -247,4 +252,46 @@ class QueenTest {
     assertThat(queen1.equals(queen2)).isFalse();
   }
 
+  @Test
+  void testQueenPossibleMovesMutationInList_successful() {
+    board.clearChessboard();
+    Position queenPosition = new Position(4, 4);
+
+    Piece queen = new Queen(Color.WHITE, queenPosition, board);
+    board.setPieceAtPosition(queen.getPosition(), queen);
+
+    List<Position> possibleMoves = queen.possibleMoves();
+
+    List<Position> expectedMoves =
+        Arrays.asList(
+            new Position(5, 4),
+            new Position(6, 4),
+            new Position(7, 4),
+            new Position(3, 4),
+            new Position(2, 4),
+            new Position(1, 4),
+            new Position(0, 4),
+            new Position(4, 5),
+            new Position(4, 6),
+            new Position(4, 7),
+            new Position(4, 3),
+            new Position(4, 2),
+            new Position(4, 1),
+            new Position(4, 0),
+            new Position(5, 5),
+            new Position(6, 6),
+            new Position(7, 7),
+            new Position(5, 3),
+            new Position(6, 2),
+            new Position(7, 1),
+            new Position(3, 5),
+            new Position(2, 6),
+            new Position(1, 7),
+            new Position(3, 3),
+            new Position(2, 2),
+            new Position(1, 1),
+            new Position(0, 0));
+
+    assertEquals(expectedMoves, possibleMoves);
+  }
 }

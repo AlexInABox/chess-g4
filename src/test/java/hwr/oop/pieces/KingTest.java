@@ -1,6 +1,7 @@
 package hwr.oop.pieces;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hwr.oop.Color;
@@ -10,6 +11,9 @@ import hwr.oop.board.ChessBoard;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 // Tests for King
 class KingTest {
@@ -390,5 +394,29 @@ class KingTest {
     String expectedMessageRight = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessageRight);
     assertThat(king.getPosition()).isEqualTo(kingPosition);
+  }
+
+  @Test
+  void testKingPossibleMovesMutationInList_successful() {
+    board.clearChessboard();
+    Position kingPosition = new Position(4, 4);
+
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    List<Position> possibleMoves = king.possibleMoves();
+
+    List<Position> expectedMoves =
+        Arrays.asList(
+            new Position(3, 3),
+            new Position(3, 4),
+            new Position(3, 5),
+            new Position(4, 3),
+            new Position(4, 5),
+            new Position(5, 3),
+            new Position(5, 4),
+            new Position(5, 5));
+
+    assertEquals(expectedMoves, possibleMoves);
   }
 }

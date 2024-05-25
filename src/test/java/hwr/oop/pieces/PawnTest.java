@@ -1,6 +1,7 @@
 package hwr.oop.pieces;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hwr.oop.Color;
@@ -10,6 +11,9 @@ import hwr.oop.board.ChessBoard;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 class PawnTest {
 
@@ -276,6 +280,7 @@ class PawnTest {
     Pawn pawn2 = new Pawn(Color.WHITE, new Position(4, 4), board);
     assertThat(pawn1.hashCode()).isNotEqualTo(pawn2.hashCode());
   }
+
   @Test
   void equals_DifferentPawns() {
     Position position1 = new Position(4, 4);
@@ -285,4 +290,27 @@ class PawnTest {
     assertThat(pawn1.equals(pawn2)).isFalse();
   }
 
+  @Test
+  void testPawnPossibleMovesMutationInList_successful() {
+    board.clearChessboard();
+    Position friendlyPawnPosition = new Position(1, 1);
+    Position leftCapturePosition = new Position(2, 0);
+    Position rightCapturePosition = new Position(2, 2);
+
+    Piece friendlyPawn = new Pawn(Color.WHITE, friendlyPawnPosition, board);
+    Piece leftCapture = new Pawn(Color.BLACK, leftCapturePosition, board);
+    Piece rightCapture = new Pawn(Color.BLACK, rightCapturePosition, board);
+
+    board.setPieceAtPosition(friendlyPawn.getPosition(), friendlyPawn);
+    board.setPieceAtPosition(leftCapture.getPosition(), leftCapture);
+    board.setPieceAtPosition(rightCapture.getPosition(), rightCapture);
+
+    List<Position> possibleMoves = friendlyPawn.possibleMoves();
+
+    List<Position> expectedMoves =
+        Arrays.asList(
+            new Position(2, 1), new Position(3, 1), new Position(2, 2), new Position(2, 0));
+
+    assertEquals(expectedMoves, possibleMoves);
+  }
 }
