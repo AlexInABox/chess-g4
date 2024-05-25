@@ -4,6 +4,7 @@ import hwr.oop.board.ChessBoard;
 import hwr.oop.Color;
 import hwr.oop.Position;
 
+import javax.management.loading.ClassLoaderRepository;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +53,7 @@ public class King implements Piece, Serializable {
 
   @Override
   public void moveTo(Position target) throws IllegalMoveException {
-    if (!isNonContestedPosition(target)) {
+    if (isContestedPosition(target)) {
       throw new IllegalMoveException("Illegal move");
     }
 
@@ -63,40 +64,72 @@ public class King implements Piece, Serializable {
     setPosition(target);
   }
 
-  private boolean isNonContestedPosition(Position target) {
-    // Check for enemy knights
+  private boolean isContestedPosition(Position target) {
+    return (knightThreatensPosition(target)
+        || pawnThreatensPosition(target)
+        || rookThreatensPosition(target)
+        || bishopThreatensPosition(target)
+        || kingThreatensPosition(target));
+  }
+
+  private boolean knightThreatensPosition(Position target) {
     Knight dummyKnight = new Knight(color, target, chessBoard);
     for (Position visiblePosition : dummyKnight.possibleMoves()) {
       Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
+      if (pieceAtPosition == null) continue;
       if ((pieceAtPosition.getColor() != color)
           && (pieceAtPosition.getType() == PieceType.KNIGHT)) {
-        return false;
+        return true;
       }
     }
+    return false;
+  }
 
-    // Check for enemy Pawns
-    Pawn dummyPawn = new Pawn(color, target, chessBoard);
-    for (Position visiblePosition : dummyPawn.possibleMoves()) {
-      Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
-      if ((pieceAtPosition.getColor() != color) && (pieceAtPosition.getType() == PieceType.PAWN)) {
-        return false;
-      }
-      // TODO: Don't respect double moving pawns. They dont threaten the target position!!
+  private boolean pawnThreatensPosition(Position target) {
+    int directionForPawnCheck = color == Color.WHITE ? 1 : -1;
+    Position leftToCheck = new Position(target.row() + directionForPawnCheck, target.column() - 1);
+    Position rightToCheck = new Position(target.row() + directionForPawnCheck, target.column() + 1);
+
+    Piece pieceAtLeftPosition = chessBoard.getPieceAtPosition(leftToCheck);
+    Piece pieceAtRightPosition = chessBoard.getPieceAtPosition(rightToCheck);
+
+    if (pieceAtLeftPosition != null
+        && pieceAtLeftPosition.getColor() != color
+        && pieceAtLeftPosition.getType() == PieceType.PAWN) {
+      return true;
     }
+    return pieceAtRightPosition != null
+        && pieceAtRightPosition.getColor() != color
+        && pieceAtRightPosition.getType() == PieceType.PAWN;
+  }
 
-    // Check for enemy Queens, Rooks, Bishops and King
-    Queen dummyQueen = new Queen(color, target, chessBoard);
-    for (Position visiblePosition : dummyQueen.possibleMoves()) {
+  private boolean rookThreatensPosition(Position target) {
+    Rook dummyRook = new Rook(color, target, chessBoard);
+    for (Position visiblePosition : dummyRook.possibleMoves()) {
       Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
+      if (pieceAtPosition == null) continue;
       if ((pieceAtPosition.getColor() != color)
           && (pieceAtPosition.getType() == PieceType.QUEEN
-              || pieceAtPosition.getType() == PieceType.ROOK
-              || pieceAtPosition.getType() == PieceType.BISHOP
-              || pieceAtPosition.getType() == PieceType.KING)) {
-        return false;
+              || pieceAtPosition.getType() == PieceType.ROOK)) {
+        return true;
       }
     }
-    //TODO: Manually check if any of the sourrounding positons has an enemy king on them, since the king cannot be captured and therefore is not included in any of the prior visiblePositions.
+    return false;
+  }
+
+  private boolean bishopThreatensPosition(Position target) {
+    Bishop dummyBishop = new Bishop(color, target, chessBoard);
+    for (Position visiblePosition : dummyBishop.possibleMoves()) {
+      Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
+      if (pieceAtPosition == null) continue;
+      if ((pieceAtPosition.getColor() != color)
+          && (pieceAtPosition.getType() == PieceType.QUEEN
+              || pieceAtPosition.getType() == PieceType.BISHOP)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   private boolean kingThreatensPosition(Position target) {
     Position oldPosition = position;
