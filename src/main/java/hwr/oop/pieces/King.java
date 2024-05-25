@@ -1,4 +1,5 @@
 package hwr.oop.pieces;
+
 import hwr.oop.board.ChessBoard;
 import hwr.oop.Color;
 import hwr.oop.Position;
@@ -11,7 +12,7 @@ import java.util.Objects;
 public class King implements Piece, Serializable {
   private final Color color;
   private final char symbol;
-  private final PieceType type = PieceType.KING;
+  private static final PieceType type = PieceType.KING;
   private final ChessBoard chessBoard;
   private Position position;
 
@@ -51,12 +52,97 @@ public class King implements Piece, Serializable {
 
   @Override
   public void moveTo(Position target) throws IllegalMoveException {
-    List<Position> possibleMoves = possibleMoves();
-    if (possibleMoves.contains(target)) {
-      setPosition(target);
-    } else {
+    if (isContestedPosition(target)) {
       throw new IllegalMoveException("Illegal move");
     }
+
+    List<Position> possibleMoves = possibleMoves();
+    if (!possibleMoves.contains(target)) {
+      throw new IllegalMoveException("Illegal move");
+    }
+    setPosition(target);
+  }
+
+  private boolean isContestedPosition(Position target) {
+    return (knightThreatensPosition(target)
+        || pawnThreatensPosition(target)
+        || rookThreatensPosition(target)
+        || bishopThreatensPosition(target)
+        || kingThreatensPosition(target));
+  }
+
+  private boolean knightThreatensPosition(Position target) {
+    Knight dummyKnight = new Knight(color, target, chessBoard);
+    for (Position visiblePosition : dummyKnight.possibleMoves()) {
+      Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
+      if (pieceAtPosition == null) continue;
+      if ((pieceAtPosition.getColor() != color)
+          && (pieceAtPosition.getType() == PieceType.KNIGHT)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean pawnThreatensPosition(Position target) {
+    int directionForPawnCheck = color == Color.WHITE ? 1 : -1;
+    Position leftToCheck = new Position(target.row() + directionForPawnCheck, target.column() - 1);
+    Position rightToCheck = new Position(target.row() + directionForPawnCheck, target.column() + 1);
+
+    Piece pieceAtLeftPosition = chessBoard.getPieceAtPosition(leftToCheck);
+    Piece pieceAtRightPosition = chessBoard.getPieceAtPosition(rightToCheck);
+
+    if (pieceAtLeftPosition != null
+        && pieceAtLeftPosition.getColor() != color
+        && pieceAtLeftPosition.getType() == PieceType.PAWN) {
+      return true;
+    }
+    return pieceAtRightPosition != null
+        && pieceAtRightPosition.getColor() != color
+        && pieceAtRightPosition.getType() == PieceType.PAWN;
+  }
+
+  private boolean rookThreatensPosition(Position target) {
+    Rook dummyRook = new Rook(color, target, chessBoard);
+    for (Position visiblePosition : dummyRook.possibleMoves()) {
+      Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
+      if (pieceAtPosition == null) continue;
+      if ((pieceAtPosition.getColor() != color)
+          && (pieceAtPosition.getType() == PieceType.QUEEN
+              || pieceAtPosition.getType() == PieceType.ROOK)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean bishopThreatensPosition(Position target) {
+    Bishop dummyBishop = new Bishop(color, target, chessBoard);
+    for (Position visiblePosition : dummyBishop.possibleMoves()) {
+      Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
+      if (pieceAtPosition == null) continue;
+      if ((pieceAtPosition.getColor() != color)
+          && (pieceAtPosition.getType() == PieceType.QUEEN
+              || pieceAtPosition.getType() == PieceType.BISHOP)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean kingThreatensPosition(Position target) {
+    Position oldPosition = position;
+    position = target;
+    for (Position visiblePosition : possibleMoves()) {
+      Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
+      if (pieceAtPosition == null) continue;
+      if ((pieceAtPosition.getColor() != color) && (pieceAtPosition.getType() == PieceType.KING)) {
+        position = oldPosition;
+        return true;
+      }
+    }
+    position = oldPosition;
+    return false;
   }
 
   @Override
@@ -98,10 +184,6 @@ public class King implements Piece, Serializable {
 
   @Override
   public String toString() {
-    return "King{" +
-            "color=" + color +
-            ", symbol=" + symbol +
-            ", position=" + position +
-            '}';
+    return "King{" + "color=" + color + ", symbol=" + symbol + ", position=" + position + '}';
   }
 }

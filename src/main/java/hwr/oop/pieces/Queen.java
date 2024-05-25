@@ -63,8 +63,8 @@ public class Queen implements Piece, Serializable {
   public List<Position> possibleMoves() {
     List<Position> possibleMoves = new ArrayList<>();
     int[][] directions = {
-            {1, 0}, {-1, 0}, {0, 1}, {0, -1},  // Rook-like moves
-            {1, 1}, {1, -1}, {-1, 1}, {-1, -1}  // Bishop-like moves
+      {1, 0}, {-1, 0}, {0, 1}, {0, -1}, // Rook-like moves
+      {1, 1}, {1, -1}, {-1, 1}, {-1, -1} // Bishop-like moves
     };
 
     for (int[] direction : directions) {
@@ -82,8 +82,11 @@ public class Queen implements Piece, Serializable {
         Position newPosition = new Position(newRow, newCol);
         Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
 
-        if (pieceAtNewPosition == null || pieceAtNewPosition.getColor() != color) {
+        if (pieceAtNewPosition == null) {
           possibleMoves.add(newPosition);
+        } else if (pieceAtNewPosition.getColor() != color) {
+          possibleMoves.add(newPosition);
+          break;
         } else {
           break;
         }
@@ -97,7 +100,9 @@ public class Queen implements Piece, Serializable {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Queen queen = (Queen) o;
-    return symbol == queen.symbol && color == queen.color && Objects.equals(position, queen.position);
+    return symbol == queen.symbol
+        && color == queen.color
+        && Objects.equals(position, queen.position);
   }
 
   @Override
@@ -107,10 +112,6 @@ public class Queen implements Piece, Serializable {
 
   @Override
   public String toString() {
-    return "Queen{" +
-            "color=" + color +
-            ", position=" + position +
-            ", symbol=" + symbol +
-            '}';
+    return "Queen{" + "color=" + color + ", position=" + position + ", symbol=" + symbol + '}';
   }
 }

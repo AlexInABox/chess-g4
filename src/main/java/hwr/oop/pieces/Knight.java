@@ -89,7 +89,9 @@ public class Knight implements Piece, Serializable {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Knight knight = (Knight) o;
-    return symbol == knight.symbol && color == knight.color && Objects.equals(position, knight.position);
+    return symbol == knight.symbol
+        && color == knight.color
+        && Objects.equals(position, knight.position);
   }
 
   @Override
@@ -99,10 +101,6 @@ public class Knight implements Piece, Serializable {
 
   @Override
   public String toString() {
-    return "Knight{" +
-            "color=" + color +
-            ", position=" + position +
-            ", symbol=" + symbol +
-            '}';
+    return "Knight{" + "color=" + color + ", position=" + position + ", symbol=" + symbol + '}';
   }
 }
