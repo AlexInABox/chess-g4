@@ -56,6 +56,24 @@ class QueenTest {
   }
 
   @Test
+  void testQueenCapture_successful() throws IllegalMoveException {
+    board.clearChessboard();
+
+    Position queenPosition = new Position(0, 0);
+    Position queenTargetPosition = new Position(1, 0);
+
+    Position enemyPawnPosition = new Position(1, 0);
+
+    Piece queen = new Queen(Color.WHITE, queenPosition, board);
+    Piece firstPawn = new Pawn(Color.BLACK, enemyPawnPosition, board);
+    board.setPieceAtPosition(queen.getPosition(), queen);
+    board.setPieceAtPosition(firstPawn.getPosition(), firstPawn);
+
+    queen.moveTo(queenTargetPosition);
+    assertThat(queen.getPosition()).isEqualTo(queenTargetPosition);
+  }
+
+  @Test
   void testQueenMove_fail() {
     Position position = new Position(2, 2);
     Position targetPosition = new Position(4, 5);
@@ -67,6 +85,51 @@ class QueenTest {
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(queen.getPosition()).isEqualTo(position);
+  }
+
+  @Test
+  void testQueenMoveRestricted_successful() throws IllegalMoveException {
+    board.clearChessboard();
+
+    Position queenPosition = new Position(0, 0);
+    Position queenTargetPosition = new Position(0, 5);
+
+    Position firstPawnBlockPosition = new Position(1, 0);
+    Position secondPawnBlockPosition = new Position(1, 1);
+
+    Piece queen = new Queen(Color.WHITE, queenPosition, board);
+    Piece firstPawn = new Pawn(Color.WHITE, firstPawnBlockPosition, board);
+    Piece secondPawn = new Pawn(Color.WHITE, secondPawnBlockPosition, board);
+    board.setPieceAtPosition(queen.getPosition(), queen);
+    board.setPieceAtPosition(firstPawn.getPosition(), firstPawn);
+    board.setPieceAtPosition(secondPawn.getPosition(), secondPawn);
+
+    queen.moveTo(queenTargetPosition);
+    assertThat(queen.getPosition()).isEqualTo(queenTargetPosition);
+  }
+
+  @Test
+  void testQueenMoveRestricted_fail(){
+    board.clearChessboard();
+
+    Position queenPosition = new Position(0, 0);
+    Position queenTargetPosition = new Position(5, 0);
+
+    Position firstPawnBlockPosition = new Position(1, 0);
+    Position secondPawnBlockPosition = new Position(1, 1);
+
+    Piece queen = new Queen(Color.WHITE, queenPosition, board);
+    Piece firstPawn = new Pawn(Color.WHITE, firstPawnBlockPosition, board);
+    Piece secondPawn = new Pawn(Color.WHITE, secondPawnBlockPosition, board);
+    board.setPieceAtPosition(queen.getPosition(), queen);
+    board.setPieceAtPosition(firstPawn.getPosition(), firstPawn);
+    board.setPieceAtPosition(secondPawn.getPosition(), secondPawn);
+
+    IllegalMoveException exception =
+            assertThrows(IllegalMoveException.class, () -> queen.moveTo(queenTargetPosition));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(queen.getPosition()).isEqualTo(queenPosition);
   }
 
   @Test
