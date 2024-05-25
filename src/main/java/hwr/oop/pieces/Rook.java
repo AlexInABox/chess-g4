@@ -79,8 +79,11 @@ public class Rook implements Piece, Serializable {
         Position newPosition = new Position(newRow, newCol);
         Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
 
-        if (pieceAtNewPosition == null || pieceAtNewPosition.getColor() != color) {
+        if (pieceAtNewPosition == null){
           possibleMoves.add(newPosition);
+        } else if (pieceAtNewPosition.getColor() != color) {
+          possibleMoves.add(newPosition);
+          break;
         } else {
           break;
         }
