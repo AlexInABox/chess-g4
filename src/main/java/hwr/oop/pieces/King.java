@@ -3,7 +3,6 @@ package hwr.oop.pieces;
 import hwr.oop.board.ChessBoard;
 import hwr.oop.Color;
 import hwr.oop.Position;
-import hwr.oop.pieces.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
