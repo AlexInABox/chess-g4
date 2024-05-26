@@ -91,7 +91,8 @@ class GameLogicTest {
     gameLogic.createPlayer(playerBlackName);
 
     // Act
-    gameLogic.createMatch(gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
+    gameLogic.createMatch(
+        gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
 
     // Assert
     List<Match> loadedMatches = persistence.loadMatches(pathMatches);
@@ -115,7 +116,11 @@ class GameLogicTest {
     // Act & Assert
     assertThrows(
         MatchAlreadyExistsException.class,
-        () -> gameLogic.createMatch(gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId));
+        () ->
+            gameLogic.createMatch(
+                gameLogic.loadPlayer(playerWhiteName),
+                gameLogic.loadPlayer(playerBlackName),
+                matchId));
   }
 
   @Test
@@ -278,7 +283,8 @@ class GameLogicTest {
     String matchId = "match1";
     gameLogic.createPlayer(playerWhiteName);
     gameLogic.createPlayer(playerBlackName);
-    gameLogic.createMatch(gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
+    gameLogic.createMatch(
+        gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
     Match match = gameLogic.loadMatch(matchId);
     Position initialPosition = new Position(1, 4);
     Position targetPosition = new Position(3, 4);
@@ -302,7 +308,8 @@ class GameLogicTest {
     String matchId = "match1";
     gameLogic.createPlayer(playerWhiteName);
     gameLogic.createPlayer(playerBlackName);
-    gameLogic.createMatch(gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
+    gameLogic.createMatch(
+        gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
     Match match = gameLogic.loadMatch(matchId);
     Position initialPosition = new Position(2, 3);
 
@@ -323,7 +330,8 @@ class GameLogicTest {
     String matchId = "match1";
     gameLogic.createPlayer(playerWhiteName);
     gameLogic.createPlayer(playerBlackName);
-    gameLogic.createMatch(gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
+    gameLogic.createMatch(
+        gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
     Match match = gameLogic.loadMatch(matchId);
     Position initialPosition = new Position(6, 4);
     Position targetPosition = new Position(5, 4);
@@ -344,7 +352,8 @@ class GameLogicTest {
     String matchId = "match1";
     gameLogic.createPlayer(playerWhiteName);
     gameLogic.createPlayer(playerBlackName);
-    gameLogic.createMatch(gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
+    gameLogic.createMatch(
+        gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
     Match match = gameLogic.loadMatch(matchId);
     Position initialPosition = new Position(1, 4);
     Position targetPosition = new Position(8, 4);
@@ -367,7 +376,8 @@ class GameLogicTest {
     String matchId = "match1";
     gameLogic.createPlayer(playerWhiteName);
     gameLogic.createPlayer(playerBlackName);
-    gameLogic.createMatch(gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
+    gameLogic.createMatch(
+        gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
     Match match = gameLogic.loadMatch(matchId);
     Position initialPosition = new Position(0, 1);
     Position targetPosition = new Position(4, 1);
@@ -390,7 +400,8 @@ class GameLogicTest {
     String matchId = "match1";
     gameLogic.createPlayer(playerWhiteName);
     gameLogic.createPlayer(playerBlackName);
-    gameLogic.createMatch(gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
+    gameLogic.createMatch(
+        gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
     Match match = gameLogic.loadMatch(matchId);
     match.getBoard().clearChessboard();
     match
@@ -451,7 +462,8 @@ class GameLogicTest {
     String matchId = "match1";
     gameLogic.createPlayer(playerWhiteName);
     gameLogic.createPlayer(playerBlackName);
-    gameLogic.createMatch(gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
+    gameLogic.createMatch(
+        gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
     Match match = gameLogic.loadMatch(matchId);
 
     Position startPosition = new Position(1, 4);
@@ -462,14 +474,16 @@ class GameLogicTest {
     match.getBoard().setPieceAtPosition(startPosition, piece);
 
     // Act & Assert
-    IllegalMoveException exception = assertThrows(
-            IllegalMoveException.class,
-            () -> gameLogic.moveTo(startPosition, endPosition, match)
-    );
+    IllegalMoveException exception =
+        assertThrows(
+            IllegalMoveException.class, () -> gameLogic.moveTo(startPosition, endPosition, match));
 
     // Check that the appropriate exception is thrown
-    assertEquals("Illegal move to position: " + endPosition + ". The start and end positions are the same.", exception.getMessage());
+    assertEquals(
+        "Illegal move to position: " + endPosition + ". The start and end positions are the same.",
+        exception.getMessage());
   }
+
   @Test
   void testMoveTo_NullMatch() {
     // Arrange
@@ -477,14 +491,14 @@ class GameLogicTest {
     Position endPosition = new Position(3, 4);
 
     // Act & Assert
-    IllegalMoveException exception = assertThrows(
-            IllegalMoveException.class,
-            () -> gameLogic.moveTo(startPosition, endPosition, null)
-    );
+    IllegalMoveException exception =
+        assertThrows(
+            IllegalMoveException.class, () -> gameLogic.moveTo(startPosition, endPosition, null));
 
     // Check that the appropriate exception is thrown
     assertEquals("Match is not initialized", exception.getMessage());
   }
+
   @Test
   void testAcceptRemi() {
     // Arrange
@@ -493,7 +507,8 @@ class GameLogicTest {
     String matchId = "match1";
     gameLogic.createPlayer(playerWhiteName);
     gameLogic.createPlayer(playerBlackName);
-    gameLogic.createMatch(gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
+    gameLogic.createMatch(
+        gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
     Match match = gameLogic.loadMatch(matchId);
 
     // Act
@@ -502,8 +517,8 @@ class GameLogicTest {
     // Assert
     assertEquals("Remi", match.getWinner());
     assertTrue(match.isGameEnded());
-
   }
+
   @Test
   void testResign_WhitePlayerResigns() {
     // Arrange
@@ -512,7 +527,8 @@ class GameLogicTest {
     String matchId = "match1";
     gameLogic.createPlayer(playerWhiteName);
     gameLogic.createPlayer(playerBlackName);
-    gameLogic.createMatch(gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
+    gameLogic.createMatch(
+        gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
     Match match = gameLogic.loadMatch(matchId);
 
     // Act
@@ -521,7 +537,6 @@ class GameLogicTest {
     // Assert
     assertEquals("Black", match.getWinner());
     assertTrue(match.isGameEnded());
-
   }
 
   @Test
@@ -532,7 +547,8 @@ class GameLogicTest {
     String matchId = "match1";
     gameLogic.createPlayer(playerWhiteName);
     gameLogic.createPlayer(playerBlackName);
-    gameLogic.createMatch(gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
+    gameLogic.createMatch(
+        gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
     Match match = gameLogic.loadMatch(matchId);
 
     // Swap next to move to black to simulate black player's turn
@@ -544,8 +560,8 @@ class GameLogicTest {
     // Assert
     assertEquals("White", match.getWinner());
     assertTrue(match.isGameEnded());
-
   }
+
   @Test
   void testCreateMatch_PlayerNotFound() {
     // Arrange
@@ -555,12 +571,46 @@ class GameLogicTest {
 
     gameLogic.createPlayer(playerWhiteName);
 
-    PlayerNotFoundException exception = assertThrows(
+    PlayerNotFoundException exception =
+        assertThrows(
             PlayerNotFoundException.class,
-            () -> gameLogic.createMatch(gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId));
+            () ->
+                gameLogic.createMatch(
+                    gameLogic.loadPlayer(playerWhiteName),
+                    gameLogic.loadPlayer(playerBlackName),
+                    matchId));
 
     String expectedMessage = "Player with the name 'Bob' was not found.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
 
+  @Test
+  void testShortestGame() {
+    // Arrange
+    String playerWhiteName = "Alice";
+    String playerBlackName = "Bob";
+    String matchId = "shortestGame";
+
+    gameLogic.createPlayer(playerWhiteName);
+    gameLogic.createPlayer(playerBlackName);
+    gameLogic.createMatch(
+        gameLogic.loadPlayer(playerWhiteName), gameLogic.loadPlayer(playerBlackName), matchId);
+    Match match = gameLogic.loadMatch(matchId);
+
+    try {
+      gameLogic.moveTo(new Position(1, 5), new Position(2, 5), match);
+      gameLogic.moveTo(new Position(6, 4), new Position(5, 4), match);
+
+      gameLogic.moveTo(new Position(1, 6), new Position(3, 6), match);
+      gameLogic.moveTo(new Position(7, 3), new Position(3, 7), match);
+
+      // TODO: Anpassen sobald Schachmatt/Schach funktioniert
+      match.declareWinner("Black");
+      assertTrue(match.isGameEnded());
+      assertEquals("Black", match.getWinner());
+      assertEquals(4, match.getMoveCount());
+    } catch (IllegalMoveException e) {
+      fail(e.getMessage());
+    }
+  }
 }
