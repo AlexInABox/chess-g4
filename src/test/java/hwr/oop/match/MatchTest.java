@@ -317,4 +317,38 @@ class MatchTest {
 
     assertThat(match.isGameEnded()).isFalse();
   }
+  @Test
+  void testMoveCountInitialization() throws FENException {
+    final Player playerWhite = new Player("player1");
+    final Player playerBlack = new Player("player2");
+    String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w 0";
+    final Match match = new Match(playerWhite, playerBlack, fen, "1");
+
+    assertThat(match.getMoveCount()).isEqualTo((short) 0);
+  }
+  @Test
+  void testMoveCountIncrementation() throws FENException {
+    final Player playerWhite = new Player("player1");
+    final Player playerBlack = new Player("player2");
+    String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w 5";
+    final Match match = new Match(playerWhite, playerBlack, fen, "1");
+
+    assertThat(match.getMoveCount()).isEqualTo((short) 5);
+
+    match.toggleNextToMove();
+    assertThat(match.getMoveCount()).isEqualTo((short) 6);
+  }
+  @Test
+  void testMoveCountInFEN() throws FENException {
+    final Player playerWhite = new Player("player1");
+    final Player playerBlack = new Player("player2");
+    String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b 10";
+    final Match match = new Match(playerWhite, playerBlack, fen, "1");
+
+    assertThat(match.convertBoardToFEN()).isEqualTo(fen);
+
+    match.toggleNextToMove();
+    assertThat(match.convertBoardToFEN()).isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w 11");
+  }
+
 }
