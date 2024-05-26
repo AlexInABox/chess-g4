@@ -103,4 +103,9 @@ public class ChessBoard implements Serializable {
     ChessBoard that = (ChessBoard) o;
     return Objects.equals(board, that.board);
   }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(board);
+  }
 }

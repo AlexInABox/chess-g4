@@ -350,5 +350,12 @@ class MatchTest {
     match.toggleNextToMove();
     assertThat(match.convertBoardToFEN()).isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w 11");
   }
+  @Test
+  void testInvalidMoveCountInFEN() {
+    final Player playerWhite = new Player("player1");
+    final Player playerBlack = new Player("player2");
+    String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w abc";
+    assertThrows(FENException.class, () -> new Match(playerWhite, playerBlack, fen, "1"));
+  }
 
 }
