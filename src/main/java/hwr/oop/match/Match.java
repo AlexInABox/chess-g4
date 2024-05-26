@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Match implements Serializable {
+  private final String id;
   private final Player playerWhite;
   private final Player playerBlack;
 
@@ -19,23 +20,19 @@ public class Match implements Serializable {
   private short moveCount = 0;
   private boolean gameEnded = false;
 
-  public Match(Player playerWhite, Player playerBlack) {
+  public Match(Player playerWhite, Player playerBlack, String id) {
     this.playerWhite = playerWhite;
     this.playerBlack = playerBlack;
     this.board = new ChessBoard();
+    this.id = id;
   }
 
-  //  public Match(Player playerWhite, Player playerBlack, ChessBoard board) {
-  //    this.playerWhite = playerWhite;
-  //    this.playerBlack = playerBlack;
-  //    this.board = board;
-  //  }
-
-  public Match(Player playerWhite, Player playerBlack, String fenNotation) throws FENException {
+  public Match(Player playerWhite, Player playerBlack, String fenNotation, String id) throws FENException {
     this.playerWhite = playerWhite;
     this.playerBlack = playerBlack;
     this.fenNotation = fenNotation;
     board = convertFENToBoard(fenNotation);
+    this.id = id;
   }
 
   public Player getPlayerWhite() {
@@ -46,12 +43,19 @@ public class Match implements Serializable {
     return playerBlack;
   }
 
+  public String getId() {
+    return id;
+  }
+
   public String getFEN() {
     return fenNotation;
   }
 
   public Color getNextToMove() {
     return nextToMove;
+  }
+  public ChessBoard getBoard() {
+    return board;
   }
 
   public String convertBoardToFEN() {
@@ -156,38 +160,31 @@ public class Match implements Serializable {
     if (o == null || getClass() != o.getClass()) return false;
     Match match = (Match) o;
     return moveCount == match.moveCount
-        && gameEnded == match.gameEnded
-        && Objects.equals(playerWhite, match.playerWhite)
-        && Objects.equals(playerBlack, match.playerBlack)
-        && Objects.equals(board, match.board)
-        && Objects.equals(fenNotation, match.fenNotation)
-        && nextToMove == match.nextToMove;
+            && gameEnded == match.gameEnded
+            && Objects.equals(id, match.id)
+            && Objects.equals(playerWhite, match.playerWhite)
+            && Objects.equals(playerBlack, match.playerBlack)
+            && Objects.equals(board, match.board)
+            && Objects.equals(fenNotation, match.fenNotation)
+            && nextToMove == match.nextToMove;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(
-        playerWhite, playerBlack, board, fenNotation, nextToMove, moveCount, gameEnded);
+    return Objects.hash(id, playerWhite, playerBlack, board, fenNotation, nextToMove, moveCount, gameEnded);
   }
 
   @Override
   public String toString() {
     return "Match{"
-        + "playerWhite="
-        + playerWhite
-        + ", playerBlack="
-        + playerBlack
-        + ", board="
-        + board
-        + ", fenNotation='"
-        + fenNotation
-        + '\''
-        + ", nextToMove="
-        + nextToMove
-        + ", moveCount="
-        + moveCount
-        + ", gameEnded="
-        + gameEnded
-        + '}';
+            + "id='" + id + '\''
+            + ", playerWhite=" + playerWhite
+            + ", playerBlack=" + playerBlack
+            + ", board=" + board
+            + ", fenNotation='" + fenNotation + '\''
+            + ", nextToMove=" + nextToMove
+            + ", moveCount=" + moveCount
+            + ", gameEnded=" + gameEnded
+            + '}';
   }
 }
