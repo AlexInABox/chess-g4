@@ -144,14 +144,14 @@ class MatchTest {
     final Player playerBlack = new Player("player2");
     final Match match = new Match(playerWhite, playerBlack, "1");
     assertThat(match.convertBoardToFEN())
-        .isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w");
+        .isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w 0");
   }
 
   @Test
   void testToFEN_CustomPosition() throws FENException {
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
-    String fen = "5b1r/8/8/3Q4/8/8/8/8 w";
+    String fen = "5b1r/8/8/3Q4/8/8/8/8 w 0";
     final Match match = new Match(playerWhite, playerBlack, fen, "1");
     System.out.println("Match: " + match.convertBoardToFEN());
     assertThat(match.convertBoardToFEN()).isEqualTo(fen);
@@ -159,7 +159,7 @@ class MatchTest {
 
   @Test
   void testBuildFromFEN_ValidFEN() throws FENException {
-    final String fenNotation = "rnbqkbnr/pppppppp/8/4p1p1/2P5/5P2/PPPPPPPP/RNBQKBNR b";
+    final String fenNotation = "rnbqkbnr/pppppppp/8/4p1p1/2P5/5P2/PPPPPPPP/RNBQKBNR b 0";
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     final Match match = new Match(playerWhite, playerBlack, fenNotation, "1");
@@ -169,7 +169,7 @@ class MatchTest {
 
   @Test
   void testBuildFromFEN_InvalidFEN() {
-    String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP w"; // Missing last part of FEN
+    String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP w 0"; // Missing last part of FEN
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     FENException exception =
@@ -180,7 +180,7 @@ class MatchTest {
 
   @Test
   void testBuildFromFEN_InvalidRowCount() {
-    String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/8 w"; // 9 rows instead of 8
+    String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/8 w 0"; // 9 rows instead of 8
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     FENException exception =
@@ -191,7 +191,7 @@ class MatchTest {
 
   @Test
   void testBuildFromFEN_InvalidPiece() {
-    String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPXPPPP/RNBQKBNR w"; // Invalid piece 'X'
+    String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPXPPPP/RNBQKBNR w 0"; // Invalid piece 'X'
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     FENException exception =
@@ -216,11 +216,11 @@ class MatchTest {
   void testEquals_SameAttributes() {
     Player white1 = new Player("White");
     Player black1 = new Player("Black");
-    Match match1 = new Match(white1, black1, "8/8/8/8/8/8/8/8 w");
+    Match match1 = new Match(white1, black1, "8/8/8/8/8/8/8/8 w 0");
 
     Player white2 = new Player("White");
     Player black2 = new Player("Black");
-    Match match2 = new Match(white2, black2, "8/8/8/8/8/8/8/8 w");
+    Match match2 = new Match(white2, black2, "8/8/8/8/8/8/8/8 w 0");
 
     assertThat(match1).isEqualTo(match2);
   }
@@ -229,11 +229,11 @@ class MatchTest {
   void testEquals_DifferentPlayers() {
     Player white1 = new Player("White1");
     Player black1 = new Player("Black1");
-    Match match1 = new Match(white1, black1, "8/8/8/8/8/8/8/8 w");
+    Match match1 = new Match(white1, black1, "8/8/8/8/8/8/8/8 w 0");
 
     Player white2 = new Player("White2");
     Player black2 = new Player("Black2");
-    Match match2 = new Match(white2, black2, "8/8/8/8/8/8/8/8 w");
+    Match match2 = new Match(white2, black2, "8/8/8/8/8/8/8/8 w 0");
     assertThat(match1).isNotEqualTo(match2);
   }
 
@@ -241,8 +241,8 @@ class MatchTest {
   void testEquals_DifferentBoard() {
     Player white = new Player("White");
     Player black = new Player("Black");
-    Match match1 = new Match(white, black, "8/8/8/8/8/8/8/8 w");
-    Match match2 = new Match(white, black, "8/8/8/8/8/8/8/7k w");
+    Match match1 = new Match(white, black, "8/8/8/8/8/8/8/8 w 0");
+    Match match2 = new Match(white, black, "8/8/8/8/8/8/8/7k w 0");
 
     assertThat(match1).isNotEqualTo(match2);
   }
@@ -251,8 +251,8 @@ class MatchTest {
   void testEquals_DifferentNextToMove() {
     Player white = new Player("White");
     Player black = new Player("Black");
-    Match match1 = new Match(white, black, "8/8/8/8/8/8/8/8 w");
-    Match match2 = new Match(white, black, "8/8/8/8/8/8/8/8 b");
+    Match match1 = new Match(white, black, "8/8/8/8/8/8/8/8 w 0");
+    Match match2 = new Match(white, black, "8/8/8/8/8/8/8/8 b 0");
 
     assertThat(match1).isNotEqualTo(match2);
   }

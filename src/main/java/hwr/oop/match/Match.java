@@ -111,9 +111,10 @@ public class Match implements Serializable {
     }
     fen.append(" ");
     fen.append(nextToMove == Color.WHITE ? "w" : "b");
+    fen.append(" ");
+    fen.append(moveCount);
     // TODO: Castling rights
     // TODO: Possible en passant destinations
-    // TODO: total number of moves
     return fen.toString();
   }
 
@@ -172,10 +173,16 @@ public class Match implements Serializable {
     } else {
       nextToMove = Color.BLACK;
     }
+    if (parts.length >= 3) {
+      try {
+        moveCount = Short.parseShort(parts[2]);
+      } catch (NumberFormatException e) {
+        throw new FENException("Invalid FEN format: total number of moves is not a valid number");
+      }
+    }
 
     // TODO: Castling rights
     // TODO: Possible en passant destinations
-    // TODO: total number of moves
     return newBoard;
   }
 
