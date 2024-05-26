@@ -55,16 +55,18 @@ public class GameLogic implements Domain {
   }
 
   @Override
-  public void createMatch(String playerWhiteName, String playerBlackName, String id) {
+  public void createMatch(Player playerWhite, Player playerBlack, String id) {
+    Player loadedPlayerWhite = loadPlayer(playerWhite.getName());
+    Player loadedPlayerBlack = loadPlayer(playerBlack.getName());
+
     if (matchExists(id)) {
       throw new MatchAlreadyExistsException(id);
     }
 
-    Player playerWhite = new Player(playerWhiteName);
-    Player playerBlack = new Player(playerBlackName);
-    Match newMatch = new Match(playerWhite, playerBlack, id);
+    Match newMatch = new Match(loadedPlayerWhite, loadedPlayerBlack, id);
     saveMatch(newMatch);
   }
+
 
   @Override
   public Player loadPlayer(String name) {
