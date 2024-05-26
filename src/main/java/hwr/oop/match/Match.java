@@ -13,7 +13,7 @@ public class Match implements Serializable {
   private final Player playerWhite;
   private final Player playerBlack;
 
-  private ChessBoard board;
+  private final ChessBoard board;
   private String fenNotation;
 
   private Color nextToMove = Color.WHITE;
@@ -138,7 +138,6 @@ public class Match implements Serializable {
   public ChessBoard convertFENToBoard(String fenNotation) throws FENException {
     ChessBoard newBoard = new ChessBoard();
     newBoard.clearChessboard();
-    // Split the FEN notation into board layout and other parts
     String[] parts = fenNotation.split(" ");
     if (parts.length < 2) {
       throw new FENException(
@@ -149,7 +148,6 @@ public class Match implements Serializable {
     if (rows.length != 8) {
       throw new FENException("Invalid FEN format: 8 rows expected");
     }
-    // Convert the board layout part
     for (int i = 0; i < 8; i++) {
       int col = 0;
       for (char c : rows[7 - i].toCharArray()) {

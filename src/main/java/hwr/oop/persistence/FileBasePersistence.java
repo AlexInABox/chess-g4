@@ -20,7 +20,9 @@ public class FileBasePersistence implements Persistence {
     }
   }
 
+  // TODO: SuppressWarnings allowed here?
   @Override
+  @SuppressWarnings("unchecked")
   public List<Match> loadMatches(Path filePath) {
     try {
       if (!Files.exists(filePath) || Files.size(filePath) == 0) {
@@ -47,7 +49,9 @@ public class FileBasePersistence implements Persistence {
     }
   }
 
+  // TODO: SuppressWarnings allowed here?
   @Override
+  @SuppressWarnings("unchecked")
   public List<Player> loadPlayers(Path filePath) {
     try {
       if (!Files.exists(filePath) || Files.size(filePath) == 0) {
