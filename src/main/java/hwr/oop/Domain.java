@@ -4,9 +4,7 @@ import hwr.oop.match.Match;
 import hwr.oop.pieces.IllegalMoveException;
 import hwr.oop.player.Player;
 
-/**
- * Interface defining the basic functionalities for the chess game.
- */
+/** Interface defining the basic functionalities for the chess game. */
 public interface Domain {
 
   /**
@@ -34,7 +32,7 @@ public interface Domain {
    * @throws MatchAlreadyExistsException If a match with the same ID already exists.
    */
   void createMatch(Player playerWhite, Player playerBlack, String id)
-          throws MatchAlreadyExistsException;
+      throws MatchAlreadyExistsException;
 
   /**
    * Loads a player based on their name.

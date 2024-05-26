@@ -67,7 +67,6 @@ public class GameLogic implements Domain {
     saveMatch(newMatch);
   }
 
-
   @Override
   public Player loadPlayer(String name) {
     List<Player> players = persistence.loadPlayers(pathPlayers);
@@ -157,12 +156,11 @@ public class GameLogic implements Domain {
   @Override
   public void resign(Match match) {
     Color currentPlayer = match.getNextToMove();
-    if(currentPlayer == Color.WHITE){
+    if (currentPlayer == Color.WHITE) {
       match.declareWinner("Black");
-    }else{
+    } else {
       match.declareWinner("White");
     }
-
   }
 
   private boolean matchExists(String matchId) {

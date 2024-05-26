@@ -286,6 +286,7 @@ class MatchTest {
     assertThat(match.getNextToMove()).isEqualTo(Color.WHITE);
     assertThat(match.getMoveCount()).isEqualTo((short) 2);
   }
+
   @Test
   void testGetMoveCount_initiallyZero() {
     Player playerWhite = new Player("White");

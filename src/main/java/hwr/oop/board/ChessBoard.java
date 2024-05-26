@@ -108,4 +108,15 @@ public class ChessBoard implements Serializable {
   public int hashCode() {
     return Objects.hash(board);
   }
+
+  public void printChessBoard() {
+    for (int row = 7; row >= 0; row--) {
+      for (int col = 0; col < 8; col++) {
+        Piece piece = board.get(row).get(col);
+        System.out.print((piece != null ? piece.getSymbol() : ".") + " ");
+      }
+      System.out.println();
+    }
+    System.out.println("_____________________________________-");
+  }
 }

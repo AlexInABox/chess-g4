@@ -70,12 +70,13 @@ public class Match implements Serializable {
   public Color getNextToMove() {
     return nextToMove;
   }
+
   public void toggleNextToMove() {
     this.nextToMove = (this.nextToMove == Color.WHITE) ? Color.BLACK : Color.WHITE;
     moveCount++;
   }
 
-  public void declareWinner(String winner){
+  public void declareWinner(String winner) {
     this.winner = winner;
     gameEnded = true;
   }

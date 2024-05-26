@@ -21,7 +21,7 @@ public class FileBasePersistence implements Persistence {
   }
 
   @Override
-  public List<Match> loadMatches(Path filePath)  {
+  public List<Match> loadMatches(Path filePath) {
     try {
       if (!Files.exists(filePath) || Files.size(filePath) == 0) {
         return new ArrayList<>();
@@ -63,6 +63,4 @@ public class FileBasePersistence implements Persistence {
       throw new PersistenceException("Cannot read.");
     }
   }
-
 }
-

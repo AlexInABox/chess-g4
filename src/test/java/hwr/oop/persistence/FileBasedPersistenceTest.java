@@ -111,7 +111,7 @@ class FileBasedPersistenceTest {
   }
 
   @Test
-  void testLoadEmptyFileReturnsEmptyListMatch() throws IOException{
+  void testLoadEmptyFileReturnsEmptyListMatch() throws IOException {
     final Path path = Path.of(TEST_FILE_PATH);
     Files.createFile(path);
 
@@ -229,7 +229,7 @@ class FileBasedPersistenceTest {
 
     // then
     PersistenceException exception =
-            assertThrows(PersistenceException.class, () -> instUT.loadMatches(path));
+        assertThrows(PersistenceException.class, () -> instUT.loadMatches(path));
     String expectedMessage = "Cannot read.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
@@ -247,7 +247,7 @@ class FileBasedPersistenceTest {
 
     // then
     PersistenceException exception =
-            assertThrows(PersistenceException.class, () -> instUT.loadPlayers(path));
+        assertThrows(PersistenceException.class, () -> instUT.loadPlayers(path));
     String expectedMessage = "Cannot read.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
