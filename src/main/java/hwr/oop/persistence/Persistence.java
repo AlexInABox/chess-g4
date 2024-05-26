@@ -2,7 +2,6 @@ package hwr.oop.persistence;
 
 import hwr.oop.match.Match;
 import hwr.oop.player.Player;
-
 import java.nio.file.Path;
 import java.util.List;
 
@@ -11,7 +10,7 @@ public interface Persistence {
 
   List<Match> loadMatches(Path filePath);
 
-  void savePlayers(List<Player> match, Path filePath);
+  void savePlayers(List<Player> players, Path filePath);
 
   List<Player> loadPlayers(Path filePath);
 }
