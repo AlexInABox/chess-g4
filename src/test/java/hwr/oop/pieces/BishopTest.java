@@ -1,6 +1,7 @@
 package hwr.oop.pieces;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hwr.oop.Color;
@@ -10,6 +11,9 @@ import hwr.oop.board.ChessBoard;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 class BishopTest {
 
@@ -185,5 +189,34 @@ class BishopTest {
     Bishop bishop1 = new Bishop(Color.WHITE, position1, board);
     Bishop bishop2 = new Bishop(Color.BLACK, position2, board);
     assertThat(bishop1.equals(bishop2)).isFalse();
+  }
+
+  @Test
+  void testBishopPossibleMovesMutationInList_successful() {
+    board.clearChessboard();
+    Position bishopPosition = new Position(4, 4);
+
+    Piece bishop = new Bishop(Color.WHITE, bishopPosition, board);
+    board.setPieceAtPosition(bishop.getPosition(), bishop);
+
+    List<Position> possibleMoves = bishop.possibleMoves();
+
+    List<Position> expectedMoves =
+        Arrays.asList(
+            new Position(5, 5),
+            new Position(6, 6),
+            new Position(7, 7),
+            new Position(5, 3),
+            new Position(6, 2),
+            new Position(7, 1),
+            new Position(3, 5),
+            new Position(2, 6),
+            new Position(1, 7),
+            new Position(3, 3),
+            new Position(2, 2),
+            new Position(1, 1),
+            new Position(0, 0));
+
+    assertEquals(expectedMoves, possibleMoves);
   }
 }

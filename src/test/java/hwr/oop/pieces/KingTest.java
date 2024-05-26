@@ -1,6 +1,7 @@
 package hwr.oop.pieces;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hwr.oop.Color;
@@ -10,6 +11,9 @@ import hwr.oop.board.ChessBoard;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 // Tests for King
 class KingTest {
@@ -47,8 +51,10 @@ class KingTest {
 
   @Test
   void testKingMove_successful() throws IllegalMoveException {
-    Position position = new Position(2, 2);
-    Position targetPosition = new Position(3, 2);
+    board.clearChessboard();
+
+    Position position = new Position(0, 0);
+    Position targetPosition = new Position(1, 0);
     Piece king = new King(Color.WHITE, position, board);
     board.setPieceAtPosition(king.getPosition(), king);
 
@@ -176,6 +182,7 @@ class KingTest {
     King king2 = new King(Color.WHITE, new Position(4, 4), board);
     assertThat(king1.hashCode()).isNotEqualTo(king2.hashCode());
   }
+
   @Test
   void equals_DifferentKings() {
     Position position1 = new Position(4, 4);
@@ -183,5 +190,233 @@ class KingTest {
     King king1 = new King(Color.WHITE, position1, board);
     King king2 = new King(Color.BLACK, position2, board);
     assertThat(king1.equals(king2)).isFalse();
+  }
+
+  // Test contested moves
+  @Test
+  void testKingMove_contestedByKnight() {
+    board.clearChessboard();
+
+    Position kingPosition = new Position(0, 0);
+    Position kingTargetPosition = new Position(1, 0);
+
+    Position knightPosition = new Position(0, 2);
+
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Piece knight = new Knight(Color.BLACK, knightPosition, board);
+    board.setPieceAtPosition(knight.getPosition(), knight);
+
+    IllegalMoveException exception =
+        assertThrows(IllegalMoveException.class, () -> king.moveTo(kingTargetPosition));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(king.getPosition()).isEqualTo(kingPosition);
+  }
+
+  @Test
+  void testKingMove_contestedByPawn() {
+    board.clearChessboard();
+
+    Position kingPosition = new Position(4, 3);
+    Position kingTargetPositionLeft = new Position(4, 2);
+    Position kingTargetPositionRight = new Position(4, 4);
+
+    Position pawnPosition = new Position(5, 3);
+
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Piece pawn = new Pawn(Color.BLACK, pawnPosition, board);
+    board.setPieceAtPosition(pawn.getPosition(), pawn);
+
+    IllegalMoveException exceptionLeft =
+        assertThrows(IllegalMoveException.class, () -> king.moveTo(kingTargetPositionLeft));
+    String expectedMessageLeft = "Illegal move";
+    assertThat(exceptionLeft.getMessage()).contains(expectedMessageLeft);
+    assertThat(king.getPosition()).isEqualTo(kingPosition);
+
+    IllegalMoveException exception =
+        assertThrows(IllegalMoveException.class, () -> king.moveTo(kingTargetPositionRight));
+    String expectedMessageRight = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessageRight);
+    assertThat(king.getPosition()).isEqualTo(kingPosition);
+  }
+
+  @Test
+  void testKingMove_contestedByRook() {
+    board.clearChessboard();
+
+    Position kingPosition = new Position(0, 0);
+    Position kingTargetPosition = new Position(1, 0);
+
+    Position rookPosition = new Position(1, 1);
+
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Piece rook = new Rook(Color.BLACK, rookPosition, board);
+    board.setPieceAtPosition(rook.getPosition(), rook);
+
+    IllegalMoveException exception =
+        assertThrows(IllegalMoveException.class, () -> king.moveTo(kingTargetPosition));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(king.getPosition()).isEqualTo(kingPosition);
+  }
+
+  @Test
+  void testKingMove_contestedByFriendlyRook() throws IllegalMoveException {
+    board.clearChessboard();
+
+    Position kingPosition = new Position(0, 0);
+    Position kingTargetPosition = new Position(1, 0);
+
+    Position rookPosition = new Position(1, 1);
+
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Piece rook = new Rook(Color.WHITE, rookPosition, board);
+    board.setPieceAtPosition(rook.getPosition(), rook);
+
+    king.moveTo(kingTargetPosition);
+    assertThat(king.getPosition()).isEqualTo(kingTargetPosition);
+  }
+
+  @Test
+  void testKingMove_contestedByBishop() {
+    board.clearChessboard();
+
+    Position kingPosition = new Position(0, 0);
+    Position kingTargetPosition = new Position(1, 0);
+
+    Position bishopPosition = new Position(0, 1);
+
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Piece bishop = new Bishop(Color.BLACK, bishopPosition, board);
+    board.setPieceAtPosition(bishop.getPosition(), bishop);
+
+    IllegalMoveException exception =
+        assertThrows(IllegalMoveException.class, () -> king.moveTo(kingTargetPosition));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(king.getPosition()).isEqualTo(kingPosition);
+  }
+
+  @Test
+  void testKingMove_contestedByFriendlyBishop() throws IllegalMoveException {
+    board.clearChessboard();
+
+    Position kingPosition = new Position(0, 0);
+    Position kingTargetPosition = new Position(1, 0);
+
+    Position bishopPosition = new Position(0, 1);
+
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Piece bishop = new Bishop(Color.WHITE, bishopPosition, board);
+    board.setPieceAtPosition(bishop.getPosition(), bishop);
+
+    king.moveTo(kingTargetPosition);
+    assertThat(king.getPosition()).isEqualTo(kingTargetPosition);
+  }
+
+  @Test
+  void testKingMove_contestedByKing() {
+    board.clearChessboard();
+
+    Position kingPosition = new Position(0, 0);
+    Position kingTargetPosition = new Position(1, 0);
+
+    Position bishopPosition = new Position(2, 0);
+
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Piece enemyKing = new King(Color.BLACK, bishopPosition, board);
+    board.setPieceAtPosition(enemyKing.getPosition(), enemyKing);
+
+    IllegalMoveException exception =
+        assertThrows(IllegalMoveException.class, () -> king.moveTo(kingTargetPosition));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(king.getPosition()).isEqualTo(kingPosition);
+  }
+
+  @Test
+  void testKingMove_contestedByFriendlyKing() throws IllegalMoveException {
+    board.clearChessboard();
+
+    Position kingPosition = new Position(0, 0);
+    Position kingTargetPosition = new Position(1, 0);
+
+    Position bishopPosition = new Position(2, 0);
+
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Piece friendlyKing = new King(Color.WHITE, bishopPosition, board);
+    board.setPieceAtPosition(friendlyKing.getPosition(), friendlyKing);
+
+    king.moveTo(kingTargetPosition);
+    assertThat(king.getPosition()).isEqualTo(kingTargetPosition);
+  }
+
+  @Test
+  void testKingMove_contestedByQueen() {
+    board.clearChessboard();
+
+    Position kingPosition = new Position(0, 0);
+    Position kingTargetPositionTop = new Position(1, 0);
+    Position kingTargetPositionRight = new Position(0, 1);
+
+    Position queenPosition = new Position(1, 2);
+
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Piece queen = new Queen(Color.BLACK, queenPosition, board);
+    board.setPieceAtPosition(queen.getPosition(), queen);
+
+    IllegalMoveException exceptionLeft =
+        assertThrows(IllegalMoveException.class, () -> king.moveTo(kingTargetPositionTop));
+    String expectedMessageLeft = "Illegal move";
+    assertThat(exceptionLeft.getMessage()).contains(expectedMessageLeft);
+    assertThat(king.getPosition()).isEqualTo(kingPosition);
+
+    IllegalMoveException exception =
+        assertThrows(IllegalMoveException.class, () -> king.moveTo(kingTargetPositionRight));
+    String expectedMessageRight = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessageRight);
+    assertThat(king.getPosition()).isEqualTo(kingPosition);
+  }
+
+  @Test
+  void testKingPossibleMovesMutationInList_successful() {
+    board.clearChessboard();
+    Position kingPosition = new Position(4, 4);
+
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    List<Position> possibleMoves = king.possibleMoves();
+
+    List<Position> expectedMoves =
+        Arrays.asList(
+            new Position(3, 3),
+            new Position(3, 4),
+            new Position(3, 5),
+            new Position(4, 3),
+            new Position(4, 5),
+            new Position(5, 3),
+            new Position(5, 4),
+            new Position(5, 5));
+
+    assertEquals(expectedMoves, possibleMoves);
   }
 }

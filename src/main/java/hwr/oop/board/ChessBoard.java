@@ -78,7 +78,10 @@ public class ChessBoard implements Serializable {
   }
 
   public Piece getPieceAtPosition(Position position) {
-    return board.get(position.row()).get(position.column());
+    if (isValidPosition(position.row(), position.column())) {
+      return board.get(position.row()).get(position.column());
+    }
+    return null;
   }
 
   public void setPieceAtPosition(Position position, Piece piece) {

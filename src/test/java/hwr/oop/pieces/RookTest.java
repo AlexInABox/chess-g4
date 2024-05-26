@@ -1,6 +1,7 @@
 package hwr.oop.pieces;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hwr.oop.Color;
@@ -10,6 +11,9 @@ import hwr.oop.board.ChessBoard;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 class RookTest {
 
@@ -192,6 +196,7 @@ class RookTest {
     Rook rook2 = new Rook(Color.WHITE, new Position(4, 4), board);
     assertThat(rook1.hashCode()).isNotEqualTo(rook2.hashCode());
   }
+
   @Test
   void equals_DifferentRooks() {
     Position position1 = new Position(4, 4);
@@ -201,4 +206,33 @@ class RookTest {
     assertThat(rook1.equals(rook2)).isFalse();
   }
 
+  @Test
+  void testRookPossibleMovesMutationInList_successful() {
+    board.clearChessboard();
+    Position rookPosition = new Position(4, 4);
+
+    Piece rook = new Rook(Color.WHITE, rookPosition, board);
+    board.setPieceAtPosition(rook.getPosition(), rook);
+
+    List<Position> possibleMoves = rook.possibleMoves();
+
+    List<Position> expectedMoves =
+        Arrays.asList(
+            new Position(5, 4),
+            new Position(6, 4),
+            new Position(7, 4),
+            new Position(3, 4),
+            new Position(2, 4),
+            new Position(1, 4),
+            new Position(0, 4),
+            new Position(4, 5),
+            new Position(4, 6),
+            new Position(4, 7),
+            new Position(4, 3),
+            new Position(4, 2),
+            new Position(4, 1),
+            new Position(4, 0));
+
+    assertEquals(expectedMoves, possibleMoves);
+  }
 }
