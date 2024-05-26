@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import hwr.oop.match.Match;
 import hwr.oop.player.Player;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -110,22 +111,7 @@ class FileBasedPersistenceTest {
   }
 
   @Test
-  void testPersistenceCannotReadMatch() {
-    // given
-    final String filePath = "target/notExistingFile.txt";
-    final File file = new File(filePath);
-    final Path path = file.toPath();
-    FileBasePersistence persistence = new FileBasePersistence();
-
-    // then
-    PersistenceException exception =
-        assertThrows(PersistenceException.class, () -> persistence.loadMatches(path));
-    String expectedMessage = "Cannot read.";
-    assertThat(exception.getMessage()).contains(expectedMessage);
-  }
-
-  @Test
-  void testLoadEmptyFileReturnsEmptyListMatch() throws IOException {
+  void testLoadEmptyFileReturnsEmptyListMatch() throws IOException{
     final Path path = Path.of(TEST_FILE_PATH);
     Files.createFile(path);
 
@@ -183,21 +169,6 @@ class FileBasedPersistenceTest {
   }
 
   @Test
-  void testLoadPlayers_CannotRead() {
-    // given
-    final String filePath = "target/notExistingFile.txt";
-    final File file = new File(filePath);
-    final Path path = file.toPath();
-    FileBasePersistence persistence = new FileBasePersistence();
-
-    // then
-    PersistenceException exception =
-        assertThrows(PersistenceException.class, () -> persistence.loadPlayers(path));
-    String expectedMessage = "Cannot read.";
-    assertThat(exception.getMessage()).contains(expectedMessage);
-  }
-
-  @Test
   void testLoadPlayers_FileWithData() {
     // given
     final Player player1 = new Player("player1");
@@ -243,5 +214,41 @@ class FileBasedPersistenceTest {
     // then
     assertNotNull(loadedPlayers, "Loaded players list should not be null");
     assertTrue(loadedPlayers.isEmpty(), "Loaded players list should be empty for an empty file");
+  }
+
+  @Test
+  void testLoadMatches_WithInvalidFileFormat_ShouldThrowPersistenceException() throws IOException {
+    // given
+    final File file = new File(TEST_FILE_PATH);
+    final Path path = file.toPath();
+
+    // create an invalid file format
+    try (FileOutputStream fos = new FileOutputStream(file)) {
+      fos.write("invalid data".getBytes());
+    }
+
+    // then
+    PersistenceException exception =
+            assertThrows(PersistenceException.class, () -> instUT.loadMatches(path));
+    String expectedMessage = "Cannot read.";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+  }
+
+  @Test
+  void testLoadPlayers_WithInvalidFileFormat_ShouldThrowPersistenceException() throws IOException {
+    // given
+    final File file = new File(TEST_FILE_PATH);
+    final Path path = file.toPath();
+
+    // create an invalid file format
+    try (FileOutputStream fos = new FileOutputStream(file)) {
+      fos.write("invalid data".getBytes());
+    }
+
+    // then
+    PersistenceException exception =
+            assertThrows(PersistenceException.class, () -> instUT.loadPlayers(path));
+    String expectedMessage = "Cannot read.";
+    assertThat(exception.getMessage()).contains(expectedMessage);
   }
 }
