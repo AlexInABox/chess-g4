@@ -31,12 +31,11 @@ class FileBasedPersistenceTest {
   void tearDown() {
     File file = new File(TEST_FILE_PATH);
     if (file.exists()) {
-      if(!file.delete()){
+      if (!file.delete()) {
         throw new RuntimeException("Deleting the file was unsuccessful.");
       }
     }
   }
-  
 
   @Test
   void testPersistenceReadWriteMatch() {
@@ -59,7 +58,7 @@ class FileBasedPersistenceTest {
   }
 
   @Test
-  void testPersistenceReadWriteMatchWithFenNotation(){
+  void testPersistenceReadWriteMatchWithFenNotation() {
     // given
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
@@ -124,6 +123,7 @@ class FileBasedPersistenceTest {
     String expectedMessage = "Cannot read.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
+
   @Test
   void testLoadEmptyFileReturnsEmptyListMatch() throws IOException {
     final Path path = Path.of(TEST_FILE_PATH);
@@ -134,6 +134,7 @@ class FileBasedPersistenceTest {
     // Assert that the loaded matches list is empty
     assertEquals(0, loadedMatches.size(), "Loaded matches list should be empty for an empty file");
   }
+
   @Test
   void testSavePlayers() {
     // given
@@ -176,7 +177,7 @@ class FileBasedPersistenceTest {
     final Path path = file.toPath();
 
     PersistenceException exception =
-            assertThrows(PersistenceException.class, () -> instUT.savePlayers(expectedPlayers, path));
+        assertThrows(PersistenceException.class, () -> instUT.savePlayers(expectedPlayers, path));
     String expectedMessage = "Cannot write.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
@@ -191,7 +192,7 @@ class FileBasedPersistenceTest {
 
     // then
     PersistenceException exception =
-            assertThrows(PersistenceException.class, () -> persistence.loadPlayers(path));
+        assertThrows(PersistenceException.class, () -> persistence.loadPlayers(path));
     String expectedMessage = "Cannot read.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
@@ -229,6 +230,7 @@ class FileBasedPersistenceTest {
     assertNotNull(loadedMatches, "Loaded matches list should not be null");
     assertTrue(loadedMatches.isEmpty(), "Loaded matches list should be empty for an empty file");
   }
+
   @Test
   void testLoadPlayers_EmptyFileReturnsEmptyList() throws IOException {
     // given
@@ -242,7 +244,4 @@ class FileBasedPersistenceTest {
     assertNotNull(loadedPlayers, "Loaded players list should not be null");
     assertTrue(loadedPlayers.isEmpty(), "Loaded players list should be empty for an empty file");
   }
-
-
-
 }

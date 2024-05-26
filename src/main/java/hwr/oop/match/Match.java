@@ -27,7 +27,8 @@ public class Match implements Serializable {
     this.id = id;
   }
 
-  public Match(Player playerWhite, Player playerBlack, String fenNotation, String id) throws FENException {
+  public Match(Player playerWhite, Player playerBlack, String fenNotation, String id)
+      throws FENException {
     this.playerWhite = playerWhite;
     this.playerBlack = playerBlack;
     this.fenNotation = fenNotation;
@@ -54,6 +55,7 @@ public class Match implements Serializable {
   public Color getNextToMove() {
     return nextToMove;
   }
+
   public ChessBoard getBoard() {
     return board;
   }
@@ -160,31 +162,42 @@ public class Match implements Serializable {
     if (o == null || getClass() != o.getClass()) return false;
     Match match = (Match) o;
     return moveCount == match.moveCount
-            && gameEnded == match.gameEnded
-            && Objects.equals(id, match.id)
-            && Objects.equals(playerWhite, match.playerWhite)
-            && Objects.equals(playerBlack, match.playerBlack)
-            && Objects.equals(board, match.board)
-            && Objects.equals(fenNotation, match.fenNotation)
-            && nextToMove == match.nextToMove;
+        && gameEnded == match.gameEnded
+        && Objects.equals(id, match.id)
+        && Objects.equals(playerWhite, match.playerWhite)
+        && Objects.equals(playerBlack, match.playerBlack)
+        && Objects.equals(board, match.board)
+        && Objects.equals(fenNotation, match.fenNotation)
+        && nextToMove == match.nextToMove;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, playerWhite, playerBlack, board, fenNotation, nextToMove, moveCount, gameEnded);
+    return Objects.hash(
+        id, playerWhite, playerBlack, board, fenNotation, nextToMove, moveCount, gameEnded);
   }
 
   @Override
   public String toString() {
     return "Match{"
-            + "id='" + id + '\''
-            + ", playerWhite=" + playerWhite
-            + ", playerBlack=" + playerBlack
-            + ", board=" + board
-            + ", fenNotation='" + fenNotation + '\''
-            + ", nextToMove=" + nextToMove
-            + ", moveCount=" + moveCount
-            + ", gameEnded=" + gameEnded
-            + '}';
+        + "id='"
+        + id
+        + '\''
+        + ", playerWhite="
+        + playerWhite
+        + ", playerBlack="
+        + playerBlack
+        + ", board="
+        + board
+        + ", fenNotation='"
+        + fenNotation
+        + '\''
+        + ", nextToMove="
+        + nextToMove
+        + ", moveCount="
+        + moveCount
+        + ", gameEnded="
+        + gameEnded
+        + '}';
   }
 }

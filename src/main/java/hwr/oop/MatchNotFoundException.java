@@ -6,4 +6,3 @@ public class MatchNotFoundException extends RuntimeException {
     super("Match with ID '" + matchId + "' not found.");
   }
 }
-

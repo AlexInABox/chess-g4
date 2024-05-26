@@ -27,7 +27,8 @@ public class ChessBoard implements Serializable {
 
   private void setupEmptyBoard() {
     IntStream.range(0, 8)
-            .forEach(i -> {
+        .forEach(
+            i -> {
               List<Piece> row = new ArrayList<>();
               IntStream.range(0, 8).forEach(j -> row.add(null));
               board.add(row);
@@ -35,8 +36,11 @@ public class ChessBoard implements Serializable {
   }
 
   public static Position convertInputToPosition(String input) throws ChessBoardException {
-    if (input.length() != 2 || !Character.isLetter(input.charAt(0)) || !Character.isDigit(input.charAt(1))) {
-      throw new ChessBoardException("Invalid input format. Please provide a valid position (e.g., 'a1').");
+    if (input.length() != 2
+        || !Character.isLetter(input.charAt(0))
+        || !Character.isDigit(input.charAt(1))) {
+      throw new ChessBoardException(
+          "Invalid input format. Please provide a valid position (e.g., 'a1').");
     }
     int column = input.charAt(0) - 'a';
     int row = Character.getNumericValue(input.charAt(1)) - 1;

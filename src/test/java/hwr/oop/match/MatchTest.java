@@ -213,7 +213,7 @@ class MatchTest {
   }
 
   @Test
-  void testEquals_SameAttributes(){
+  void testEquals_SameAttributes() {
     Player white1 = new Player("White");
     Player black1 = new Player("Black");
     Match match1 = new Match(white1, black1, "8/8/8/8/8/8/8/8 w");
@@ -226,7 +226,7 @@ class MatchTest {
   }
 
   @Test
-  void testEquals_DifferentPlayers(){
+  void testEquals_DifferentPlayers() {
     Player white1 = new Player("White1");
     Player black1 = new Player("Black1");
     Match match1 = new Match(white1, black1, "8/8/8/8/8/8/8/8 w");
@@ -238,7 +238,7 @@ class MatchTest {
   }
 
   @Test
-  void testEquals_DifferentBoard(){
+  void testEquals_DifferentBoard() {
     Player white = new Player("White");
     Player black = new Player("Black");
     Match match1 = new Match(white, black, "8/8/8/8/8/8/8/8 w");
@@ -248,7 +248,7 @@ class MatchTest {
   }
 
   @Test
-  void testEquals_DifferentNextToMove(){
+  void testEquals_DifferentNextToMove() {
     Player white = new Player("White");
     Player black = new Player("Black");
     Match match1 = new Match(white, black, "8/8/8/8/8/8/8/8 w");
@@ -268,6 +268,4 @@ class MatchTest {
 
     assertThat(boardFromMatch).isNotNull().isEqualTo(expectedBoard);
   }
-
-
 }

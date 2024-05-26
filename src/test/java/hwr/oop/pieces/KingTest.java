@@ -7,13 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import hwr.oop.Color;
 import hwr.oop.Position;
 import hwr.oop.board.ChessBoard;
-
+import java.util.Arrays;
+import java.util.List;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-import java.util.List;
 
 // Tests for King
 class KingTest {

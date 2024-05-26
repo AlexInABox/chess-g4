@@ -6,4 +6,3 @@ public class PlayerNotFoundException extends RuntimeException {
     super("Player with the name '" + name + "' was not found.");
   }
 }
-
