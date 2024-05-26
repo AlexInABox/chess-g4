@@ -268,4 +268,52 @@ class MatchTest {
 
     assertThat(boardFromMatch).isNotNull().isEqualTo(expectedBoard);
   }
+
+  @Test
+  void testToggleNextToMove() {
+    Player playerWhite = new Player("White");
+    Player playerBlack = new Player("Black");
+    Match match = new Match(playerWhite, playerBlack, "1");
+
+    assertThat(match.getNextToMove()).isEqualTo(Color.WHITE);
+    assertThat(match.getMoveCount()).isEqualTo((short) 0);
+
+    match.toggleNextToMove();
+    assertThat(match.getNextToMove()).isEqualTo(Color.BLACK);
+    assertThat(match.getMoveCount()).isEqualTo((short) 1);
+
+    match.toggleNextToMove();
+    assertThat(match.getNextToMove()).isEqualTo(Color.WHITE);
+    assertThat(match.getMoveCount()).isEqualTo((short) 2);
+  }
+  @Test
+  void testGetMoveCount_initiallyZero() {
+    Player playerWhite = new Player("White");
+    Player playerBlack = new Player("Black");
+    Match match = new Match(playerWhite, playerBlack, "1");
+
+    assertThat(match.getMoveCount()).isEqualTo((short) 0);
+  }
+
+  @Test
+  void testGetMoveCount_afterTogglingNextToMove() {
+    Player playerWhite = new Player("White");
+    Player playerBlack = new Player("Black");
+    Match match = new Match(playerWhite, playerBlack, "1");
+
+    match.toggleNextToMove();
+    assertThat(match.getMoveCount()).isEqualTo((short) 1);
+
+    match.toggleNextToMove();
+    assertThat(match.getMoveCount()).isEqualTo((short) 2);
+  }
+
+  @Test
+  void testIsGameEnded_initiallyFalse() {
+    Player playerWhite = new Player("White");
+    Player playerBlack = new Player("Black");
+    Match match = new Match(playerWhite, playerBlack, "1");
+
+    assertThat(match.isGameEnded()).isFalse();
+  }
 }

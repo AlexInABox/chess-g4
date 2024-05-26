@@ -19,12 +19,26 @@ public class Match implements Serializable {
   private Color nextToMove = Color.WHITE;
   private short moveCount = 0;
   private boolean gameEnded = false;
+  private String winner;
+
+  public String getWinner() {
+    return winner;
+  }
+
+  public short getMoveCount() {
+    return moveCount;
+  }
+
+  public boolean isGameEnded() {
+    return gameEnded;
+  }
 
   public Match(Player playerWhite, Player playerBlack, String id) {
     this.playerWhite = playerWhite;
     this.playerBlack = playerBlack;
     this.board = new ChessBoard();
     this.id = id;
+    winner = "NOT_FINISHED_YET";
   }
 
   public Match(Player playerWhite, Player playerBlack, String fenNotation, String id)
@@ -34,6 +48,7 @@ public class Match implements Serializable {
     this.fenNotation = fenNotation;
     board = convertFENToBoard(fenNotation);
     this.id = id;
+    winner = "NOT_FINISHED_YET";
   }
 
   public Player getPlayerWhite() {
@@ -54,6 +69,15 @@ public class Match implements Serializable {
 
   public Color getNextToMove() {
     return nextToMove;
+  }
+  public void toggleNextToMove() {
+    this.nextToMove = (this.nextToMove == Color.WHITE) ? Color.BLACK : Color.WHITE;
+    moveCount++;
+  }
+
+  public void declareWinner(String winner){
+    this.winner = winner;
+    gameEnded = true;
   }
 
   public ChessBoard getBoard() {
