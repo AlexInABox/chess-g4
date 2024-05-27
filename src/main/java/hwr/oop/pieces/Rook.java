@@ -3,7 +3,6 @@ package hwr.oop.pieces;
 import hwr.oop.Color;
 import hwr.oop.Position;
 import hwr.oop.board.ChessBoard;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +10,9 @@ import java.util.Objects;
 
 public class Rook implements Piece, Serializable {
   private final Color color;
-  private Position position;
   private final ChessBoard chessBoard;
   private final char symbol;
+  private Position position;
 
   public Rook(Color color, Position position, ChessBoard chessBoard) {
     this.color = color;
@@ -81,7 +80,7 @@ public class Rook implements Piece, Serializable {
 
         if (pieceAtNewPosition == null) {
           possibleMoves.add(newPosition);
-        } else if (pieceAtNewPosition.getColor() != color) {
+        } else if ((pieceAtNewPosition.getColor() != color) && (pieceAtNewPosition.getType() != PieceType.KING)) {
           possibleMoves.add(newPosition);
           break;
         } else {
