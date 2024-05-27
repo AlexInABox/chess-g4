@@ -1,18 +1,17 @@
 package hwr.oop.pieces;
 
-import hwr.oop.board.ChessBoard;
 import hwr.oop.Color;
 import hwr.oop.Position;
-
+import hwr.oop.board.ChessBoard;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class King implements Piece, Serializable {
+  private static final PieceType type = PieceType.KING;
   private final Color color;
   private final char symbol;
-  private static final PieceType type = PieceType.KING;
   private final ChessBoard chessBoard;
   private Position position;
 

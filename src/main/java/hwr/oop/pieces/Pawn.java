@@ -3,7 +3,6 @@ package hwr.oop.pieces;
 import hwr.oop.Color;
 import hwr.oop.Position;
 import hwr.oop.board.ChessBoard;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +10,9 @@ import java.util.Objects;
 
 public class Pawn implements Piece, Serializable {
   private final Color color;
-  private Position position;
   private final ChessBoard chessBoard;
   private final char symbol;
-  private Position twoStepsAhead;
+  private Position position;
 
   public Pawn(Color color, Position position, ChessBoard chessBoard) {
     this.color = color;
@@ -88,7 +86,7 @@ public class Pawn implements Piece, Serializable {
       Position capturePosition = new Position(newRow, newCol);
       if (chessBoard.isValidPosition(newRow, newCol)) {
         Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(capturePosition);
-        if (pieceAtNewPosition != null && pieceAtNewPosition.getColor() != color) {
+        if ((pieceAtNewPosition != null) && (pieceAtNewPosition.getColor() != color) && (pieceAtNewPosition.getType() != PieceType.KING)) {
           possibleMoves.add(capturePosition);
         }
       }
