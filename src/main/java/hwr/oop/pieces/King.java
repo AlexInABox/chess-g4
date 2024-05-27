@@ -168,6 +168,14 @@ public class King implements Piece, Serializable {
     return possibleMoves;
   }
 
+  public boolean isInCheck() {
+    return (knightThreatensPosition(position)
+            || pawnThreatensPosition(position)
+            || rookThreatensPosition(position)
+            || bishopThreatensPosition(position)
+            || kingThreatensPosition(position));
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

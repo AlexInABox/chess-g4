@@ -92,6 +92,17 @@ public class ChessBoard implements Serializable {
     board.get(position.row()).set(position.column(), piece);
   }
 
+  public King getKingOfColor(Color color){
+    for (List<Piece> row : board) {
+      for (Piece piece : row) {
+        if (piece.getColor() == color && piece.getType() == PieceType.KING) {
+          return (King) piece;
+        }
+      }
+    }
+    return null;
+  }
+
   public boolean isValidPosition(int row, int column) {
     return row >= 0 && row < 8 && column >= 0 && column < 8;
   }
