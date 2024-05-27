@@ -9,33 +9,46 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Match implements Serializable {
+  private final String id;
   private final Player playerWhite;
   private final Player playerBlack;
 
-  private ChessBoard board;
+  private final ChessBoard board;
   private String fenNotation;
 
   private Color nextToMove = Color.WHITE;
   private short moveCount = 0;
   private boolean gameEnded = false;
+  private String winner;
 
-  public Match(Player playerWhite, Player playerBlack) {
+  public String getWinner() {
+    return winner;
+  }
+
+  public short getMoveCount() {
+    return moveCount;
+  }
+
+  public boolean isGameEnded() {
+    return gameEnded;
+  }
+
+  public Match(Player playerWhite, Player playerBlack, String id) {
     this.playerWhite = playerWhite;
     this.playerBlack = playerBlack;
     this.board = new ChessBoard();
+    this.id = id;
+    winner = "NOT_FINISHED_YET";
   }
 
-  //  public Match(Player playerWhite, Player playerBlack, ChessBoard board) {
-  //    this.playerWhite = playerWhite;
-  //    this.playerBlack = playerBlack;
-  //    this.board = board;
-  //  }
-
-  public Match(Player playerWhite, Player playerBlack, String fenNotation) throws FENException {
+  public Match(Player playerWhite, Player playerBlack, String fenNotation, String id)
+      throws FENException {
     this.playerWhite = playerWhite;
     this.playerBlack = playerBlack;
     this.fenNotation = fenNotation;
     board = convertFENToBoard(fenNotation);
+    this.id = id;
+    winner = "NOT_FINISHED_YET";
   }
 
   public Player getPlayerWhite() {
@@ -46,12 +59,30 @@ public class Match implements Serializable {
     return playerBlack;
   }
 
+  public String getId() {
+    return id;
+  }
+
   public String getFEN() {
     return fenNotation;
   }
 
   public Color getNextToMove() {
     return nextToMove;
+  }
+
+  public void toggleNextToMove() {
+    this.nextToMove = (this.nextToMove == Color.WHITE) ? Color.BLACK : Color.WHITE;
+    moveCount++;
+  }
+
+  public void declareWinner(String winner) {
+    this.winner = winner;
+    gameEnded = true;
+  }
+
+  public ChessBoard getBoard() {
+    return board;
   }
 
   public String convertBoardToFEN() {
@@ -80,9 +111,10 @@ public class Match implements Serializable {
     }
     fen.append(" ");
     fen.append(nextToMove == Color.WHITE ? "w" : "b");
+    fen.append(" ");
+    fen.append(moveCount);
     // TODO: Castling rights
     // TODO: Possible en passant destinations
-    // TODO: total number of moves
     return fen.toString();
   }
 
@@ -107,7 +139,6 @@ public class Match implements Serializable {
   public ChessBoard convertFENToBoard(String fenNotation) throws FENException {
     ChessBoard newBoard = new ChessBoard();
     newBoard.clearChessboard();
-    // Split the FEN notation into board layout and other parts
     String[] parts = fenNotation.split(" ");
     if (parts.length < 2) {
       throw new FENException(
@@ -118,7 +149,6 @@ public class Match implements Serializable {
     if (rows.length != 8) {
       throw new FENException("Invalid FEN format: 8 rows expected");
     }
-    // Convert the board layout part
     for (int i = 0; i < 8; i++) {
       int col = 0;
       for (char c : rows[7 - i].toCharArray()) {
@@ -143,10 +173,16 @@ public class Match implements Serializable {
     } else {
       nextToMove = Color.BLACK;
     }
+    if (parts.length >= 3) {
+      try {
+        moveCount = Short.parseShort(parts[2]);
+      } catch (NumberFormatException e) {
+        throw new FENException("Invalid FEN format: total number of moves is not a valid number");
+      }
+    }
 
     // TODO: Castling rights
     // TODO: Possible en passant destinations
-    // TODO: total number of moves
     return newBoard;
   }
 
@@ -157,6 +193,7 @@ public class Match implements Serializable {
     Match match = (Match) o;
     return moveCount == match.moveCount
         && gameEnded == match.gameEnded
+        && Objects.equals(id, match.id)
         && Objects.equals(playerWhite, match.playerWhite)
         && Objects.equals(playerBlack, match.playerBlack)
         && Objects.equals(board, match.board)
@@ -167,13 +204,16 @@ public class Match implements Serializable {
   @Override
   public int hashCode() {
     return Objects.hash(
-        playerWhite, playerBlack, board, fenNotation, nextToMove, moveCount, gameEnded);
+        id, playerWhite, playerBlack, board, fenNotation, nextToMove, moveCount, gameEnded);
   }
 
   @Override
   public String toString() {
     return "Match{"
-        + "playerWhite="
+        + "id='"
+        + id
+        + '\''
+        + ", playerWhite="
         + playerWhite
         + ", playerBlack="
         + playerBlack
