@@ -2,8 +2,7 @@ package hwr.oop;
 
 import hwr.oop.match.Match;
 import hwr.oop.persistence.Persistence;
-import hwr.oop.pieces.IllegalMoveException;
-import hwr.oop.pieces.Piece;
+import hwr.oop.pieces.*;
 import hwr.oop.player.Player;
 import java.io.File;
 import java.nio.file.Path;
@@ -99,18 +98,16 @@ public class GameLogic implements Domain {
 
   @Override
   public void moveTo(String oldPositionString, String newPositionString, Match match)
-          throws IllegalMoveException, ConvertInputToPositionException {
-//    if (match == null) {
-//      throw new MatchNotFoundException("Match is not initialized");
-//    }
+      throws IllegalMoveException, ConvertInputToPositionException {
+
     Position oldPosition = convertInputToPosition(oldPositionString);
     Position newPosition = convertInputToPosition(newPositionString);
 
     if (oldPosition.equals(newPosition)) {
       throw new IllegalMoveException(
-              "Illegal move to position: "
-                      + newPosition
-                      + ". The start and end positions are the same.");
+          "Illegal move to position: "
+              + newPosition
+              + ". The start and end positions are the same.");
     }
 
     Piece currentPiece = match.getBoard().getPieceAtPosition(oldPosition);
@@ -121,27 +118,26 @@ public class GameLogic implements Domain {
 
     if (currentPiece.getColor() != match.getNextToMove()) {
       throw new IllegalMoveException(
-              "It's not your turn. Expected: "
-                      + match.getNextToMove()
-                      + ", but got: "
-                      + currentPiece.getColor());
+          "It's not your turn. Expected: "
+              + match.getNextToMove()
+              + ", but got: "
+              + currentPiece.getColor());
     }
 
     List<Position> possibleMoves = currentPiece.possibleMoves();
     if (!possibleMoves.contains(newPosition)) {
       String firstTwoPossibleMoves =
-              possibleMoves.stream().limit(2).map(Position::toString).collect(Collectors.joining(", "));
+          possibleMoves.stream().limit(2).map(Position::toString).collect(Collectors.joining(", "));
       throw new IllegalMoveException(
-              "Illegal move to position: "
-                      + newPosition
-                      + ". Possible possible moves are for example: "
-                      + firstTwoPossibleMoves);
+          "Illegal move to position: "
+              + newPosition
+              + ". Possible possible moves are for example: "
+              + firstTwoPossibleMoves);
     }
 
     currentPiece.moveTo(newPosition);
     match.toggleNextToMove();
   }
-
 
   @Override
   public void acceptRemi(Match match) {
@@ -158,6 +154,48 @@ public class GameLogic implements Domain {
     }
   }
 
+
+
+  public String endGame(Match match){
+    Player playerWhite = loadPlayer(match.getPlayerWhite().getName());
+    Player playerBlack = loadPlayer(match.getPlayerBlack().getName());
+    //TODO: Adjust ELO for playerWhite and playerBlack
+    String victoryMessage = "";
+    switch (match.getWinner()) {
+      case MatchOutcome.REMI -> victoryMessage = "The game ended in Remi.";
+      case MatchOutcome.WHITE -> victoryMessage = "WHITE won this game. Congrats "+playerWhite.getName()+" (new ELO: "+playerWhite.getElo()+")" ;
+      case MatchOutcome.BLACK -> victoryMessage = "BLACK won this game. Congrats "+playerBlack.getName()+" (new ELO: "+playerBlack.getElo()+")";
+      case MatchOutcome.NOT_FINISHED_YET ->
+          throw new TheMatchHasNotEndedException("The game has not ended yet");
+    }
+    deleteMatch(match.getId());
+    return victoryMessage;
+  }
+  private void deleteMatch(String matchId) {
+    List<Match> matches = persistence.loadMatches(pathMatches);
+    matches.removeIf(match -> match.getId().equals(matchId));
+    persistence.saveMatches(matches, pathMatches);
+  }
+  public static Position convertInputToPosition(String input)
+      throws ConvertInputToPositionException {
+    if (input.length() != 2
+        || !Character.isLetter(input.charAt(0))
+        || !Character.isDigit(input.charAt(1))) {
+      throw new ConvertInputToPositionException(
+          "Invalid input format. Please provide a valid position (e.g., 'a1').");
+    }
+
+    int column = input.charAt(0) - 'a';
+    int row = Character.getNumericValue(input.charAt(1)) - 1;
+
+    if (column < 0 || column >= 8 || row < 0 || row >= 8) {
+      throw new ConvertInputToPositionException(
+          "Invalid position. Position must be within the chessboard.");
+    }
+
+    return new Position(row, column);
+  }
+
   private boolean matchExists(String matchId) {
     List<Match> matches = persistence.loadMatches(pathMatches);
     for (Match match : matches) {
@@ -167,21 +205,4 @@ public class GameLogic implements Domain {
     }
     return false;
   }
-
-
-  public static Position convertInputToPosition(String input) throws ConvertInputToPositionException {
-    if (input.length() != 2 || !Character.isLetter(input.charAt(0)) || !Character.isDigit(input.charAt(1))) {
-      throw new ConvertInputToPositionException("Invalid input format. Please provide a valid position (e.g., 'a1').");
-    }
-
-    int column = input.charAt(0) - 'a';
-    int row = Character.getNumericValue(input.charAt(1)) - 1;
-
-    if (column < 0 || column >= 8 || row < 0 || row >= 8) {
-      throw new ConvertInputToPositionException("Invalid position. Position must be within the chessboard.");
-    }
-
-    return new Position(row, column);
-  }
-
 }
