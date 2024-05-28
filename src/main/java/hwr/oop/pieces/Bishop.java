@@ -64,10 +64,22 @@ public class Bishop implements Piece, Serializable {
     List<Position> visiblePositions = visiblePositions();
 
     for (Position visiblePosition : visiblePositions) {
+      Piece pieceAtVisiblePosition = chessBoard.getPieceAtPosition(visiblePosition);
+
+      if (pieceAtVisiblePosition == null && !wouldKingBeInCheckAfterMoveTo(visiblePosition)) {
+        possibleMoves.add(visiblePosition);
+        continue;
+      }
+
+      if (pieceAtVisiblePosition != null) {
+        if (pieceAtVisiblePosition.getType() == PieceType.KING) continue;
+        if (pieceAtVisiblePosition.getColor() == color) continue;
+
         if (!wouldKingBeInCheckAfterMoveTo(visiblePosition)) {
           possibleMoves.add(visiblePosition);
         }
       }
+    }
     return possibleMoves;
   }
 
@@ -84,19 +96,15 @@ public class Bishop implements Piece, Serializable {
         newRow += direction[0];
         newCol += direction[1];
 
-        Position newPosition = new Position(newRow, newCol);
-        Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
-
         if (!chessBoard.isValidPosition(newRow, newCol)) {
           break;
         }
 
-        if (pieceAtNewPosition == null) {
-          visiblePositions.add(newPosition);
-        } else if (pieceAtNewPosition.getColor() != color) {
-          visiblePositions.add(newPosition);
-          break;
-        } else {
+        Position newPosition = new Position(newRow, newCol);
+        Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
+
+        visiblePositions.add(newPosition);
+        if (pieceAtNewPosition != null) {
           break;
         }
       }
@@ -106,12 +114,17 @@ public class Bishop implements Piece, Serializable {
   }
 
   private boolean wouldKingBeInCheckAfterMoveTo(Position target) {
-    ChessBoard copiedBoard = chessBoard;
+    Piece pieceAtTarget = chessBoard.getPieceAtPosition(target);
 
-    copiedBoard.setPieceAtPosition(position, null);
-    copiedBoard.setPieceAtPosition(target, this);
+    chessBoard.setPieceAtPosition(position, null);
+    chessBoard.setPieceAtPosition(target, this);
 
-    return copiedBoard.getKingOfColor(color).isInCheck();
+    boolean isKingInCheckNow = chessBoard.getKingOfColor(color).isInCheck();
+
+    chessBoard.setPieceAtPosition(target, pieceAtTarget);
+    chessBoard.setPieceAtPosition(position, this);
+
+    return isKingInCheckNow;
   }
 
   @Override

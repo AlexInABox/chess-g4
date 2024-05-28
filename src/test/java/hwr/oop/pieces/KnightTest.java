@@ -192,6 +192,10 @@ class KnightTest {
   @Test
   void testKnightPossibleMovesMutationInList_successful() {
     board.clearChessboard();
+    Position kingPosition = new Position(7, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
     Position knightPosition = new Position(4, 4);
 
     Piece knight = new Knight(Color.WHITE, knightPosition, board);

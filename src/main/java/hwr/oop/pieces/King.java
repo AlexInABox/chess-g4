@@ -63,11 +63,15 @@ public class King implements Piece, Serializable {
   }
 
   private boolean isContestedPosition(Position target) {
-    return (knightThreatensPosition(target)
-        || pawnThreatensPosition(target)
-        || rookThreatensPosition(target)
-        || bishopThreatensPosition(target)
-        || kingThreatensPosition(target));
+    chessBoard.setPieceAtPosition(position, null);
+    boolean isContested =
+        (knightThreatensPosition(target)
+            || pawnThreatensPosition(target)
+            || rookThreatensPosition(target)
+            || bishopThreatensPosition(target)
+            || kingThreatensPosition(target));
+    chessBoard.setPieceAtPosition(position, this);
+    return isContested;
   }
 
   private boolean knightThreatensPosition(Position target) {
@@ -103,7 +107,7 @@ public class King implements Piece, Serializable {
 
   private boolean rookThreatensPosition(Position target) {
     Rook dummyRook = new Rook(color, target, chessBoard);
-    for (Position visiblePosition : dummyRook.possibleMoves()) {
+    for (Position visiblePosition : dummyRook.visiblePositions()) {
       Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
       if (pieceAtPosition == null) continue;
       if ((pieceAtPosition.getColor() != color)
@@ -117,7 +121,7 @@ public class King implements Piece, Serializable {
 
   private boolean bishopThreatensPosition(Position target) {
     Bishop dummyBishop = new Bishop(color, target, chessBoard);
-    for (Position visiblePosition : dummyBishop.possibleMoves()) {
+    for (Position visiblePosition : dummyBishop.visiblePositions()) {
       Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
       if (pieceAtPosition == null) continue;
       if ((pieceAtPosition.getColor() != color)
@@ -170,10 +174,10 @@ public class King implements Piece, Serializable {
 
   public boolean isInCheck() {
     return (knightThreatensPosition(position)
-            || pawnThreatensPosition(position)
-            || rookThreatensPosition(position)
-            || bishopThreatensPosition(position)
-            || kingThreatensPosition(position));
+        || pawnThreatensPosition(position)
+        || rookThreatensPosition(position)
+        || bishopThreatensPosition(position)
+        || kingThreatensPosition(position));
   }
 
   @Override

@@ -293,6 +293,10 @@ class PawnTest {
   @Test
   void testPawnPossibleMovesMutationInList_successful() {
     board.clearChessboard();
+    Position kingPosition = new Position(7, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
     Position friendlyPawnPosition = new Position(1, 1);
     Position leftCapturePosition = new Position(2, 0);
     Position rightCapturePosition = new Position(2, 2);
@@ -353,7 +357,7 @@ class PawnTest {
     board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
 
     IllegalMoveException exception =
-            assertThrows(IllegalMoveException.class, () -> pawn.moveTo(pawnTarget));
+        assertThrows(IllegalMoveException.class, () -> pawn.moveTo(pawnTarget));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(pawn.getPosition()).isEqualTo(pawnPosition);
@@ -377,7 +381,7 @@ class PawnTest {
     board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
 
     IllegalMoveException exception =
-            assertThrows(IllegalMoveException.class, () -> pawn.moveTo(pawnTarget));
+        assertThrows(IllegalMoveException.class, () -> pawn.moveTo(pawnTarget));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(pawn.getPosition()).isEqualTo(pawnPosition);

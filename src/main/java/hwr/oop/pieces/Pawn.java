@@ -51,7 +51,7 @@ public class Pawn implements Piece, Serializable {
   @Override
   public void moveTo(Position target) throws IllegalMoveException {
     List<Position> possibleMoves = possibleMoves();
-    if (possibleMoves.contains(target) && !wouldKingBeInCheckAfterMoveTo(target)) {
+    if (possibleMoves.contains(target)) {
       setPosition(target);
     } else {
       throw new IllegalMoveException("Illegal move");
@@ -66,7 +66,8 @@ public class Pawn implements Piece, Serializable {
 
     Position oneStepAhead = new Position(position.row() + direction, position.column());
     if (chessBoard.isValidPosition(oneStepAhead.row(), oneStepAhead.column())
-        && chessBoard.getPieceAtPosition(oneStepAhead) == null && !wouldKingBeInCheckAfterMoveTo(oneStepAhead)) {
+        && chessBoard.getPieceAtPosition(oneStepAhead) == null
+        && !wouldKingBeInCheckAfterMoveTo(oneStepAhead)) {
       possibleMoves.add(oneStepAhead);
 
       Position twoStepsAhead;
@@ -74,7 +75,9 @@ public class Pawn implements Piece, Serializable {
         twoStepsAhead = new Position(position.row() + 2, position.column());
       } else twoStepsAhead = new Position(position.row() - 2, position.column());
 
-      if (position.row() == startRow && chessBoard.getPieceAtPosition(twoStepsAhead) == null && !wouldKingBeInCheckAfterMoveTo(twoStepsAhead)) {
+      if (position.row() == startRow
+          && chessBoard.getPieceAtPosition(twoStepsAhead) == null
+          && !wouldKingBeInCheckAfterMoveTo(twoStepsAhead)) {
         possibleMoves.add(twoStepsAhead);
       }
     }
@@ -86,7 +89,10 @@ public class Pawn implements Piece, Serializable {
       Position capturePosition = new Position(newRow, newCol);
       if (chessBoard.isValidPosition(newRow, newCol)) {
         Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(capturePosition);
-        if ((pieceAtNewPosition != null) && (pieceAtNewPosition.getColor() != color) && (pieceAtNewPosition.getType() != PieceType.KING) && !wouldKingBeInCheckAfterMoveTo(capturePosition)) {
+        if ((pieceAtNewPosition != null)
+            && (pieceAtNewPosition.getColor() != color)
+            && (pieceAtNewPosition.getType() != PieceType.KING)
+            && !wouldKingBeInCheckAfterMoveTo(capturePosition)) {
           possibleMoves.add(capturePosition);
         }
       }
@@ -94,13 +100,21 @@ public class Pawn implements Piece, Serializable {
     return possibleMoves;
   }
 
-  private boolean wouldKingBeInCheckAfterMoveTo(Position target){
-    ChessBoard copiedBoard = chessBoard;
+  private boolean wouldKingBeInCheckAfterMoveTo(Position target) {
+    Piece pieceAtTarget = chessBoard.getPieceAtPosition(target);
+    if (pieceAtTarget != null && pieceAtTarget.getType() == PieceType.KING && pieceAtTarget.getColor() == color) {
+      return true;
+    }
 
-    copiedBoard.setPieceAtPosition(position, null);
-    copiedBoard.setPieceAtPosition(target, this);
+    chessBoard.setPieceAtPosition(position, null);
+    chessBoard.setPieceAtPosition(target, this);
 
-    return copiedBoard.getKingOfColor(color).isInCheck();
+    boolean isKingInCheckNow = chessBoard.getKingOfColor(color).isInCheck();
+
+    chessBoard.setPieceAtPosition(target, pieceAtTarget);
+    chessBoard.setPieceAtPosition(position, this);
+
+    return isKingInCheckNow;
   }
 
   @Override

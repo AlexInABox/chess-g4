@@ -264,6 +264,10 @@ class QueenTest {
   @Test
   void testQueenPossibleMovesMutationInList_successful() {
     board.clearChessboard();
+    Position kingPosition = new Position(7, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
     Position queenPosition = new Position(4, 4);
 
     Piece queen = new Queen(Color.WHITE, queenPosition, board);
@@ -273,6 +277,19 @@ class QueenTest {
 
     List<Position> expectedMoves =
         Arrays.asList(
+            new Position(5, 5),
+            new Position(6, 6),
+            new Position(7, 7),
+            new Position(5, 3),
+            new Position(6, 2),
+            new Position(7, 1),
+            new Position(3, 5),
+            new Position(2, 6),
+            new Position(1, 7),
+            new Position(3, 3),
+            new Position(2, 2),
+            new Position(1, 1),
+            new Position(0, 0),
             new Position(5, 4),
             new Position(6, 4),
             new Position(7, 4),
@@ -286,20 +303,7 @@ class QueenTest {
             new Position(4, 3),
             new Position(4, 2),
             new Position(4, 1),
-            new Position(4, 0),
-            new Position(5, 5),
-            new Position(6, 6),
-            new Position(7, 7),
-            new Position(5, 3),
-            new Position(6, 2),
-            new Position(7, 1),
-            new Position(3, 5),
-            new Position(2, 6),
-            new Position(1, 7),
-            new Position(3, 3),
-            new Position(2, 2),
-            new Position(1, 1),
-            new Position(0, 0));
+            new Position(4, 0));
 
     assertEquals(expectedMoves, possibleMoves);
   }
@@ -343,7 +347,7 @@ class QueenTest {
     board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
 
     IllegalMoveException exception =
-            assertThrows(IllegalMoveException.class, () -> queen.moveTo(queenTarget));
+        assertThrows(IllegalMoveException.class, () -> queen.moveTo(queenTarget));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(queen.getPosition()).isEqualTo(queenPosition);
@@ -367,7 +371,7 @@ class QueenTest {
     board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
 
     IllegalMoveException exception =
-            assertThrows(IllegalMoveException.class, () -> queen.moveTo(queenTarget));
+        assertThrows(IllegalMoveException.class, () -> queen.moveTo(queenTarget));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(queen.getPosition()).isEqualTo(queenPosition);

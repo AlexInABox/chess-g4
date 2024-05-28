@@ -62,19 +62,22 @@ public class Knight implements Piece, Serializable {
   @Override
   public List<Position> possibleMoves() {
     List<Position> possibleMoves = new ArrayList<>();
-    List<Position> visibleMoves = visiblePositions();
+    List<Position> visiblePositions = visiblePositions();
 
-    for (Position visibleMove : visibleMoves) {
-      Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(visibleMove);
+    for (Position visiblePosition : visiblePositions) {
+      Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(visiblePosition);
 
-      if ((pieceAtNewPosition == null) || ((pieceAtNewPosition.getColor() != color) && (pieceAtNewPosition.getType() != PieceType.KING) && !wouldKingBeInCheckAfterMoveTo(visibleMove))) {
-        possibleMoves.add(visibleMove);
+      if (!wouldKingBeInCheckAfterMoveTo(visiblePosition)
+          && ((pieceAtNewPosition == null)
+              || ((pieceAtNewPosition.getColor() != color)
+                  && (pieceAtNewPosition.getType() != PieceType.KING)))) {
+        possibleMoves.add(visiblePosition);
       }
     }
     return possibleMoves;
   }
 
-  public List<Position> visiblePositions(){
+  public List<Position> visiblePositions() {
     List<Position> visiblePositions = new ArrayList<>();
 
     int[][] moveOffsets = {{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2}};
@@ -93,13 +96,21 @@ public class Knight implements Piece, Serializable {
     return visiblePositions;
   }
 
-  private boolean wouldKingBeInCheckAfterMoveTo(Position target){
-    ChessBoard copiedBoard = chessBoard;
+  private boolean wouldKingBeInCheckAfterMoveTo(Position target) {
+    Piece pieceAtTarget = chessBoard.getPieceAtPosition(target);
+    if (pieceAtTarget != null && pieceAtTarget.getType() == PieceType.KING && pieceAtTarget.getColor() == color) {
+      return true;
+    }
 
-    copiedBoard.setPieceAtPosition(position, null);
-    copiedBoard.setPieceAtPosition(target, this);
+    chessBoard.setPieceAtPosition(position, null);
+    chessBoard.setPieceAtPosition(target, this);
 
-    return copiedBoard.getKingOfColor(color).isInCheck();
+    boolean isKingInCheckNow = chessBoard.getKingOfColor(color).isInCheck();
+
+    chessBoard.setPieceAtPosition(target, pieceAtTarget);
+    chessBoard.setPieceAtPosition(position, this);
+
+    return isKingInCheckNow;
   }
 
   @Override

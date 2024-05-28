@@ -353,12 +353,12 @@ class KingTest {
     Position kingPosition = new Position(0, 0);
     Position kingTargetPosition = new Position(1, 0);
 
-    Position bishopPosition = new Position(2, 0);
+    Position friendlyKingPosition = new Position(2, 0);
 
     Piece king = new King(Color.WHITE, kingPosition, board);
     board.setPieceAtPosition(king.getPosition(), king);
 
-    Piece friendlyKing = new King(Color.WHITE, bishopPosition, board);
+    Piece friendlyKing = new King(Color.WHITE, friendlyKingPosition, board);
     board.setPieceAtPosition(friendlyKing.getPosition(), friendlyKing);
 
     king.moveTo(kingTargetPosition);

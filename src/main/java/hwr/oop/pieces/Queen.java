@@ -64,7 +64,12 @@ public class Queen implements Piece, Serializable {
     List<Position> visiblePositions = visiblePositions();
 
     for (Position visiblePosition : visiblePositions) {
-      if (!wouldKingBeInCheckAfterMoveTo(visiblePosition)) {
+      Piece pieceAtVisiblePosition = chessBoard.getPieceAtPosition(visiblePosition);
+
+      if (!wouldKingBeInCheckAfterMoveTo(visiblePosition)
+          && ((pieceAtVisiblePosition == null)
+              || ((pieceAtVisiblePosition.getColor() != color)
+                  && (pieceAtVisiblePosition.getType() != PieceType.KING)))) {
         possibleMoves.add(visiblePosition);
       }
     }
@@ -85,12 +90,20 @@ public class Queen implements Piece, Serializable {
   }
 
   private boolean wouldKingBeInCheckAfterMoveTo(Position target) {
-    ChessBoard copiedBoard = chessBoard;
+    Piece pieceAtTarget = chessBoard.getPieceAtPosition(target);
+    if (pieceAtTarget != null && pieceAtTarget.getType() == PieceType.KING && pieceAtTarget.getColor() == color) {
+      return true;
+    }
 
-    copiedBoard.setPieceAtPosition(position, null);
-    copiedBoard.setPieceAtPosition(target, this);
+    chessBoard.setPieceAtPosition(position, null);
+    chessBoard.setPieceAtPosition(target, this);
 
-    return copiedBoard.getKingOfColor(color).isInCheck();
+    boolean isKingInCheckNow = chessBoard.getKingOfColor(color).isInCheck();
+
+    chessBoard.setPieceAtPosition(target, pieceAtTarget);
+    chessBoard.setPieceAtPosition(position, this);
+
+    return isKingInCheckNow;
   }
 
   @Override
