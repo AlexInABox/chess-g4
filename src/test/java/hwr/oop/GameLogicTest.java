@@ -426,7 +426,6 @@ class GameLogicTest {
             assertThrows(
                     IllegalMoveException.class, () -> gameLogic.moveTo(startPosition, endPosition, match));
 
-    // Check that the appropriate exception is thrown
     assertEquals(
             "Illegal move to position: "
                     + convertInputToPosition(endPosition)
@@ -434,20 +433,6 @@ class GameLogicTest {
             exception.getMessage());
   }
 
-//  @Test
-//  void testMoveTo_NullMatch() {
-//    // Arrange
-//    String startPosition = "e2";
-//    String endPosition = "e4";
-//
-//    // Act & Assert
-//    IllegalMoveException exception =
-//            assertThrows(
-//                    IllegalMoveException.class, () -> gameLogic.moveTo(startPosition, endPosition, null));
-//
-//    // Check that the appropriate exception is thrown
-//    assertEquals("Match is not initialized", exception.getMessage());
-//  }
 
   @Test
   void testAcceptRemi(){
@@ -554,6 +539,127 @@ class GameLogicTest {
       softly.assertThat(loadedMatch.getPlayerBlack().getName()).isEqualTo("Bob");
       softly.assertThat(loadedMatch.getPlayerWhite()).isEqualTo(playerWhite);
       softly.assertThat(loadedMatch.getPlayerBlack()).isEqualTo(playerBlack);
+    });
+  }
+
+
+  @Test
+  void testEndGame_DeclareWinnerRemi() {
+    // Arrange
+    String matchId = "matchToEnd";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createMatch(playerWhite, playerBlack, matchId);
+    Match match = gameLogic.loadMatch(matchId);
+
+    // Act
+    gameLogic.acceptRemi(match);
+    String result = gameLogic.endGame(match);
+
+    // Assert
+    assertSoftly(softly -> {
+      softly.assertThat(match.isGameEnded()).isTrue();
+      softly.assertThat(match.getWinner()).isEqualTo(MatchOutcome.REMI);
+      softly.assertThat(result).contains("The game ended in Remi.");
+    });
+  }
+
+  @Test
+  void testEndGame_DeclareWinnerWhite() {
+    // Arrange
+    String matchId = "matchToEnd";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createMatch(playerWhite, playerBlack, matchId);
+    Match match = gameLogic.loadMatch(matchId);
+    match.declareWinner(MatchOutcome.WHITE);
+
+    // Act
+    String result = gameLogic.endGame(match);
+
+    // Assert
+    assertSoftly(softly -> {
+      softly.assertThat(match.isGameEnded()).isTrue();
+      softly.assertThat(match.getWinner()).isEqualTo(MatchOutcome.WHITE);
+      softly.assertThat(result).contains("WHITE won this game. Congrats Alice (new ELO: " + playerWhite.getElo() + ")");
+    });
+  }
+
+  @Test
+  void testEndGame_DeclareWinnerBlack() {
+    // Arrange
+    String matchId = "matchToEnd";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createMatch(playerWhite, playerBlack, matchId);
+    Match match = gameLogic.loadMatch(matchId);
+    match.declareWinner(MatchOutcome.BLACK);
+
+    // Act
+    String result = gameLogic.endGame(match);
+
+    // Assert
+    assertSoftly(softly -> {
+      softly.assertThat(match.isGameEnded()).isTrue();
+      softly.assertThat(match.getWinner()).isEqualTo(MatchOutcome.BLACK);
+      softly.assertThat(result).contains("BLACK won this game. Congrats Bob (new ELO: " + playerBlack.getElo() + ")");
+    });
+  }
+
+  @Test
+  void testDeleteMatch_MatchExists() {
+    // Arrange
+    String matchId = "matchToDelete";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createMatch(playerWhite, playerBlack, matchId);
+    Match match = gameLogic.loadMatch(matchId);
+
+    // Act & Assert
+    TheMatchHasNotEndedException exception =
+            assertThrows(
+                    TheMatchHasNotEndedException.class, () -> gameLogic.endGame(match));
+
+    assertEquals(
+            "The game has not ended yet",
+            exception.getMessage());
+  }
+
+  @Test
+  void testDeleteMatch_MatchDoesNotExist() {
+    // Arrange
+    String matchId = "nonExistentMatch";
+
+    // Act
+    List<Match> loadedMatches = persistence.loadMatches(pathMatches);
+    int initialSize = loadedMatches.size();
+
+    // Assert
+    assertSoftly(softly -> {
+      softly.assertThat(initialSize).isEqualTo(loadedMatches.size());
+      softly.assertThat(loadedMatches.stream().noneMatch(m -> m.getId().equals(matchId))).isTrue();
+    });
+  }
+  @Test
+  void testEndGame_DeleteMatchAfterEnding() {
+    // Arrange
+    String matchId = "matchToEnd";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createMatch(playerWhite, playerBlack, matchId);
+    Match match = gameLogic.loadMatch(matchId);
+    match.declareWinner(MatchOutcome.BLACK);
+
+    // Act
+    String result = gameLogic.endGame(match);
+
+    // Assert
+    assertSoftly(softly -> {
+      softly.assertThat(match.isGameEnded()).isTrue();
+      softly.assertThat(match.getWinner()).isEqualTo(MatchOutcome.BLACK);
+      softly.assertThat(result).contains("BLACK won this game. Congrats Bob (new ELO: " + playerBlack.getElo() + ")");
+      softly.assertThat(persistence.loadMatches(pathMatches).stream().anyMatch(m -> m.getId().equals(matchId))).isFalse();
+
     });
   }
 
