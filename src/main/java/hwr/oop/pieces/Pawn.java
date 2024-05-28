@@ -51,7 +51,7 @@ public class Pawn implements Piece, Serializable {
   @Override
   public void moveTo(Position target) throws IllegalMoveException {
     List<Position> possibleMoves = possibleMoves();
-    if (possibleMoves.contains(target)) {
+    if (possibleMoves.contains(target) && !wouldKingBeInCheckAfterMoveTo(target)) {
       setPosition(target);
     } else {
       throw new IllegalMoveException("Illegal move");
@@ -92,6 +92,15 @@ public class Pawn implements Piece, Serializable {
       }
     }
     return possibleMoves;
+  }
+
+  private boolean wouldKingBeInCheckAfterMoveTo(Position target){
+    ChessBoard copiedBoard = chessBoard;
+
+    copiedBoard.setPieceAtPosition(position, null);
+    copiedBoard.setPieceAtPosition(target, this);
+
+    return copiedBoard.getKingOfColor(color).isInCheck();
   }
 
   @Override

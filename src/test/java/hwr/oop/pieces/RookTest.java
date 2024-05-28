@@ -209,6 +209,11 @@ class RookTest {
   @Test
   void testRookPossibleMovesMutationInList_successful() {
     board.clearChessboard();
+    Position kingPosition = new Position(2, 2);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+
     Position rookPosition = new Position(4, 4);
 
     Piece rook = new Rook(Color.WHITE, rookPosition, board);
@@ -234,5 +239,74 @@ class RookTest {
             new Position(4, 0));
 
     assertEquals(expectedMoves, possibleMoves);
+  }
+
+  @Test
+  void testRookBlockCheck_successful() throws IllegalMoveException {
+    board.clearChessboard();
+    Position kingPosition = new Position(0, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position rookPosition = new Position(1, 1);
+    Position rookTarget = new Position(1, 0);
+    Position enemyRookPosition = new Position(2, 0);
+
+    Piece rook = new Rook(Color.WHITE, rookPosition, board);
+    Piece enemyRook = new Rook(Color.BLACK, enemyRookPosition, board);
+
+    board.setPieceAtPosition(rook.getPosition(), rook);
+    board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
+
+    rook.moveTo(rookTarget);
+    assertThat(rook.getPosition()).isEqualTo(rookTarget);
+  }
+
+  @Test
+  void testRookBlockCheck_fail() {
+    board.clearChessboard();
+    Position kingPosition = new Position(0, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position rookPosition = new Position(1, 1);
+    Position rookTarget = new Position(1, 3);
+    Position enemyRookPosition = new Position(2, 0);
+
+    Piece rook = new Rook(Color.WHITE, rookPosition, board);
+    Piece enemyRook = new Rook(Color.BLACK, enemyRookPosition, board);
+
+    board.setPieceAtPosition(rook.getPosition(), rook);
+    board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
+
+    IllegalMoveException exception =
+            assertThrows(IllegalMoveException.class, () -> rook.moveTo(rookTarget));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(rook.getPosition()).isEqualTo(rookPosition);
+  }
+
+  @Test
+  void testRookUnblockCheck_fail() {
+    board.clearChessboard();
+    Position kingPosition = new Position(0, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position rookPosition = new Position(1, 0);
+    Position rookTarget = new Position(1, 1);
+    Position enemyRookPosition = new Position(2, 0);
+
+    Piece rook = new Rook(Color.WHITE, rookPosition, board);
+    Piece enemyRook = new Rook(Color.BLACK, enemyRookPosition, board);
+
+    board.setPieceAtPosition(rook.getPosition(), rook);
+    board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
+
+    IllegalMoveException exception =
+            assertThrows(IllegalMoveException.class, () -> rook.moveTo(rookTarget));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(rook.getPosition()).isEqualTo(rookPosition);
   }
 }

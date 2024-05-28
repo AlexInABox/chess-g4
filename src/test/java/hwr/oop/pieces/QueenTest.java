@@ -62,6 +62,9 @@ class QueenTest {
   @Test
   void testQueenCapture_successful() throws IllegalMoveException {
     board.clearChessboard();
+    Position kingPosition = new Position(2, 2);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
 
     Position queenPosition = new Position(0, 0);
     Position queenTargetPosition = new Position(1, 0);
@@ -94,6 +97,9 @@ class QueenTest {
   @Test
   void testQueenMoveRestricted_successful() throws IllegalMoveException {
     board.clearChessboard();
+    Position kingPosition = new Position(2, 2);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
 
     Position queenPosition = new Position(0, 0);
     Position queenTargetPosition = new Position(0, 5);
@@ -115,6 +121,9 @@ class QueenTest {
   @Test
   void testQueenMoveRestricted_fail() {
     board.clearChessboard();
+    Position kingPosition = new Position(2, 2);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
 
     Position queenPosition = new Position(0, 0);
     Position queenTargetPosition = new Position(5, 0);
@@ -293,5 +302,74 @@ class QueenTest {
             new Position(0, 0));
 
     assertEquals(expectedMoves, possibleMoves);
+  }
+
+  @Test
+  void testQueenBlockCheck_successful() throws IllegalMoveException {
+    board.clearChessboard();
+    Position kingPosition = new Position(0, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position queenPosition = new Position(1, 1);
+    Position queenTarget = new Position(1, 0);
+    Position enemyRookPosition = new Position(2, 0);
+
+    Piece queen = new Queen(Color.WHITE, queenPosition, board);
+    Piece enemyRook = new Rook(Color.BLACK, enemyRookPosition, board);
+
+    board.setPieceAtPosition(queen.getPosition(), queen);
+    board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
+
+    queen.moveTo(queenTarget);
+    assertThat(queen.getPosition()).isEqualTo(queenTarget);
+  }
+
+  @Test
+  void testQueenBlockCheck_fail() {
+    board.clearChessboard();
+    Position kingPosition = new Position(0, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position queenPosition = new Position(1, 1);
+    Position queenTarget = new Position(1, 3);
+    Position enemyRookPosition = new Position(2, 0);
+
+    Piece queen = new Queen(Color.WHITE, queenPosition, board);
+    Piece enemyRook = new Rook(Color.BLACK, enemyRookPosition, board);
+
+    board.setPieceAtPosition(queen.getPosition(), queen);
+    board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
+
+    IllegalMoveException exception =
+            assertThrows(IllegalMoveException.class, () -> queen.moveTo(queenTarget));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(queen.getPosition()).isEqualTo(queenPosition);
+  }
+
+  @Test
+  void testQueenUnblockCheck_fail() {
+    board.clearChessboard();
+    Position kingPosition = new Position(0, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position queenPosition = new Position(1, 0);
+    Position queenTarget = new Position(1, 1);
+    Position enemyRookPosition = new Position(2, 0);
+
+    Piece queen = new Queen(Color.WHITE, queenPosition, board);
+    Piece enemyRook = new Rook(Color.BLACK, enemyRookPosition, board);
+
+    board.setPieceAtPosition(queen.getPosition(), queen);
+    board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
+
+    IllegalMoveException exception =
+            assertThrows(IllegalMoveException.class, () -> queen.moveTo(queenTarget));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(queen.getPosition()).isEqualTo(queenPosition);
   }
 }

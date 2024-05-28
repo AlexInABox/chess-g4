@@ -95,7 +95,7 @@ public class ChessBoard implements Serializable {
   public King getKingOfColor(Color color){
     for (List<Piece> row : board) {
       for (Piece piece : row) {
-        if (piece.getColor() == color && piece.getType() == PieceType.KING) {
+        if (piece != null && piece.getColor() == color && piece.getType() == PieceType.KING) {
           return (King) piece;
         }
       }

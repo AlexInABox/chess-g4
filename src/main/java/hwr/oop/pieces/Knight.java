@@ -52,7 +52,7 @@ public class Knight implements Piece, Serializable {
   public void moveTo(Position target) throws IllegalMoveException {
     List<Position> possibleMoves = possibleMoves();
 
-    if (possibleMoves.contains(target)) {
+    if (possibleMoves.contains(target) && !wouldKingBeInCheckAfterMoveTo(target)) {
       setPosition(target);
     } else {
       throw new IllegalMoveException("Illegal move");
@@ -77,7 +77,7 @@ public class Knight implements Piece, Serializable {
       Position newPosition = new Position(newRow, newCol);
       Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
 
-      if (((pieceAtNewPosition == null) || ((pieceAtNewPosition.getColor() != color) && (pieceAtNewPosition.getType() != PieceType.KING))) && !wouldKingBeInCheckAfterMoveTo(newPosition)) {
+      if ((pieceAtNewPosition == null) || ((pieceAtNewPosition.getColor() != color) && (pieceAtNewPosition.getType() != PieceType.KING))) {
         possibleMoves.add(newPosition);
       }
     }
