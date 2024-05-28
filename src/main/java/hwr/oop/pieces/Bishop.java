@@ -61,6 +61,19 @@ public class Bishop implements Piece, Serializable {
   @Override
   public List<Position> possibleMoves() {
     List<Position> possibleMoves = new ArrayList<>();
+    List<Position> visiblePositions = visiblePositions();
+
+    for (Position visiblePosition : visiblePositions) {
+        if (!wouldKingBeInCheckAfterMoveTo(visiblePosition)) {
+          possibleMoves.add(visiblePosition);
+        }
+      }
+    return possibleMoves;
+  }
+
+  public List<Position> visiblePositions() {
+    List<Position> visiblePositions = new ArrayList<>();
+
     int[][] directions = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 
     for (int[] direction : directions) {
@@ -71,27 +84,28 @@ public class Bishop implements Piece, Serializable {
         newRow += direction[0];
         newCol += direction[1];
 
+        Position newPosition = new Position(newRow, newCol);
+        Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
+
         if (!chessBoard.isValidPosition(newRow, newCol)) {
           break;
         }
 
-        Position newPosition = new Position(newRow, newCol);
-        Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
-
         if (pieceAtNewPosition == null) {
-          possibleMoves.add(newPosition);
-        } else if ((pieceAtNewPosition.getColor() != color) && (pieceAtNewPosition.getType() != PieceType.KING)) {
-          possibleMoves.add(newPosition);
+          visiblePositions.add(newPosition);
+        } else if (pieceAtNewPosition.getColor() != color) {
+          visiblePositions.add(newPosition);
           break;
         } else {
           break;
         }
       }
     }
-    return possibleMoves;
+
+    return visiblePositions;
   }
 
-  private boolean wouldKingBeInCheckAfterMoveTo(Position target){
+  private boolean wouldKingBeInCheckAfterMoveTo(Position target) {
     ChessBoard copiedBoard = chessBoard;
 
     copiedBoard.setPieceAtPosition(position, null);

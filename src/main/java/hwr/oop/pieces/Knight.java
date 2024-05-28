@@ -52,7 +52,7 @@ public class Knight implements Piece, Serializable {
   public void moveTo(Position target) throws IllegalMoveException {
     List<Position> possibleMoves = possibleMoves();
 
-    if (possibleMoves.contains(target) && !wouldKingBeInCheckAfterMoveTo(target)) {
+    if (possibleMoves.contains(target)) {
       setPosition(target);
     } else {
       throw new IllegalMoveException("Illegal move");
@@ -62,6 +62,21 @@ public class Knight implements Piece, Serializable {
   @Override
   public List<Position> possibleMoves() {
     List<Position> possibleMoves = new ArrayList<>();
+    List<Position> visibleMoves = visiblePositions();
+
+    for (Position visibleMove : visibleMoves) {
+      Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(visibleMove);
+
+      if ((pieceAtNewPosition == null) || ((pieceAtNewPosition.getColor() != color) && (pieceAtNewPosition.getType() != PieceType.KING) && !wouldKingBeInCheckAfterMoveTo(visibleMove))) {
+        possibleMoves.add(visibleMove);
+      }
+    }
+    return possibleMoves;
+  }
+
+  public List<Position> visiblePositions(){
+    List<Position> visiblePositions = new ArrayList<>();
+
     int[][] moveOffsets = {{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2}};
 
     int currentRow = position.row();
@@ -71,17 +86,11 @@ public class Knight implements Piece, Serializable {
       int newRow = currentRow + offset[0];
       int newCol = currentCol + offset[1];
 
-      if (!chessBoard.isValidPosition(newRow, newCol)) {
-        continue;
-      }
-      Position newPosition = new Position(newRow, newCol);
-      Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
-
-      if ((pieceAtNewPosition == null) || ((pieceAtNewPosition.getColor() != color) && (pieceAtNewPosition.getType() != PieceType.KING))) {
-        possibleMoves.add(newPosition);
+      if (chessBoard.isValidPosition(newRow, newCol)) {
+        visiblePositions.add(new Position(newRow, newCol));
       }
     }
-    return possibleMoves;
+    return visiblePositions;
   }
 
   private boolean wouldKingBeInCheckAfterMoveTo(Position target){

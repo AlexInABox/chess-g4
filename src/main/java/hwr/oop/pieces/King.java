@@ -72,7 +72,7 @@ public class King implements Piece, Serializable {
 
   private boolean knightThreatensPosition(Position target) {
     Knight dummyKnight = new Knight(color, target, chessBoard);
-    for (Position visiblePosition : dummyKnight.possibleMoves()) {
+    for (Position visiblePosition : dummyKnight.visiblePositions()) {
       Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
       if (pieceAtPosition == null) continue;
       if ((pieceAtPosition.getColor() != color)

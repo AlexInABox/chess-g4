@@ -61,40 +61,30 @@ public class Queen implements Piece, Serializable {
   @Override
   public List<Position> possibleMoves() {
     List<Position> possibleMoves = new ArrayList<>();
-    int[][] directions = {
-      {1, 0}, {-1, 0}, {0, 1}, {0, -1}, // Rook-like moves
-      {1, 1}, {1, -1}, {-1, 1}, {-1, -1} // Bishop-like moves
-    };
+    List<Position> visiblePositions = visiblePositions();
 
-    for (int[] direction : directions) {
-      int newRow = position.row();
-      int newCol = position.column();
-
-      while (true) {
-        newRow += direction[0];
-        newCol += direction[1];
-
-        if (!chessBoard.isValidPosition(newRow, newCol)) {
-          break;
-        }
-
-        Position newPosition = new Position(newRow, newCol);
-        Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
-
-        if (pieceAtNewPosition == null) {
-          possibleMoves.add(newPosition);
-        } else if ((pieceAtNewPosition.getColor() != color) && (pieceAtNewPosition.getType() != PieceType.KING)) {
-          possibleMoves.add(newPosition);
-          break;
-        } else {
-          break;
-        }
+    for (Position visiblePosition : visiblePositions) {
+      if (!wouldKingBeInCheckAfterMoveTo(visiblePosition)) {
+        possibleMoves.add(visiblePosition);
       }
     }
     return possibleMoves;
   }
 
-  private boolean wouldKingBeInCheckAfterMoveTo(Position target){
+  public List<Position> visiblePositions() {
+    List<Position> visiblePositions = new ArrayList<>();
+
+    ChessBoard copiedBoard = chessBoard;
+    Bishop dummyBishop = new Bishop(color, position, copiedBoard);
+    Rook dummyRook = new Rook(color, position, copiedBoard);
+
+    visiblePositions.addAll(dummyBishop.visiblePositions());
+    visiblePositions.addAll(dummyRook.visiblePositions());
+
+    return visiblePositions;
+  }
+
+  private boolean wouldKingBeInCheckAfterMoveTo(Position target) {
     ChessBoard copiedBoard = chessBoard;
 
     copiedBoard.setPieceAtPosition(position, null);

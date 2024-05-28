@@ -66,7 +66,7 @@ public class Pawn implements Piece, Serializable {
 
     Position oneStepAhead = new Position(position.row() + direction, position.column());
     if (chessBoard.isValidPosition(oneStepAhead.row(), oneStepAhead.column())
-        && chessBoard.getPieceAtPosition(oneStepAhead) == null) {
+        && chessBoard.getPieceAtPosition(oneStepAhead) == null && !wouldKingBeInCheckAfterMoveTo(oneStepAhead)) {
       possibleMoves.add(oneStepAhead);
 
       Position twoStepsAhead;
@@ -74,7 +74,7 @@ public class Pawn implements Piece, Serializable {
         twoStepsAhead = new Position(position.row() + 2, position.column());
       } else twoStepsAhead = new Position(position.row() - 2, position.column());
 
-      if (position.row() == startRow && chessBoard.getPieceAtPosition(twoStepsAhead) == null) {
+      if (position.row() == startRow && chessBoard.getPieceAtPosition(twoStepsAhead) == null && !wouldKingBeInCheckAfterMoveTo(twoStepsAhead)) {
         possibleMoves.add(twoStepsAhead);
       }
     }
@@ -86,7 +86,7 @@ public class Pawn implements Piece, Serializable {
       Position capturePosition = new Position(newRow, newCol);
       if (chessBoard.isValidPosition(newRow, newCol)) {
         Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(capturePosition);
-        if ((pieceAtNewPosition != null) && (pieceAtNewPosition.getColor() != color) && (pieceAtNewPosition.getType() != PieceType.KING)) {
+        if ((pieceAtNewPosition != null) && (pieceAtNewPosition.getColor() != color) && (pieceAtNewPosition.getType() != PieceType.KING) && !wouldKingBeInCheckAfterMoveTo(capturePosition)) {
           possibleMoves.add(capturePosition);
         }
       }

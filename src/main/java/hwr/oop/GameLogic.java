@@ -133,18 +133,11 @@ public class GameLogic implements Domain {
               + currentPiece.getColor());
     }
 
-    List<Position> possibleMoves = currentPiece.possibleMoves();
-    if (!possibleMoves.contains(newPosition)) {
-      String firstTwoPossibleMoves =
-          possibleMoves.stream().limit(2).map(Position::toString).collect(Collectors.joining(", "));
-      throw new IllegalMoveException(
-          "Illegal move to position: "
-              + newPosition
-              + ". Possible possible moves are for example: "
-              + firstTwoPossibleMoves);
-    }
-
     currentPiece.moveTo(newPosition);
+
+    if (match.getBoard().isCheckMate()){
+      match.declareWinner(currentPiece.getColor().toString());
+    }
     match.toggleNextToMove();
   }
 
