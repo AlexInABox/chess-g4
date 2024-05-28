@@ -1,14 +1,12 @@
 package hwr.oop;
 
+import static org.assertj.core.api.Assertions.*;
+
 import hwr.oop.board.ChessBoard;
-import hwr.oop.board.ChessBoardException;
 import hwr.oop.pieces.*;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static hwr.oop.board.ChessBoard.convertInputToPosition;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ChessBoardTest {
   private ChessBoard board;
@@ -90,38 +88,6 @@ class ChessBoardTest {
                 .isEqualTo(new Pawn(Color.BLACK, new Position(6, i), board));
           }
         });
-  }
-
-  @Test
-  void convertInputToPosition_Valid() {
-    SoftAssertions.assertSoftly(
-        softly -> {
-          try {
-            softly.assertThat(convertInputToPosition("a8")).isEqualTo(new Position(7, 0));
-            softly.assertThat(convertInputToPosition("h1")).isEqualTo(new Position(0, 7));
-            softly.assertThat(convertInputToPosition("e5")).isEqualTo(new Position(4, 4));
-          } catch (ChessBoardException e) {
-            throw new RuntimeException(e);
-          }
-        });
-  }
-
-  @Test
-  void convertInputToPosition_InvalidFormat() {
-    assertThrows(ChessBoardException.class, () -> convertInputToPosition(""));
-    assertThrows(ChessBoardException.class, () -> convertInputToPosition("a"));
-    assertThrows(ChessBoardException.class, () -> convertInputToPosition("abc"));
-    assertThrows(ChessBoardException.class, () -> convertInputToPosition("a12"));
-    assertThrows(ChessBoardException.class, () -> convertInputToPosition("12"));
-    assertThrows(ChessBoardException.class, () -> convertInputToPosition("abc12"));
-  }
-
-  @Test
-  void testInvalidPosition() {
-    assertThrows(ChessBoardException.class, () -> convertInputToPosition("i1"));
-    assertThrows(ChessBoardException.class, () -> convertInputToPosition("a0"));
-    assertThrows(ChessBoardException.class, () -> convertInputToPosition("a9"));
-    assertThrows(ChessBoardException.class, () -> convertInputToPosition("h9"));
   }
 
   @Test

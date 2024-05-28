@@ -1,6 +1,7 @@
 package hwr.oop.match;
 
 import hwr.oop.Color;
+import hwr.oop.MatchOutcome;
 import hwr.oop.Position;
 import hwr.oop.board.ChessBoard;
 import hwr.oop.pieces.*;
@@ -10,8 +11,8 @@ import java.util.Objects;
 
 public class Match implements Serializable {
   private final String id;
-  private final Player playerWhite;
-  private final Player playerBlack;
+  private Player playerWhite;
+  private Player playerBlack;
 
   private final ChessBoard board;
   private String fenNotation;
@@ -19,9 +20,9 @@ public class Match implements Serializable {
   private Color nextToMove = Color.WHITE;
   private short moveCount = 0;
   private boolean gameEnded = false;
-  private String winner;
+  private MatchOutcome winner;
 
-  public String getWinner() {
+  public MatchOutcome getWinner() {
     return winner;
   }
 
@@ -38,7 +39,7 @@ public class Match implements Serializable {
     this.playerBlack = playerBlack;
     this.board = new ChessBoard();
     this.id = id;
-    winner = "NOT_FINISHED_YET";
+    winner = MatchOutcome.NOT_FINISHED_YET;
   }
 
   public Match(Player playerWhite, Player playerBlack, String fenNotation, String id)
@@ -48,7 +49,7 @@ public class Match implements Serializable {
     this.fenNotation = fenNotation;
     board = convertFENToBoard(fenNotation);
     this.id = id;
-    winner = "NOT_FINISHED_YET";
+    winner = MatchOutcome.NOT_FINISHED_YET;
   }
 
   public Player getPlayerWhite() {
@@ -76,9 +77,14 @@ public class Match implements Serializable {
     moveCount++;
   }
 
-  public void declareWinner(String winner) {
+  public void declareWinner(MatchOutcome winner) {
     this.winner = winner;
     gameEnded = true;
+  }
+
+  public void updatePlayers(Player playerWhite, Player playerBlack) {
+    this.playerWhite = playerWhite;
+    this.playerBlack = playerBlack;
   }
 
   public ChessBoard getBoard() {

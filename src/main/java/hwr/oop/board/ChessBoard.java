@@ -35,23 +35,6 @@ public class ChessBoard implements Serializable {
             });
   }
 
-  public static Position convertInputToPosition(String input) throws ChessBoardException {
-    if (input.length() != 2
-        || !Character.isLetter(input.charAt(0))
-        || !Character.isDigit(input.charAt(1))) {
-      throw new ChessBoardException(
-          "Invalid input format. Please provide a valid position (e.g., 'a1').");
-    }
-    int column = input.charAt(0) - 'a';
-    int row = Character.getNumericValue(input.charAt(1)) - 1;
-
-    if (column < 0 || column >= 8 || row < 0 || row >= 8) {
-      throw new ChessBoardException("Invalid position. Position must be within the chessboard.");
-    }
-
-    return new Position(row, column);
-  }
-
   private void setupPieces() {
     // Place Rooks
     board.get(0).set(0, new Rook(Color.WHITE, new Position(0, 0), this));
