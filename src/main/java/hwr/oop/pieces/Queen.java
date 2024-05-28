@@ -83,7 +83,8 @@ public class Queen implements Piece, Serializable {
 
         if (pieceAtNewPosition == null) {
           possibleMoves.add(newPosition);
-        } else if ((pieceAtNewPosition.getColor() != color) && (pieceAtNewPosition.getType() != PieceType.KING)) {
+        } else if ((pieceAtNewPosition.getColor() != color)
+            && (pieceAtNewPosition.getType() != PieceType.KING)) {
           possibleMoves.add(newPosition);
           break;
         } else {

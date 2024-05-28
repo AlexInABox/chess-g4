@@ -317,6 +317,7 @@ class MatchTest {
 
     assertThat(match.isGameEnded()).isFalse();
   }
+
   @Test
   void testMoveCountInitialization() throws FENException {
     final Player playerWhite = new Player("player1");
@@ -326,6 +327,7 @@ class MatchTest {
 
     assertThat(match.getMoveCount()).isEqualTo((short) 0);
   }
+
   @Test
   void testMoveCountIncrementation() throws FENException {
     final Player playerWhite = new Player("player1");
@@ -338,6 +340,7 @@ class MatchTest {
     match.toggleNextToMove();
     assertThat(match.getMoveCount()).isEqualTo((short) 6);
   }
+
   @Test
   void testMoveCountInFEN() throws FENException {
     final Player playerWhite = new Player("player1");
@@ -348,8 +351,10 @@ class MatchTest {
     assertThat(match.convertBoardToFEN()).isEqualTo(fen);
 
     match.toggleNextToMove();
-    assertThat(match.convertBoardToFEN()).isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w 11");
+    assertThat(match.convertBoardToFEN())
+        .isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w 11");
   }
+
   @Test
   void testInvalidMoveCountInFEN() {
     final Player playerWhite = new Player("player1");
@@ -357,5 +362,4 @@ class MatchTest {
     String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w abc";
     assertThrows(FENException.class, () -> new Match(playerWhite, playerBlack, fen, "1"));
   }
-
 }

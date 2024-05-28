@@ -35,7 +35,8 @@ public interface Domain {
       throws MatchAlreadyExistsException;
 
   /**
-   * Loads a player based on their name.
+   * Loads a player based on their name or creates a new player, if there is no player with this
+   * name yet.
    *
    * @param name The name of the player to load.
    * @return The loaded player.
@@ -50,7 +51,6 @@ public interface Domain {
    */
   void savePlayer(Player player);
 
-
   /**
    * Moves a piece from an old position to a new position.
    *
@@ -59,8 +59,8 @@ public interface Domain {
    * @param match The match in which the move is performed.
    * @throws IllegalMoveException If the move is illegal.
    */
-  public void moveTo(String oldPositionString, String newPositionString, Match match)
-          throws IllegalMoveException, ConvertInputToPositionException;
+  void moveTo(String oldPositionString, String newPositionString, Match match)
+      throws IllegalMoveException, ConvertInputToPositionException;
 
   /**
    * Accepts a draw offer, ending the match in a draw.

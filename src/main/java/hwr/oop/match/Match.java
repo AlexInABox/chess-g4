@@ -82,7 +82,7 @@ public class Match implements Serializable {
     gameEnded = true;
   }
 
-  public void updatePlayers(Player playerWhite, Player playerBlack){
+  public void updatePlayers(Player playerWhite, Player playerBlack) {
     this.playerWhite = playerWhite;
     this.playerBlack = playerBlack;
   }

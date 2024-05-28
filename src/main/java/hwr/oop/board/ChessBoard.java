@@ -35,7 +35,6 @@ public class ChessBoard implements Serializable {
             });
   }
 
-
   private void setupPieces() {
     // Place Rooks
     board.get(0).set(0, new Rook(Color.WHITE, new Position(0, 0), this));

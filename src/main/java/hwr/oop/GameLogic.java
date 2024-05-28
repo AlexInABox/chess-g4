@@ -73,9 +73,10 @@ public class GameLogic implements Domain {
   @Override
   public Player loadPlayer(String playerName) {
     return persistence.loadPlayers(pathPlayers).stream()
-            .filter(player -> player.getName().equals(playerName))
-            .findFirst()
-            .orElseGet(() -> {
+        .filter(player -> player.getName().equals(playerName))
+        .findFirst()
+        .orElseGet(
+            () -> {
               Player newPlayer = new Player(playerName);
               savePlayer(newPlayer);
               return newPlayer;
@@ -154,28 +155,40 @@ public class GameLogic implements Domain {
     }
   }
 
-
-
-  public String endGame(Match match){
+  public String endGame(Match match) {
     Player playerWhite = loadPlayer(match.getPlayerWhite().getName());
     Player playerBlack = loadPlayer(match.getPlayerBlack().getName());
-    //TODO: Adjust ELO for playerWhite and playerBlack
+    // TODO: Adjust ELO for playerWhite and playerBlack
     String victoryMessage = "";
     switch (match.getWinner()) {
       case MatchOutcome.REMI -> victoryMessage = "The game ended in Remi.";
-      case MatchOutcome.WHITE -> victoryMessage = "WHITE won this game. Congrats "+playerWhite.getName()+" (new ELO: "+playerWhite.getElo()+")" ;
-      case MatchOutcome.BLACK -> victoryMessage = "BLACK won this game. Congrats "+playerBlack.getName()+" (new ELO: "+playerBlack.getElo()+")";
+      case MatchOutcome.WHITE ->
+          victoryMessage =
+              "WHITE won this game. Congrats "
+                  + playerWhite.getName()
+                  + " (new ELO: "
+                  + playerWhite.getElo()
+                  + ")";
+      case MatchOutcome.BLACK ->
+          victoryMessage =
+              "BLACK won this game. Congrats "
+                  + playerBlack.getName()
+                  + " (new ELO: "
+                  + playerBlack.getElo()
+                  + ")";
       case MatchOutcome.NOT_FINISHED_YET ->
           throw new TheMatchHasNotEndedException("The game has not ended yet");
     }
     deleteMatch(match.getId());
     return victoryMessage;
   }
+
   private void deleteMatch(String matchId) {
     List<Match> matches = persistence.loadMatches(pathMatches);
     matches.removeIf(match -> match.getId().equals(matchId));
     persistence.saveMatches(matches, pathMatches);
   }
+
   public static Position convertInputToPosition(String input)
       throws ConvertInputToPositionException {
     if (input.length() != 2

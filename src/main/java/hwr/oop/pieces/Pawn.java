@@ -86,7 +86,9 @@ public class Pawn implements Piece, Serializable {
       Position capturePosition = new Position(newRow, newCol);
       if (chessBoard.isValidPosition(newRow, newCol)) {
         Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(capturePosition);
-        if ((pieceAtNewPosition != null) && (pieceAtNewPosition.getColor() != color) && (pieceAtNewPosition.getType() != PieceType.KING)) {
+        if ((pieceAtNewPosition != null)
+            && (pieceAtNewPosition.getColor() != color)
+            && (pieceAtNewPosition.getType() != PieceType.KING)) {
           possibleMoves.add(capturePosition);
         }
       }

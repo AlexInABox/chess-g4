@@ -76,7 +76,9 @@ public class Knight implements Piece, Serializable {
       Position newPosition = new Position(newRow, newCol);
       Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
 
-      if ((pieceAtNewPosition == null) || ((pieceAtNewPosition.getColor() != color) && (pieceAtNewPosition.getType() != PieceType.KING))) {
+      if ((pieceAtNewPosition == null)
+          || ((pieceAtNewPosition.getColor() != color)
+              && (pieceAtNewPosition.getType() != PieceType.KING))) {
         possibleMoves.add(newPosition);
       }
     }

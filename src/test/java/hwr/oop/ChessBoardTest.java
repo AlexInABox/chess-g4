@@ -1,7 +1,6 @@
 package hwr.oop;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import hwr.oop.board.ChessBoard;
 import hwr.oop.pieces.*;
@@ -90,7 +89,6 @@ class ChessBoardTest {
           }
         });
   }
-
 
   @Test
   void testIsPositionValid() {
