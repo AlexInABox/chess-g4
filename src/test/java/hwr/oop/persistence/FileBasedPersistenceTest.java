@@ -22,10 +22,13 @@ class FileBasedPersistenceTest {
   private static final String TEST_FILE_PATH = "target/persistenceTest.txt";
 
   private FileBasePersistence instUT;
+  File file;
 
   @BeforeEach
   void setUp() {
-    instUT = new FileBasePersistence();
+    file = new File(TEST_FILE_PATH);
+    Path path = file.toPath();
+    instUT = new FileBasePersistence(path,path);
   }
 
   @AfterEach
@@ -46,12 +49,10 @@ class FileBasedPersistenceTest {
     final Match match = new Match(playerWhite, playerBlack, "1");
     List<Match> expectedMatches = new ArrayList<>();
     expectedMatches.add(match);
-    final File file = new File(TEST_FILE_PATH);
-    final Path path = file.toPath();
 
     // when
-    instUT.saveMatches(expectedMatches, path);
-    final List<Match> actualMatches = instUT.loadMatches(path);
+    instUT.saveMatches(expectedMatches);
+    final List<Match> actualMatches = instUT.loadMatches();
 
     // then
     assertNotNull(actualMatches);
@@ -67,12 +68,10 @@ class FileBasedPersistenceTest {
     final Match match = new Match(playerWhite, playerBlack, fenNotation);
     List<Match> expectedMatches = new ArrayList<>();
     expectedMatches.add(match);
-    final File file = new File(TEST_FILE_PATH);
-    final Path path = file.toPath();
 
     // when
-    instUT.saveMatches(expectedMatches, path);
-    final List<Match> actualMatches = instUT.loadMatches(path);
+    instUT.saveMatches(expectedMatches);
+    final List<Match> actualMatches = instUT.loadMatches();
 
     // then
     assertNotNull(actualMatches);
@@ -87,11 +86,12 @@ class FileBasedPersistenceTest {
     List<Match> expectedMatches = new ArrayList<>();
     expectedMatches.add(match);
     final String filePath = "not-existing-directory/persistenceTest.txt";
-    final File file = new File(filePath);
-    final Path path = file.toPath();
+    File fileNew = new File(filePath);
+    Path pathNew = fileNew.toPath();
+    instUT = new FileBasePersistence(pathNew, pathNew);
 
     PersistenceException exception =
-        assertThrows(PersistenceException.class, () -> instUT.saveMatches(expectedMatches, path));
+        assertThrows(PersistenceException.class, () -> instUT.saveMatches(expectedMatches));
     String expectedMessage = "Cannot write.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
@@ -103,7 +103,7 @@ class FileBasedPersistenceTest {
     Files.createFile(path);
 
     // when
-    List<Match> loadedMatches = instUT.loadMatches(path);
+    List<Match> loadedMatches = instUT.loadMatches();
 
     // then
     assertNotNull(loadedMatches);
@@ -115,7 +115,7 @@ class FileBasedPersistenceTest {
     final Path path = Path.of(TEST_FILE_PATH);
     Files.createFile(path);
 
-    List<Match> loadedMatches = instUT.loadMatches(path);
+    List<Match> loadedMatches = instUT.loadMatches();
 
     // Assert that the loaded matches list is empty
     assertEquals(0, loadedMatches.size(), "Loaded matches list should be empty for an empty file");
@@ -127,12 +127,10 @@ class FileBasedPersistenceTest {
     final Player player = new Player("player1");
     List<Player> expectedPlayers = new ArrayList<>();
     expectedPlayers.add(player);
-    final File file = new File(TEST_FILE_PATH);
-    final Path path = file.toPath();
 
     // when
-    instUT.savePlayers(expectedPlayers, path);
-    final List<Player> actualPlayers = instUT.loadPlayers(path);
+    instUT.savePlayers(expectedPlayers);
+    final List<Player> actualPlayers = instUT.loadPlayers();
 
     // then
     assertNotNull(actualPlayers);
@@ -146,7 +144,7 @@ class FileBasedPersistenceTest {
     Files.createFile(path);
 
     // when
-    List<Player> loadedPlayers = instUT.loadPlayers(path);
+    List<Player> loadedPlayers = instUT.loadPlayers();
 
     // then
     assertNotNull(loadedPlayers);
@@ -159,11 +157,11 @@ class FileBasedPersistenceTest {
     List<Player> expectedPlayers = new ArrayList<>();
     expectedPlayers.add(player);
     final String filePath = "not-existing-directory/persistenceTest.txt";
-    final File file = new File(filePath);
-    final Path path = file.toPath();
-
+    File fileNew = new File(filePath);
+    Path pathNew = fileNew.toPath();
+    instUT = new FileBasePersistence(pathNew, pathNew);
     PersistenceException exception =
-        assertThrows(PersistenceException.class, () -> instUT.savePlayers(expectedPlayers, path));
+        assertThrows(PersistenceException.class, () -> instUT.savePlayers(expectedPlayers));
     String expectedMessage = "Cannot write.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
@@ -176,12 +174,10 @@ class FileBasedPersistenceTest {
     List<Player> expectedPlayers = new ArrayList<>();
     expectedPlayers.add(player1);
     expectedPlayers.add(player2);
-    final File file = new File(TEST_FILE_PATH);
-    final Path path = file.toPath();
 
     // when
-    instUT.savePlayers(expectedPlayers, path);
-    final List<Player> actualPlayers = instUT.loadPlayers(path);
+    instUT.savePlayers(expectedPlayers);
+    final List<Player> actualPlayers = instUT.loadPlayers();
 
     // then
     assertNotNull(actualPlayers);
@@ -195,7 +191,7 @@ class FileBasedPersistenceTest {
     Files.createFile(path);
 
     // when
-    List<Match> loadedMatches = instUT.loadMatches(path);
+    List<Match> loadedMatches = instUT.loadMatches();
 
     // then
     assertNotNull(loadedMatches, "Loaded matches list should not be null");
@@ -209,7 +205,7 @@ class FileBasedPersistenceTest {
     Files.createFile(path);
 
     // when
-    List<Player> loadedPlayers = instUT.loadPlayers(path);
+    List<Player> loadedPlayers = instUT.loadPlayers();
 
     // then
     assertNotNull(loadedPlayers, "Loaded players list should not be null");
@@ -219,8 +215,6 @@ class FileBasedPersistenceTest {
   @Test
   void testLoadMatches_WithInvalidFileFormat_ShouldThrowPersistenceException() throws IOException {
     // given
-    final File file = new File(TEST_FILE_PATH);
-    final Path path = file.toPath();
 
     // create an invalid file format
     try (FileOutputStream fos = new FileOutputStream(file)) {
@@ -229,7 +223,7 @@ class FileBasedPersistenceTest {
 
     // then
     PersistenceException exception =
-        assertThrows(PersistenceException.class, () -> instUT.loadMatches(path));
+        assertThrows(PersistenceException.class, () -> instUT.loadMatches());
     String expectedMessage = "Cannot read.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
@@ -238,8 +232,6 @@ class FileBasedPersistenceTest {
   void testLoadPlayers_WithInvalidFileFormat_ShouldThrowPersistenceException() throws IOException {
     // given
     final File file = new File(TEST_FILE_PATH);
-    final Path path = file.toPath();
-
     // create an invalid file format
     try (FileOutputStream fos = new FileOutputStream(file)) {
       fos.write("invalid data".getBytes());
@@ -247,7 +239,7 @@ class FileBasedPersistenceTest {
 
     // then
     PersistenceException exception =
-        assertThrows(PersistenceException.class, () -> instUT.loadPlayers(path));
+        assertThrows(PersistenceException.class, () -> instUT.loadPlayers());
     String expectedMessage = "Cannot read.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
