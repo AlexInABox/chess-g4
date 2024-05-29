@@ -75,6 +75,10 @@ public class ChessBoard implements Serializable {
     board.get(position.row()).set(position.column(), piece);
   }
 
+  public List<List<Piece>> getBoard() {
+    return board;
+  }
+
   public boolean isValidPosition(int row, int column) {
     return row >= 0 && row < 8 && column >= 0 && column < 8;
   }
