@@ -4,29 +4,21 @@ import hwr.oop.match.Match;
 import hwr.oop.persistence.Persistence;
 import hwr.oop.pieces.*;
 import hwr.oop.player.Player;
-import java.io.File;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameLogic implements Domain {
 
   Persistence persistence;
-  private final Path pathMatches;
-  private final Path pathPlayers;
 
-  public GameLogic(Persistence persistence, String allMatchesPath, String allPlayersPath) {
+  public GameLogic(Persistence persistence) {
     this.persistence = persistence;
-    final File fileMatches = new File(allMatchesPath);
-    pathMatches = fileMatches.toPath();
-    final File filePlayers = new File(allPlayersPath);
-    pathPlayers = filePlayers.toPath();
   }
 
   @Override
   public Match loadMatch(String matchId) {
 
-    List<Match> matches = persistence.loadMatches(pathMatches);
+    List<Match> matches = persistence.loadMatches();
 
     for (Match match : matches) {
       if (match.getId().equals(matchId)) {
@@ -42,7 +34,7 @@ public class GameLogic implements Domain {
 
   @Override
   public void saveMatch(Match newMatch) {
-    List<Match> matches = persistence.loadMatches(pathMatches);
+    List<Match> matches = persistence.loadMatches();
     boolean matchExists = false;
     for (int i = 0; i < matches.size(); i++) {
       if (matches.get(i).getId().equals(newMatch.getId())) {
@@ -54,7 +46,7 @@ public class GameLogic implements Domain {
     if (!matchExists) {
       matches.add(newMatch);
     }
-    persistence.saveMatches(matches, pathMatches);
+    persistence.saveMatches(matches);
   }
 
   @Override
@@ -72,7 +64,7 @@ public class GameLogic implements Domain {
 
   @Override
   public Player loadPlayer(String playerName) {
-    return persistence.loadPlayers(pathPlayers).stream()
+    return persistence.loadPlayers().stream()
         .filter(player -> player.getName().equals(playerName))
         .findFirst()
         .orElseGet(
@@ -85,16 +77,16 @@ public class GameLogic implements Domain {
 
   @Override
   public void savePlayer(Player newPlayer) {
-    List<Player> players = persistence.loadPlayers(pathPlayers);
+    List<Player> players = persistence.loadPlayers();
     for (int i = 0; i < players.size(); i++) {
       if (players.get(i).getName().equals(newPlayer.getName())) {
         players.set(i, newPlayer);
-        persistence.savePlayers(players, pathPlayers);
+        persistence.savePlayers(players);
         return;
       }
     }
     players.add(newPlayer);
-    persistence.savePlayers(players, pathPlayers);
+    persistence.savePlayers(players);
   }
 
   @Override
@@ -184,9 +176,9 @@ public class GameLogic implements Domain {
   }
 
   private void deleteMatch(String matchId) {
-    List<Match> matches = persistence.loadMatches(pathMatches);
+    List<Match> matches = persistence.loadMatches();
     matches.removeIf(match -> match.getId().equals(matchId));
-    persistence.saveMatches(matches, pathMatches);
+    persistence.saveMatches(matches);
   }
 
   public static Position convertInputToPosition(String input)
@@ -210,7 +202,7 @@ public class GameLogic implements Domain {
   }
 
   private boolean matchExists(String matchId) {
-    List<Match> matches = persistence.loadMatches(pathMatches);
+    List<Match> matches = persistence.loadMatches();
     for (Match match : matches) {
       if (match.getId().equals(matchId)) {
         return true;

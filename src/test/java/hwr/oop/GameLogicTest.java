@@ -28,17 +28,14 @@ class GameLogicTest {
   private static final String TEST_FILE_PATH_MATCHES = "target/GameLogicTestMatches.txt";
   private static final String TEST_FILE_PATH_PLAYERS = "target/GameLogicTestPlayers.txt";
 
-  private Path pathMatches;
-  private Path pathPlayers;
-
   @BeforeEach
   void setUp() {
     File fileMatches = new File(TEST_FILE_PATH_MATCHES);
-    pathMatches = fileMatches.toPath();
+    Path pathMatches = fileMatches.toPath();
     File filePlayers = new File(TEST_FILE_PATH_PLAYERS);
-    pathPlayers = filePlayers.toPath();
-    persistence = new FileBasePersistence();
-    gameLogic = new GameLogic(persistence, TEST_FILE_PATH_MATCHES, TEST_FILE_PATH_PLAYERS);
+    Path pathPlayers = filePlayers.toPath();
+    persistence = new FileBasePersistence(pathMatches, pathPlayers);
+    gameLogic = new GameLogic(persistence);
   }
 
   @AfterEach
@@ -67,7 +64,7 @@ class GameLogicTest {
     Match expectedMatch = new Match(playerWhite, playerBlack, matchId);
 
     matches.add(expectedMatch);
-    persistence.saveMatches(matches, pathMatches);
+    persistence.saveMatches(matches);
 
     // Act
     Match loadedMatch = gameLogic.loadMatch("shortestGame");
@@ -91,13 +88,13 @@ class GameLogicTest {
   void testSaveMatch_NewMatch() {
     // Arrange
     List<Match> matches = new ArrayList<>();
-    persistence.saveMatches(matches, pathMatches);
+    persistence.saveMatches(matches);
     Match newMatch = new Match(new Player("Alice"), new Player("Bob"), "67");
     // Act
     gameLogic.saveMatch(newMatch);
 
     // Assert
-    List<Match> loadedMatches = persistence.loadMatches(pathMatches);
+    List<Match> loadedMatches = persistence.loadMatches();
     assertTrue(loadedMatches.contains(newMatch));
   }
 
@@ -112,13 +109,13 @@ class GameLogicTest {
     Match updatedMatch = new Match(playerWhite2, playerBlack, "123");
     List<Match> matches = new ArrayList<>();
     matches.add(existingMatch);
-    persistence.saveMatches(matches, pathMatches);
+    persistence.saveMatches(matches);
 
     // Act
     gameLogic.saveMatch(updatedMatch);
 
     // Assert
-    List<Match> loadedMatches = persistence.loadMatches(pathMatches);
+    List<Match> loadedMatches = persistence.loadMatches();
     assertTrue(loadedMatches.contains(updatedMatch));
   }
 
@@ -133,7 +130,7 @@ class GameLogicTest {
     gameLogic.createMatch(playerWhite, playerBlack, matchId);
 
     // Assert
-    List<Match> loadedMatches = persistence.loadMatches(pathMatches);
+    List<Match> loadedMatches = persistence.loadMatches();
     assertTrue(loadedMatches.contains(new Match(playerWhite, playerBlack, matchId)));
   }
 
@@ -147,7 +144,7 @@ class GameLogicTest {
     // Arrange: Save a match with the same ID
     List<Match> matches = new ArrayList<>();
     matches.add(new Match(playerWhite, playerBlack, matchId));
-    persistence.saveMatches(matches, pathMatches);
+    persistence.saveMatches(matches);
 
     // Act & Assert
     assertThrows(
@@ -161,7 +158,7 @@ class GameLogicTest {
     Player expectedPlayer = new Player("Player1");
     List<Player> players = new ArrayList<>();
     players.add(expectedPlayer);
-    persistence.savePlayers(players, pathPlayers);
+    persistence.savePlayers(players);
 
     // Act
     Player loadedPlayer = gameLogic.loadPlayer("Player1");
@@ -180,7 +177,7 @@ class GameLogicTest {
     gameLogic.savePlayer(newPlayer);
 
     // Assert
-    List<Player> loadedPlayers = persistence.loadPlayers(pathPlayers);
+    List<Player> loadedPlayers = persistence.loadPlayers();
     assertTrue(loadedPlayers.contains(newPlayer));
   }
 
@@ -192,13 +189,13 @@ class GameLogicTest {
     updatedPlayer.setElo((short) 110);
     List<Player> players = new ArrayList<>();
     players.add(existingPlayer);
-    persistence.savePlayers(players, pathPlayers);
+    persistence.savePlayers(players);
 
     // Act
     gameLogic.savePlayer(updatedPlayer);
 
     // Assert
-    List<Player> loadedPlayers = persistence.loadPlayers(pathPlayers);
+    List<Player> loadedPlayers = persistence.loadPlayers();
     assertTrue(loadedPlayers.contains(updatedPlayer));
   }
 
@@ -208,7 +205,7 @@ class GameLogicTest {
     Player existingPlayer = new Player("Alice");
     List<Player> players = new ArrayList<>();
     players.add(existingPlayer);
-    persistence.savePlayers(players, pathPlayers);
+    persistence.savePlayers(players);
 
     // Act
     Player loadedPlayer = gameLogic.loadPlayer("Alice");
@@ -226,13 +223,13 @@ class GameLogicTest {
     updatedPlayer.setElo((short) 110);
     List<Player> players = new ArrayList<>();
     players.add(existingPlayer);
-    persistence.savePlayers(players, pathPlayers);
+    persistence.savePlayers(players);
 
     // Act
     gameLogic.savePlayer(updatedPlayer);
 
     // Assert
-    List<Player> loadedPlayers = persistence.loadPlayers(pathPlayers);
+    List<Player> loadedPlayers = persistence.loadPlayers();
     assertTrue(loadedPlayers.contains(updatedPlayer));
   }
 
@@ -384,7 +381,7 @@ class GameLogicTest {
     gameLogic.saveMatch(newMatch);
 
     // Assert
-    List<Match> loadedMatches = persistence.loadMatches(pathMatches);
+    List<Match> loadedMatches = persistence.loadMatches();
     assertTrue(loadedMatches.contains(newMatch));
   }
 
@@ -397,7 +394,7 @@ class GameLogicTest {
     gameLogic.savePlayer(newPlayer);
 
     // Assert
-    List<Player> loadedPlayers = persistence.loadPlayers(pathPlayers);
+    List<Player> loadedPlayers = persistence.loadPlayers();
     assertTrue(loadedPlayers.contains(newPlayer));
   }
 
@@ -522,7 +519,7 @@ class GameLogicTest {
     List<Match> matches = new ArrayList<>();
     Match match = new Match(playerWhite, playerBlack, matchId);
     matches.add(match);
-    persistence.saveMatches(matches, pathMatches);
+    persistence.saveMatches(matches);
 
     // Act
     Match loadedMatch = gameLogic.loadMatch(matchId);
@@ -632,7 +629,7 @@ class GameLogicTest {
     String matchId = "nonExistentMatch";
 
     // Act
-    List<Match> loadedMatches = persistence.loadMatches(pathMatches);
+    List<Match> loadedMatches = persistence.loadMatches();
     int initialSize = loadedMatches.size();
 
     // Assert
@@ -669,7 +666,7 @@ class GameLogicTest {
                   "BLACK won this game. Congrats Bob (new ELO: " + playerBlack.getElo() + ")");
           softly
               .assertThat(
-                  persistence.loadMatches(pathMatches).stream()
+                  persistence.loadMatches().stream()
                       .anyMatch(m -> m.getId().equals(matchId)))
               .isFalse();
         });

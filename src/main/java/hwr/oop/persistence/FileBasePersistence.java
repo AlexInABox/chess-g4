@@ -9,10 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileBasePersistence implements Persistence {
+  private final Path filePathMatches;
+  private final Path filePathPlayers;
 
+
+  public FileBasePersistence(Path filePathMatches, Path filePathPlayers) {
+    this.filePathMatches = filePathMatches;
+    this.filePathPlayers = filePathPlayers;
+  }
   @Override
-  public void saveMatches(List<Match> matches, Path filePath) {
-    try (FileOutputStream f = new FileOutputStream(String.valueOf(filePath))) {
+  public void saveMatches(List<Match> matches) {
+    try (FileOutputStream f = new FileOutputStream(String.valueOf(filePathMatches))) {
       ObjectOutputStream o = new ObjectOutputStream(f);
       o.writeObject(matches);
     } catch (IOException e) {
@@ -20,16 +27,14 @@ public class FileBasePersistence implements Persistence {
     }
   }
 
-  // TODO: SuppressWarnings allowed here?
   @Override
-  @SuppressWarnings("unchecked")
-  public List<Match> loadMatches(Path filePath) {
+  public List<Match> loadMatches() {
     try {
-      if (!Files.exists(filePath) || Files.size(filePath) == 0) {
+      if (!Files.exists(filePathMatches) || Files.size(filePathMatches) == 0) {
         return new ArrayList<>();
       }
 
-      try (FileInputStream f = new FileInputStream(String.valueOf(filePath))) {
+      try (FileInputStream f = new FileInputStream(String.valueOf(filePathMatches))) {
         ObjectInputStream o = new ObjectInputStream(f);
         List<Match> loadedMatches = (List<Match>) o.readObject();
         return loadedMatches != null ? loadedMatches : new ArrayList<>();
@@ -40,8 +45,8 @@ public class FileBasePersistence implements Persistence {
   }
 
   @Override
-  public void savePlayers(List<Player> players, Path filePath) {
-    try (FileOutputStream f = new FileOutputStream(String.valueOf(filePath))) {
+  public void savePlayers(List<Player> players) {
+    try (FileOutputStream f = new FileOutputStream(String.valueOf(filePathPlayers))) {
       ObjectOutputStream o = new ObjectOutputStream(f);
       o.writeObject(players);
     } catch (IOException e) {
@@ -49,16 +54,14 @@ public class FileBasePersistence implements Persistence {
     }
   }
 
-  // TODO: SuppressWarnings allowed here?
   @Override
-  @SuppressWarnings("unchecked")
-  public List<Player> loadPlayers(Path filePath) {
+  public List<Player> loadPlayers() {
     try {
-      if (!Files.exists(filePath) || Files.size(filePath) == 0) {
+      if (!Files.exists(filePathPlayers) || Files.size(filePathPlayers) == 0) {
         return new ArrayList<>();
       }
 
-      try (FileInputStream f = new FileInputStream(String.valueOf(filePath))) {
+      try (FileInputStream f = new FileInputStream(String.valueOf(filePathPlayers))) {
         ObjectInputStream o = new ObjectInputStream(f);
         List<Player> loadedPlayers = (List<Player>) o.readObject();
         return loadedPlayers != null ? loadedPlayers : new ArrayList<>();
