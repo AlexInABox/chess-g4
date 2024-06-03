@@ -1,4 +1,5 @@
-# :chess_pawn: CHESS - HWR OOP Lecture Project 
+# :chess_pawn: CHESS - HWR OOP Lecture Project ![Static Badge](https://img.shields.io/badge/Mutation%20Coverage-8A2BE2)
+
 This repository contains our (Alex :shipit:, Maja :basecampy:, Felix :penguin:, Gero :octocat:, Laura :bug:) student project created for an ongoing lecture on object-oriented
 programming with Java/Kotlin at HWR Berlin (summer term 2024).
 
