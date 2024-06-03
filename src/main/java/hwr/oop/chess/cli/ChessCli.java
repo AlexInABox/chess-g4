@@ -1,14 +1,14 @@
 package hwr.oop.chess.cli;
 
-import hwr.oop.MatchAlreadyExistsException;
-import hwr.oop.MatchNotFoundException;
-import hwr.oop.Position;
-import hwr.oop.pieces.IllegalMoveException;
-import hwr.oop.pieces.Piece;
-import hwr.oop.match.Match;
-import hwr.oop.GameLogic;
+import hwr.oop.chess.MatchAlreadyExistsException;
+import hwr.oop.chess.MatchNotFoundException;
+import hwr.oop.chess.Position;
+import hwr.oop.chess.pieces.IllegalMoveException;
+import hwr.oop.chess.pieces.Piece;
+import hwr.oop.chess.match.Match;
+import hwr.oop.chess.GameLogic;
 
-import hwr.oop.player.Player;
+import hwr.oop.chess.player.Player;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;

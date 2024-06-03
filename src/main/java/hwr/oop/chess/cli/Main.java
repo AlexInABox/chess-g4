@@ -1,8 +1,8 @@
 package hwr.oop.chess.cli;
 
-import hwr.oop.GameLogic;
-import hwr.oop.persistence.FileBasePersistence;
-import hwr.oop.persistence.Persistence;
+import hwr.oop.chess.GameLogic;
+import hwr.oop.chess.persistence.FileBasePersistence;
+import hwr.oop.chess.persistence.Persistence;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;

@@ -2,15 +2,10 @@ package hwr.oop.chess;
 
 import hwr.oop.chess.match.Match;
 import hwr.oop.chess.persistence.Persistence;
+import hwr.oop.chess.pieces.*;
 import hwr.oop.chess.pieces.IllegalMoveException;
 import hwr.oop.chess.pieces.Piece;
 import hwr.oop.chess.player.Player;
-
-import hwr.oop.match.Match;
-import hwr.oop.persistence.Persistence;
-import hwr.oop.pieces.*;
-import hwr.oop.player.Player;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

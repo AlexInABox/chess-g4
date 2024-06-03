@@ -5,12 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-import hwr.oop.GameLogic;
-import hwr.oop.MatchNotFoundException;
-import hwr.oop.Position;
-import hwr.oop.match.Match;
-import hwr.oop.pieces.IllegalMoveException;
-import hwr.oop.player.Player;
+import hwr.oop.chess.GameLogic;
+import hwr.oop.chess.MatchNotFoundException;
+import hwr.oop.chess.Position;
+import hwr.oop.chess.match.Match;
+import hwr.oop.chess.pieces.IllegalMoveException;
+import hwr.oop.chess.player.Player;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
