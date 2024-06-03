@@ -1,34 +1,71 @@
-/*package hwr.oop.cli;
+package hwr.oop.cli;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
 
 import hwr.oop.GameLogic;
+import hwr.oop.MatchNotFoundException;
+import hwr.oop.Position;
 import hwr.oop.match.Match;
+import hwr.oop.pieces.IllegalMoveException;
+import hwr.oop.player.Player;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Stream;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class ChessCliTest {
 
   private ByteArrayOutputStream outContent;
+  @Mock GameLogic gameLogicMock;
   private ChessCli chessCli;
 
   @BeforeEach
   void setUp() {
     outContent = new ByteArrayOutputStream();
     OutputStream out = new PrintStream(outContent);
-    chessCli = new ChessCli(out);
+    chessCli = new ChessCli(out, gameLogicMock);
+  }
+
+  @Test
+  void createMatchCommand() {
+    // Arrange
+    String playerWhiteName = "Alice";
+    String playerBlackName = "Bob";
+    String matchId = "123";
+    List<String> arguments = Arrays.asList("create", matchId, playerWhiteName, playerBlackName);
+    Player playerWhite = new Player(playerWhiteName);
+    Player playerBlack = new Player(playerBlackName);
+    Match match = new Match(playerWhite, playerBlack, matchId);
+    when(gameLogicMock.loadPlayer(playerWhiteName)).thenReturn(playerWhite);
+    when(gameLogicMock.loadPlayer(playerBlackName)).thenReturn(playerBlack);
+    when(gameLogicMock.loadMatch(anyString())).thenReturn(match);
+    // Act
+    chessCli.handle(arguments);
+    String output = outContent.toString().trim();
+
+    // Assert
+    assertThat(output)
+        .contains("Welcome to chess in Java!")
+        .contains("Chess match created with ID: 123")
+        .contains("Hello Alice and Bob.")
+        .contains("Let's start the match.")
+        .contains("Have fun!");
   }
 
   @Test
@@ -58,7 +95,10 @@ class ChessCliTest {
     String output = outContent.toString().trim();
 
     // Normalize line endings in expected output
-    expectedOutput = expectedOutput.replace("\n", System.lineSeparator()).replace("\r\n", System.lineSeparator());
+    expectedOutput =
+        expectedOutput
+            .replace("\n", System.lineSeparator())
+            .replace("\r\n", System.lineSeparator());
 
     // Assert
     assertThat(output).isEqualTo(expectedOutput);
@@ -66,8 +106,10 @@ class ChessCliTest {
 
   private static Stream<Arguments> unknownCommandsProvider() {
     return Stream.of(
-        Arguments.of("start", "Unknown command: start\nFor help and further information: chess help"),
-        Arguments.of("play", "Unknown command: play\nFor help and further information: chess help"));
+        Arguments.of(
+            "start", "Unknown command: start\nFor help and further information: chess help"),
+        Arguments.of(
+            "play", "Unknown command: play\nFor help and further information: chess help"));
   }
 
   @ParameterizedTest
@@ -81,7 +123,10 @@ class ChessCliTest {
     String output = outContent.toString().trim();
 
     // Normalize line endings in expected output
-    expectedOutput = expectedOutput.replace("\n", System.lineSeparator()).replace("\r\n", System.lineSeparator());
+    expectedOutput =
+        expectedOutput
+            .replace("\n", System.lineSeparator())
+            .replace("\r\n", System.lineSeparator());
 
     // Assert
     assertThat(output).isEqualTo(expectedOutput);
@@ -90,14 +135,15 @@ class ChessCliTest {
   // Provide invalid arguments for each command
   private static Stream<Arguments> invalidArgumentsProvider() {
     return Stream.of(
-        Arguments.of("print", "Oops... Invalid command.\nUsage: chess print"),
-        Arguments.of("create", "Oops... Invalid command.\nUsage: chess create <ID> <Player1Name> <Player2Name>"),
-        Arguments.of("save", "Oops... Invalid command.\nUsage: chess save <ID>"),
-        Arguments.of("load", "Oops... Invalid command.\nUsage: chess load <ID>"),
-        Arguments.of("on", "Oops... Invalid command.\nUsage: chess on <ID> move <FROM> <TO>"),
+        Arguments.of(
+            "print", "Unknown command: print\nFor help and further information: chess help"),
+        Arguments.of(
+            "create",
+            "Oops... Invalid command.\nUsage: chess create <ID> <Player1Name> <Player2Name>"),
+        Arguments.of("save", "Unknown command: save\nFor help and further information: chess help"),
+        Arguments.of("on", "Unknown command: on\nFor help and further information: chess help"),
         Arguments.of("resign", "Oops... Invalid command.\nUsage: chess resign <ID>"),
-        Arguments.of("accept", "Oops... Invalid command.\nUsage: chess accept <ID>")
-    );
+        Arguments.of("accept", "Oops... Invalid command.\nUsage: chess accept <ID>"));
   }
 
   @Test
@@ -111,7 +157,10 @@ class ChessCliTest {
 
     // Normalize line endings in expected output
     String expectedOutput = "Oops... Invalid command.\nUsage: chess help";
-    expectedOutput = expectedOutput.replace("\n", System.lineSeparator()).replace("\r\n", System.lineSeparator());
+    expectedOutput =
+        expectedOutput
+            .replace("\n", System.lineSeparator())
+            .replace("\r\n", System.lineSeparator());
 
     // Assert
     assertThat(output).isEqualTo(expectedOutput);
@@ -129,138 +178,148 @@ class ChessCliTest {
     // Assert
     assertThat(output)
         .contains("Supported commands:")
-        .contains("- print: Print chessboard for current match")
         .contains("- create <ID> <PlayerWhite> <PlayerBlack>: Start a new chess match")
-        .contains("- save <ID>: Save a chess match")
-        .contains("- load <ID>: Load a saved chess match")
-        .contains("- on <ID> move <FROM> <TO>: Move a chess piece to a valid position")
+        .contains("- move <FROM> <TO> on <ID>: Move a chess piece to a valid position")
         .contains("- resign <ID>: Resign the current match")
         .contains("- accept <ID>: Accept a remi")
         .contains("- help: Display this help message");
   }
 
+
   @Test
-  void printMatchCommand() {
+  void testMovePiece() throws MatchNotFoundException {
     // Arrange
-    List<String> arguments = Collections.singletonList("print");
+    String playerWhiteName = "Alice";
+    String playerBlackName = "Bob";
+    String matchId = "123";
+    List<String> arguments = Arrays.asList("move", "B2", "B3", "on", matchId);
+    Player playerWhite = new Player(playerWhiteName);
+    Player playerBlack = new Player(playerBlackName);
+    Match matchUpdated = new Match(playerWhite, playerBlack,"rnbqkbnr/pppppppp/8/8/8/1P6/P1PPPPPP/RNBQKBNR b 1", matchId);
+    when(gameLogicMock.loadMatch(matchId)).thenReturn(matchUpdated);
+
 
     // Act
     chessCli.handle(arguments);
     String output = outContent.toString().trim();
 
     // Assert
+    assertThat(output).contains("Moving piece in match 123 from B2 to B3")
+            .contains("________________")
+            .contains("r n b q k b n r")
+            .contains("p p p p p p p p")
+            .contains(". . . . . . . .")
+            .contains(". . . . . . . .")
+            .contains(". . . . . . . .")
+            .contains(". P . . . . . .")
+            .contains("P . P P P P P P")
+            .contains("R N B Q K B N R")
+            .contains("________________");
+
+    // Verify interactions with mocks
+    verify(gameLogicMock, times(1)).loadMatch(matchId);
+    verify(gameLogicMock, times(1)).moveTo("B2", "B3", matchUpdated);
+    verify(gameLogicMock, times(1)).saveMatch(matchUpdated);
+  }
+
+  
+  @Test
+  void testMovePieceThrowsMatchNotFoundException2() throws MatchNotFoundException {
+    // Arrange
+    List<String> arguments = Arrays.asList("move", "e2", "e4", "on", "nonexistentID");
+
+    // We need to mock the behavior of gameLogic to throw the exception
+    doThrow(new MatchNotFoundException("Match not found")).when(gameLogicMock).loadMatch("nonexistentID");
+
+    // Act & Assert
+    chessCli.handle(arguments);
+
+    // Verify that the appropriate message was printed
+    String output = outContent.toString();
+    assertTrue(output.contains("The match does not exist. Please use another match ID!"));
+  }
+  @Test
+  void testMovePieceThrowsMatchNotFoundException() throws MatchNotFoundException {
+    // Arrange
+    List<String> arguments = Arrays.asList("move", "e2", "e4", "on", "nonexistentID");
+
+    // We need to mock the behavior of gameLogic to throw the exception
+    doThrow(new MatchNotFoundException("Match not found")).when(gameLogicMock).loadMatch("nonexistentID");
+
+    // Act & Assert
+    chessCli.handle(arguments);
+
+    // Verify that the appropriate message was printed
+    String output = outContent.toString();
+    assertTrue(output.contains("The match does not exist. Please use another match ID!"));
   }
 
   @Test
-  void createMatchCommand() {
+  void testMovePieceThrowsIllegalMoveException() throws MatchNotFoundException, IllegalMoveException {
     // Arrange
-    List<String> arguments = Arrays.asList("create", "123", "Alice", "Bob");
+    String matchId = "123";
+    List<String> arguments = Arrays.asList("move", "e2", "e5", "on", matchId);
+
+    // Mocking match and illegal move exception
+    Player playerWhite = new Player("Alice");
+    Player playerBlack = new Player("Bob");
+    Match match = new Match(playerWhite, playerBlack, "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w 0", matchId);
+    when(gameLogicMock.loadMatch(matchId)).thenReturn(match);
+    doThrow(new IllegalMoveException("Illegal move")).when(gameLogicMock).moveTo("e2", "e5", match);
 
     // Act
     chessCli.handle(arguments);
+
+    // Assert
     String output = outContent.toString().trim();
+    assertThat(output).contains("Illegal move");
 
-    // Assert
-    assertThat(output)
-        .contains("Welcome to chess in Java!")
-        .contains("Chess match created with ID: 123")
-        .contains("Hello Alice and Bob.")
-        .contains("Let's start the match.")
-        .contains("Have fun!");
+    // Verify interactions with mocks
+    verify(gameLogicMock, times(1)).loadMatch(matchId);
+    verify(gameLogicMock, times(1)).moveTo("e2", "e5", match);
   }
 
   @Test
-  void saveMatchCommand() {
+  void testShowMoves() throws MatchNotFoundException {
     // Arrange
-    OutputStream outputStream = new ByteArrayOutputStream();
-    PrintStream printStream = new PrintStream(outputStream);
-    ChessCli chessCli = new ChessCli(printStream);
-    List<String> arguments = Arrays.asList("save", "123");
+    String matchId = "123";
+    List<String> arguments = Arrays.asList("show-moves", "e2", "on", matchId);
+
+    // Mocking match and possible moves
+    Player playerWhite = new Player("Alice");
+    Player playerBlack = new Player("Bob");
+    Match match = new Match(playerWhite, playerBlack, matchId);
+    when(gameLogicMock.loadMatch(matchId)).thenReturn(match);
+
+    List<Position> possibleMoves = Arrays.asList(new Position(2, 4), new Position(3, 4));
+    when(gameLogicMock.getPossibleMoves("e2", match)).thenReturn(possibleMoves);
 
     // Act
     chessCli.handle(arguments);
-    String output = outputStream.toString().trim();
 
     // Assert
-    assertThat(output).isEqualTo("Match with ID 123 saved successfully.");
+    String output = outContent.toString().trim();
+    assertThat(output).contains("Possible moves for piece at position e2: e3, e4");
+
+    // Verify interactions with mocks
+    verify(gameLogicMock, times(1)).loadMatch(matchId);
   }
 
   @Test
-  void loadMatchCommand_MatchExists() {
+  void testShowMovesThrowsMatchNotFoundException() throws MatchNotFoundException {
     // Arrange
-    OutputStream outputStream = new ByteArrayOutputStream();
-    PrintStream printStream = new PrintStream(outputStream);
-    ChessCli chessCli = new ChessCli(printStream);
-    List<String> arguments = Arrays.asList("load", "123");
+    List<String> arguments = Arrays.asList("show-moves", "e2", "on", "nonexistentID");
+
+    // We need to mock the behavior of gameLogic to throw the exception
+    doThrow(new MatchNotFoundException("Match not found")).when(gameLogicMock).loadMatch("nonexistentID");
 
     // Act
     chessCli.handle(arguments);
-    String output = outputStream.toString().trim();
 
-    // Assert
-    assertThat(output)
-        .contains("Loading match with ID: 123")
-        .contains("Match with ID 123 loaded successfully.");
+    // Verify that the appropriate message was printed
+    String output = outContent.toString();
+    assertTrue(output.contains("The match does not exist. Please use another match ID!"));
   }
 
-  @Test
-  void loadMatchCommand_MatchDoesNotExist() {
-    // Arrange
-    OutputStream outputStream = new ByteArrayOutputStream();
-    PrintStream printStream = new PrintStream(outputStream);
-    ChessCli chessCli = new ChessCli(printStream);
-    List<String> arguments = Arrays.asList("load", "456");
 
-    // Act
-    chessCli.handle(arguments);
-    String output = outputStream.toString().trim();
-
-    // Assert
-    assertThat(output)
-        .contains("Match with ID 456 does not exist. Please choose a different ID.");
-  }
-
-  @Test
-  void testMovePiece() {
-    // Arrange
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    PrintStream printStream = new PrintStream(outputStream);
-    ChessCli chessCli = new ChessCli(printStream);
-    List<String> arguments = Arrays.asList("on", "123", "move", "A1", "B2");
-
-    // Act
-    chessCli.handle(arguments);
-    String output = outputStream.toString().trim();
-
-    // Assert
-    assertThat(output)
-        .contains("Moving piece in match 123 from A1 to B2")
-        .contains("Piece was successfully moved.");
-    assertThat(output.lines().count()).isEqualTo(2);
-  }
-
-  @Test
-  void testMain_HandleMethodCall() {
-    // Arrange
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    PrintStream printStream = new PrintStream(outputStream);
-    System.setOut(printStream);
-
-    String matchID = "123";
-    String playerOneName = "Alice";
-    String playerTwoName = "Bob";
-
-    // Act
-    Main.main(new String[] {"create", matchID, playerOneName, playerTwoName});
-
-    // Assert
-    String output = outputStream.toString().trim();
-    assertThat(output)
-        .contains("Welcome to chess in Java!")
-        .contains("Chess match created with ID: " + matchID)
-        .contains("Hello " + playerOneName + " and " + playerTwoName + ".")
-        .contains("Let's start the match.")
-        .contains("Have fun!");
-  }
 }
-*/

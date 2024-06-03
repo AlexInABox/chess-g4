@@ -43,7 +43,6 @@ public class ChessCli {
     switch (command) {
       case "help" -> handleHelp(arguments);
       case "create" -> handleCreate(arguments);
-      case "load" -> handleLoad(arguments);
       case "move" -> handleMove(arguments);
       case "show-moves" -> handleShowMoves(arguments);
       case "resign" -> handleResign(arguments);
@@ -75,16 +74,6 @@ public class ChessCli {
     startMatch(playerWhiteName, playerBlackName, matchID);
   }
 
-  private void handleLoad(List<String> arguments) {
-    if (arguments.size() != 2) {
-      out.println(INVALID_COMMAND);
-      out.println("Usage: chess load <ID>");
-      return;
-    }
-
-    String matchToLoad = arguments.get(1);
-    loadMatch(matchToLoad);
-  }
 
   private void handleMove(List<String> arguments) {
     if (arguments.size() != 5) {
@@ -143,7 +132,6 @@ public class ChessCli {
     out.println("Supported commands:");
     out.println("  - create <ID> <PlayerWhite> <PlayerBlack>: Start a new chess match");
     out.println("  - save <ID>: Save a chess match");
-    out.println("  - load <ID>: Load a saved chess match");
     out.println("  - move <FROM> <TO> on <ID>: Move a chess piece to a valid position");
     out.println("  - resign <ID>: Resign the current match");
     out.println("  - accept <ID>: Accept a remi");
@@ -213,18 +201,18 @@ public class ChessCli {
     }
   }
 
-  private void loadMatch (String matchID) {
-    try {
-      loadCurrentMatchIfNecessary(matchID);
-      out.println("Loading match with ID: " + matchID);
-      currentMatch = gameLogic.loadMatch(matchID);
-      out.println(MATCH_WITH_ID + matchID + " loaded successfully.");
-      printChessboard(matchID);
-    } catch (MatchNotFoundException e) {
-      out.println(MATCH_NOT_EXIST);
-      out.println(e.getMessage());
-    }
-  }
+//  private void loadMatch (String matchID) {
+//    try {
+//      loadCurrentMatchIfNecessary(matchID);
+//      out.println("Loading match with ID: " + matchID);
+//      currentMatch = gameLogic.loadMatch(matchID);
+//      out.println(MATCH_WITH_ID + matchID + " loaded successfully.");
+//      printChessboard(matchID);
+//    } catch (MatchNotFoundException e) {
+//      out.println(MATCH_NOT_EXIST);
+//      out.println(e.getMessage());
+//    }
+//  }
 
   private void movePiece (String from, String to, String matchID) {
     try {
@@ -232,6 +220,7 @@ public class ChessCli {
       gameLogic.moveTo(from, to, currentMatch);
       out.println("Moving piece in match " + matchID + " from " + from + " to " + to);
       gameLogic.saveMatch(currentMatch);
+      loadCurrentMatchIfNecessary(matchID);
       printChessboard(matchID);
     } catch (MatchNotFoundException e) {
       out.println(MATCH_NOT_EXIST);
@@ -244,8 +233,7 @@ public class ChessCli {
   private void showMoves(String from, String matchID) {
     try {
       loadCurrentMatchIfNecessary(matchID);
-      Position position = parsePosition(from);
-      List<Position> possibleMoves = getPossibleMoves(position, currentMatch);
+      List<Position> possibleMoves = gameLogic.getPossibleMoves(from, currentMatch);
       out.println("Possible moves for piece at position " + from + ": " + possibleMovesToString(possibleMoves));
       printChessboardHighlighted(matchID, possibleMoves);
     } catch (MatchNotFoundException e) {
