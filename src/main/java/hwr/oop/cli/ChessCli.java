@@ -270,20 +270,20 @@ public class ChessCli {
     }
   }
 
-  private Position parsePosition(String positionStr) {
-    int column = positionStr.charAt(0) - 'a';
-    int row = Character.getNumericValue(positionStr.charAt(1)) - 1;
-    return new Position(row, column);
-  }
+//  private Position parsePosition(String positionStr) {
+//    int column = positionStr.charAt(0) - 'a';
+//    int row = Character.getNumericValue(positionStr.charAt(1)) - 1;
+//    return new Position(row, column);
+//  }
 
-  public List<Position> getPossibleMoves(Position position, Match match) {
-    List<Position> possibleMoves = new ArrayList<>();
-    Piece piece = match.getBoard().getPieceAtPosition(position);
-    if (piece != null) {
-      possibleMoves = piece.possibleMoves();
-    }
-    return possibleMoves;
-  }
+//  public List<Position> getPossibleMoves(Position position, Match match) {
+//    List<Position> possibleMoves = new ArrayList<>();
+//    Piece piece = match.getBoard().getPieceAtPosition(position);
+//    if (piece != null) {
+//      possibleMoves = piece.possibleMoves();
+//    }
+//    return possibleMoves;
+//  }
 
   private String possibleMovesToString(List<Position> positions) {
     StringBuilder sb = new StringBuilder();
