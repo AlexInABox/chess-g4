@@ -75,8 +75,37 @@ public class ChessBoard implements Serializable {
     board.get(position.row()).set(position.column(), piece);
   }
 
+  public King getKingOfColor(Color color) {
+    for (List<Piece> row : board) {
+      for (Piece piece : row) {
+        if (piece != null && piece.getColor() == color && piece.getType() == PieceType.KING) {
+          return (King) piece;
+        }
+      }
+    }
+    return null;
+  }
+
   public boolean isValidPosition(int row, int column) {
     return row >= 0 && row < 8 && column >= 0 && column < 8;
+  }
+
+  public boolean isCheckMate() {
+    Color colorInCheck;
+    if (getKingOfColor(Color.WHITE).isInCheck()) {
+      colorInCheck = Color.WHITE;
+    } else if (getKingOfColor(Color.BLACK).isInCheck()) {
+      colorInCheck = Color.BLACK;
+    } else return false;
+
+    for (List<Piece> row : board) {
+      for (Piece piece : row) {
+        if (piece != null && piece.getColor() == colorInCheck && !piece.possibleMoves().isEmpty())
+          return false;
+      }
+    }
+
+    return true;
   }
 
   @Override

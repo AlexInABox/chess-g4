@@ -66,7 +66,8 @@ public class Pawn implements Piece, Serializable {
 
     Position oneStepAhead = new Position(position.row() + direction, position.column());
     if (chessBoard.isValidPosition(oneStepAhead.row(), oneStepAhead.column())
-        && chessBoard.getPieceAtPosition(oneStepAhead) == null) {
+        && chessBoard.getPieceAtPosition(oneStepAhead) == null
+        && !wouldKingBeInCheckAfterMoveTo(oneStepAhead)) {
       possibleMoves.add(oneStepAhead);
 
       Position twoStepsAhead;
@@ -74,7 +75,9 @@ public class Pawn implements Piece, Serializable {
         twoStepsAhead = new Position(position.row() + 2, position.column());
       } else twoStepsAhead = new Position(position.row() - 2, position.column());
 
-      if (position.row() == startRow && chessBoard.getPieceAtPosition(twoStepsAhead) == null) {
+      if (position.row() == startRow
+          && chessBoard.getPieceAtPosition(twoStepsAhead) == null
+          && !wouldKingBeInCheckAfterMoveTo(twoStepsAhead)) {
         possibleMoves.add(twoStepsAhead);
       }
     }
@@ -88,12 +91,28 @@ public class Pawn implements Piece, Serializable {
         Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(capturePosition);
         if ((pieceAtNewPosition != null)
             && (pieceAtNewPosition.getColor() != color)
-            && (pieceAtNewPosition.getType() != PieceType.KING)) {
+            && (pieceAtNewPosition.getType() != PieceType.KING)
+            && !wouldKingBeInCheckAfterMoveTo(capturePosition)) {
           possibleMoves.add(capturePosition);
         }
       }
     }
+
     return possibleMoves;
+  }
+
+  private boolean wouldKingBeInCheckAfterMoveTo(Position target) {
+    Piece pieceAtTarget = chessBoard.getPieceAtPosition(target);
+
+    chessBoard.setPieceAtPosition(position, null);
+    chessBoard.setPieceAtPosition(target, this);
+
+    boolean isKingInCheckNow = chessBoard.getKingOfColor(color).isInCheck();
+
+    chessBoard.setPieceAtPosition(target, pieceAtTarget);
+    chessBoard.setPieceAtPosition(position, this);
+
+    return isKingInCheckNow;
   }
 
   @Override

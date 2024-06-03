@@ -59,6 +59,19 @@ class BishopTest {
 
     bishop.moveTo(targetPosition);
     assertThat(bishop.getPosition()).isEqualTo(targetPosition);
+    assertThat(board.getPieceAtPosition(new Position(3, 3))).isNull();
+  }
+
+  @Test
+  void testBishopTake_successful() throws IllegalMoveException {
+    Position bishopPosition = new Position(2, 2);
+    Position bishopTargetPosition = new Position(6, 6);
+    Piece bishop = new Bishop(Color.WHITE, bishopPosition, board);
+    board.setPieceAtPosition(bishop.getPosition(), bishop);
+
+    bishop.moveTo(bishopTargetPosition);
+    assertThat(bishop.getPosition()).isEqualTo(bishopTargetPosition);
+    assertThat(board.getPieceAtPosition(new Position(3, 3))).isNull();
   }
 
   @Test
@@ -73,6 +86,7 @@ class BishopTest {
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(bishop.getPosition()).isEqualTo(position);
+    assertThat(board.getPieceAtPosition(bishop.getPosition())).isEqualTo(bishop);
   }
 
   @Test
@@ -194,6 +208,10 @@ class BishopTest {
   @Test
   void testBishopPossibleMovesMutationInList_successful() {
     board.clearChessboard();
+    Position kingPosition = new Position(7, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
     Position bishopPosition = new Position(4, 4);
 
     Piece bishop = new Bishop(Color.WHITE, bishopPosition, board);
@@ -218,5 +236,120 @@ class BishopTest {
             new Position(0, 0));
 
     assertEquals(expectedMoves, possibleMoves);
+  }
+
+  @Test
+  void testBishopBlockCheck_successful() throws IllegalMoveException {
+    board.clearChessboard();
+    Position kingPosition = new Position(0, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position bishopPosition = new Position(1, 0);
+    Position bishopTarget = new Position(0, 1);
+    Position enemyRookPosition = new Position(0, 2);
+
+    Piece bishop = new Bishop(Color.WHITE, bishopPosition, board);
+    Piece enemyRook = new Rook(Color.BLACK, enemyRookPosition, board);
+
+    board.setPieceAtPosition(bishop.getPosition(), bishop);
+    board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
+
+    bishop.moveTo(bishopTarget);
+    assertThat(bishop.getPosition()).isEqualTo(bishopTarget);
+  }
+
+  @Test
+  void testBishopBlockCheck_fail() {
+    board.clearChessboard();
+    Position kingPosition = new Position(0, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position bishopPosition = new Position(1, 0);
+    Position bishopTarget = new Position(2, 1);
+    Position enemyRookPosition = new Position(0, 2);
+
+    Piece bishop = new Bishop(Color.WHITE, bishopPosition, board);
+    Piece enemyRook = new Rook(Color.BLACK, enemyRookPosition, board);
+
+    board.setPieceAtPosition(bishop.getPosition(), bishop);
+    board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
+
+    IllegalMoveException exception =
+            assertThrows(IllegalMoveException.class, () -> bishop.moveTo(bishopTarget));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(bishop.getPosition()).isEqualTo(bishopPosition);
+  }
+
+  @Test
+  void testBishopUnblockCheck_fail() {
+    board.clearChessboard();
+    Position kingPosition = new Position(0, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position bishopPosition = new Position(0, 1);
+    Position bishopTarget = new Position(1, 0);
+    Position enemyRookPosition = new Position(0, 2);
+
+    Piece bishop = new Bishop(Color.WHITE, bishopPosition, board);
+    Piece enemyRook = new Rook(Color.BLACK, enemyRookPosition, board);
+
+    board.setPieceAtPosition(bishop.getPosition(), bishop);
+    board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
+
+    IllegalMoveException exception =
+            assertThrows(IllegalMoveException.class, () -> bishop.moveTo(bishopTarget));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(bishop.getPosition()).isEqualTo(bishopPosition);
+  }
+
+  @Test
+  void testBishopTakeFriendlyKing_fail() {
+    board.clearChessboard();
+    Position kingPosition = new Position(0, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position bishopPosition = new Position(1, 1);
+    Position bishopTarget = new Position(0, 0);
+
+    Piece bishop = new Bishop(Color.WHITE, bishopPosition, board);
+
+    board.setPieceAtPosition(bishop.getPosition(), bishop);
+
+    IllegalMoveException exception =
+            assertThrows(IllegalMoveException.class, () -> bishop.moveTo(bishopTarget));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(bishop.getPosition()).isEqualTo(bishopPosition);
+  }
+
+  @Test
+  void testBishopTakeEnemyKing_fail() {
+    board.clearChessboard();
+    Position kingPosition = new Position(7, 7);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position enemyKingPosition = new Position(0, 0);
+    Piece enemyKing = new King(Color.BLACK, enemyKingPosition, board);
+    board.setPieceAtPosition(enemyKing.getPosition(), enemyKing);
+
+    Position bishopPosition = new Position(1, 1);
+    Position bishopTarget = new Position(0, 0);
+
+    Piece bishop = new Bishop(Color.WHITE, bishopPosition, board);
+
+    board.setPieceAtPosition(bishop.getPosition(), bishop);
+
+    IllegalMoveException exception =
+            assertThrows(IllegalMoveException.class, () -> bishop.moveTo(bishopTarget));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(bishop.getPosition()).isEqualTo(bishopPosition);
   }
 }

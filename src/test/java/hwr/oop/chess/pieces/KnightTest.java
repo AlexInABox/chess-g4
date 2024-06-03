@@ -57,12 +57,31 @@ class KnightTest {
 
     knight.moveTo(targetPosition);
     assertThat(knight.getPosition()).isEqualTo(targetPosition);
+
+    assertThat(board.getPieceAtPosition(position)).isNull();
+    assertThat(board.getPieceAtPosition(targetPosition)).isEqualTo(knight);
+  }
+
+  @Test
+  void testKnightTake_successful() throws IllegalMoveException {
+    Position knightPosition = new Position(1, 0);
+    Position knightTargetPosition = new Position(2, 2);
+    Piece knight = new Knight(Color.WHITE, knightPosition, board);
+    Piece enemyPiece = new Pawn(Color.BLACK, knightTargetPosition, board);
+
+    board.setPieceAtPosition(knight.getPosition(), knight);
+    board.setPieceAtPosition(enemyPiece.getPosition(), enemyPiece);
+
+    knight.moveTo(knightTargetPosition);
+    assertThat(knight.getPosition()).isEqualTo(knightTargetPosition);
+    assertThat(board.getPieceAtPosition(knightPosition)).isNull();
+    assertThat(board.getPieceAtPosition(knightTargetPosition)).isEqualTo(knight);
   }
 
   @Test
   void testKnightMove_fail() {
     Position position = new Position(2, 2);
-    Position targetPosition = new Position(1, 4);
+    Position targetPosition = new Position(2, 3);
     Piece knight = new Knight(Color.WHITE, position, board);
     board.setPieceAtPosition(knight.getPosition(), knight);
 
@@ -71,6 +90,9 @@ class KnightTest {
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(knight.getPosition()).isEqualTo(position);
+
+    assertThat(board.getPieceAtPosition(position)).isEqualTo(knight);
+    assertThat(board.getPieceAtPosition(targetPosition)).isNull();
   }
 
   @Test
@@ -192,6 +214,10 @@ class KnightTest {
   @Test
   void testKnightPossibleMovesMutationInList_successful() {
     board.clearChessboard();
+    Position kingPosition = new Position(7, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
     Position knightPosition = new Position(4, 4);
 
     Piece knight = new Knight(Color.WHITE, knightPosition, board);
@@ -211,5 +237,120 @@ class KnightTest {
             new Position(3, 2));
 
     assertEquals(expectedMoves, possibleMoves);
+  }
+
+  @Test
+  void testKnightBlockCheck_successful() throws IllegalMoveException {
+    board.clearChessboard();
+    Position kingPosition = new Position(0, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position knightPosition = new Position(1, 3);
+    Position knightTarget = new Position(0, 1);
+    Position enemyRookPosition = new Position(0, 2);
+
+    Piece knight = new Knight(Color.WHITE, knightPosition, board);
+    Piece enemyRook = new Rook(Color.BLACK, enemyRookPosition, board);
+
+    board.setPieceAtPosition(knight.getPosition(), knight);
+    board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
+
+    knight.moveTo(knightTarget);
+    assertThat(knight.getPosition()).isEqualTo(knightTarget);
+  }
+
+  @Test
+  void testKnightBlockCheck_fail() {
+    board.clearChessboard();
+    Position kingPosition = new Position(0, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position knightPosition = new Position(1, 3);
+    Position knightTarget = new Position(2, 1);
+    Position enemyRookPosition = new Position(0, 2);
+
+    Piece knight = new Knight(Color.WHITE, knightPosition, board);
+    Piece enemyRook = new Rook(Color.BLACK, enemyRookPosition, board);
+
+    board.setPieceAtPosition(knight.getPosition(), knight);
+    board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
+
+    IllegalMoveException exception =
+            assertThrows(IllegalMoveException.class, () -> knight.moveTo(knightTarget));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(knight.getPosition()).isEqualTo(knightPosition);
+  }
+
+  @Test
+  void testKnightUnblockCheck_fail() {
+    board.clearChessboard();
+    Position kingPosition = new Position(0, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position knightPosition = new Position(0, 1);
+    Position knightTarget = new Position(1, 3);
+    Position enemyRookPosition = new Position(0, 2);
+
+    Piece knight = new Knight(Color.WHITE, knightPosition, board);
+    Piece enemyRook = new Rook(Color.BLACK, enemyRookPosition, board);
+
+    board.setPieceAtPosition(knight.getPosition(), knight);
+    board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
+
+    IllegalMoveException exception =
+            assertThrows(IllegalMoveException.class, () -> knight.moveTo(knightTarget));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(knight.getPosition()).isEqualTo(knightPosition);
+  }
+
+  @Test
+  void testKnightTakeFriendlyKing_fail() {
+    board.clearChessboard();
+    Position kingPosition = new Position(0, 0);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position knightPosition = new Position(2, 1);
+    Position knightTarget = new Position(0, 0);
+
+    Piece knight = new Knight(Color.WHITE, knightPosition, board);
+
+    board.setPieceAtPosition(knight.getPosition(), knight);
+
+    IllegalMoveException exception =
+            assertThrows(IllegalMoveException.class, () -> knight.moveTo(knightTarget));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(knight.getPosition()).isEqualTo(knightPosition);
+  }
+
+  @Test
+  void testKnightTakeEnemyKing_fail() {
+    board.clearChessboard();
+    Position kingPosition = new Position(7, 7);
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Position enemyKingPosition = new Position(0, 0);
+    Piece enemyKing = new King(Color.BLACK, enemyKingPosition, board);
+    board.setPieceAtPosition(enemyKing.getPosition(), enemyKing);
+
+    Position knightPosition = new Position(2, 1);
+    Position knightTarget = new Position(0, 0);
+
+    Piece knight = new Knight(Color.WHITE, knightPosition, board);
+
+    board.setPieceAtPosition(knight.getPosition(), knight);
+
+    IllegalMoveException exception =
+            assertThrows(IllegalMoveException.class, () -> knight.moveTo(knightTarget));
+    String expectedMessage = "Illegal move";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+    assertThat(knight.getPosition()).isEqualTo(knightPosition);
   }
 }

@@ -8,11 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import hwr.oop.chess.match.Match;
 import hwr.oop.chess.persistence.FileBasePersistence;
 import hwr.oop.chess.persistence.Persistence;
-import hwr.oop.chess.pieces.IllegalMoveException;
-import hwr.oop.chess.pieces.Pawn;
+import hwr.oop.chess.pieces.*;
 import hwr.oop.chess.player.Player;
-import hwr.oop.chess.pieces.Piece;
-import hwr.oop.chess.pieces.Rook;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -346,6 +343,11 @@ class GameLogicTest {
     gameLogic.createMatch(playerWhite, playerBlack, matchId);
     Match match = gameLogic.loadMatch(matchId);
     match.getBoard().clearChessboard();
+    match
+            .getBoard()
+            .setPieceAtPosition(
+                    new Position(0, 0),
+                    new King(Color.WHITE, new Position(0, 0), match.getBoard()));
     match
         .getBoard()
         .setPieceAtPosition(
