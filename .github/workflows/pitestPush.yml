@@ -1,0 +1,36 @@
+name: Mutation on Push
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+      - name: Generate Pitest Report
+        run: mvn test-compile org.pitest:pitest-maven:mutationCoverage --file pom.xml
+      - name: Upload Pitest Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: pitest-report
+          path: target/pit-reports/
+      - name: Deploy to GitHub Pages
+        if: success()
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git fetch origin +refs/heads/gh-pages:refs/remotes/origin/gh-pages || git checkout --orphan gh-pages
+          git checkout gh-pages
+          mkdir -p main
+          cp -r target/pit-reports/* main/
+          git add main
+          git commit -m "Update mutation coverage report: ${{ github.event.head_commit.message }}"
+          git push origin gh-pages
