@@ -418,4 +418,40 @@ class KingTest {
 
     assertEquals(expectedMoves, possibleMoves);
   }
+
+  @Test
+  void testKingMoveToContestedPositionWhileInLineOfSight_fail() {
+    board.clearChessboard();
+
+    Position kingPosition = new Position(1, 1);
+    Position kingTargetPositionLeft = new Position(1, 0);
+    Position kingTargetPositionDown = new Position(0, 1);
+
+    Position rightRookPosition = new Position(1, 2);
+    Position topRookPosition = new Position(2, 1);
+
+    Piece king = new King(Color.WHITE, kingPosition, board);
+    board.setPieceAtPosition(king.getPosition(), king);
+
+    Piece rightRook = new Rook(Color.BLACK, rightRookPosition, board);
+    board.setPieceAtPosition(rightRook.getPosition(), rightRook);
+
+    Piece topRook = new Rook(Color.BLACK, topRookPosition, board);
+    board.setPieceAtPosition(topRook.getPosition(), topRook);
+
+
+    IllegalMoveException exceptionLeft =
+            assertThrows(IllegalMoveException.class, () -> king.moveTo(kingTargetPositionLeft));
+    String expectedMessageLeft = "Illegal move";
+    assertThat(exceptionLeft.getMessage()).contains(expectedMessageLeft);
+    assertThat(board.getPieceAtPosition(kingTargetPositionLeft)).isNull();
+    assertThat(board.getPieceAtPosition(kingPosition)).isEqualTo(king);
+
+    IllegalMoveException exceptionDown =
+            assertThrows(IllegalMoveException.class, () -> king.moveTo(kingTargetPositionDown));
+    String expectedMessageDown = "Illegal move";
+    assertThat(exceptionDown.getMessage()).contains(expectedMessageDown);
+    assertThat(board.getPieceAtPosition(kingTargetPositionDown)).isNull();
+    assertThat(board.getPieceAtPosition(kingPosition)).isEqualTo(king);
+  }
 }

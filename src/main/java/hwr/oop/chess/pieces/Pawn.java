@@ -97,14 +97,12 @@ public class Pawn implements Piece, Serializable {
         }
       }
     }
+
     return possibleMoves;
   }
 
   private boolean wouldKingBeInCheckAfterMoveTo(Position target) {
     Piece pieceAtTarget = chessBoard.getPieceAtPosition(target);
-    if (pieceAtTarget != null && pieceAtTarget.getType() == PieceType.KING && pieceAtTarget.getColor() == color) {
-      return true;
-    }
 
     chessBoard.setPieceAtPosition(position, null);
     chessBoard.setPieceAtPosition(target, this);

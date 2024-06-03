@@ -92,6 +92,9 @@ class QueenTest {
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(queen.getPosition()).isEqualTo(position);
+
+    assertThat(board.getPieceAtPosition(targetPosition)).isNull();
+    assertThat(board.getPieceAtPosition(position)).isEqualTo(queen);
   }
 
   @Test

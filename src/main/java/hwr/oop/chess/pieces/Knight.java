@@ -65,13 +65,19 @@ public class Knight implements Piece, Serializable {
     List<Position> visiblePositions = visiblePositions();
 
     for (Position visiblePosition : visiblePositions) {
-      Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(visiblePosition);
-
-      if (!wouldKingBeInCheckAfterMoveTo(visiblePosition)
-          && ((pieceAtNewPosition == null)
-              || ((pieceAtNewPosition.getColor() != color)
-                  && (pieceAtNewPosition.getType() != PieceType.KING)))) {
+      Piece pieceAtVisiblePosition = chessBoard.getPieceAtPosition(visiblePosition);
+      if (pieceAtVisiblePosition == null && !wouldKingBeInCheckAfterMoveTo(visiblePosition)) {
         possibleMoves.add(visiblePosition);
+        continue;
+      }
+
+      if (pieceAtVisiblePosition != null) {
+        if (pieceAtVisiblePosition.getType() == PieceType.KING) continue;
+        if (pieceAtVisiblePosition.getColor() == color) continue;
+
+        if (!wouldKingBeInCheckAfterMoveTo(visiblePosition)) {
+          possibleMoves.add(visiblePosition);
+        }
       }
     }
     return possibleMoves;
@@ -98,9 +104,6 @@ public class Knight implements Piece, Serializable {
 
   private boolean wouldKingBeInCheckAfterMoveTo(Position target) {
     Piece pieceAtTarget = chessBoard.getPieceAtPosition(target);
-    if (pieceAtTarget != null && pieceAtTarget.getType() == PieceType.KING && pieceAtTarget.getColor() == color) {
-      return true;
-    }
 
     chessBoard.setPieceAtPosition(position, null);
     chessBoard.setPieceAtPosition(target, this);

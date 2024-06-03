@@ -172,6 +172,7 @@ class PawnTest {
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(pawn.getPosition()).isEqualTo(position);
+    assertThat(board.getPieceAtPosition(position)).isEqualTo(pawn);
   }
 
   @Test

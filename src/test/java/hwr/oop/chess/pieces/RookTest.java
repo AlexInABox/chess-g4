@@ -73,6 +73,9 @@ class RookTest {
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(rook.getPosition()).isEqualTo(position);
+
+    assertThat(board.getPieceAtPosition(targetPosition)).isNull();
+    assertThat(board.getPieceAtPosition(position)).isEqualTo(rook);
   }
 
   @Test
