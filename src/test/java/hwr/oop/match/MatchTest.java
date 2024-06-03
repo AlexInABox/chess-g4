@@ -153,7 +153,6 @@ class MatchTest {
     final Player playerBlack = new Player("player2");
     String fen = "5b1r/8/8/3Q4/8/8/8/8 w 0";
     final Match match = new Match(playerWhite, playerBlack, fen, "1");
-    System.out.println("Match: " + match.convertBoardToFEN());
     assertThat(match.convertBoardToFEN()).isEqualTo(fen);
   }
 
