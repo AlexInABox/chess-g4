@@ -703,4 +703,43 @@ class GameLogicTest {
     assertThrows(ConvertInputToPositionException.class, () -> convertInputToPosition("a9"));
     assertThrows(ConvertInputToPositionException.class, () -> convertInputToPosition("h9"));
   }
+  @Test
+  void testGetPossibleMoves_PieceAtPosition() {
+    // Arrange
+    String matchId = "testMatch";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createMatch(playerWhite, playerBlack, matchId);
+    Match match = gameLogic.loadMatch(matchId);
+    Position initialPosition = convertInputToPosition("e2");
+    Piece piece = new Pawn(Color.WHITE, initialPosition, match.getBoard());
+    match.getBoard().setPieceAtPosition(initialPosition, piece);
+
+    // Act
+    List<Position> possibleMoves = gameLogic.getPossibleMoves("e2", match);
+
+    // Assert
+    assertNotNull(possibleMoves);
+    assertFalse(possibleMoves.isEmpty());
+  }
+
+  @Test
+  void testGetPossibleMoves_NoPieceAtPosition() {
+    // Arrange
+    String matchId = "testMatch";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createMatch(playerWhite, playerBlack, matchId);
+    Match match = gameLogic.loadMatch(matchId);
+
+    // Act
+    final List<Position> possibleMoves = gameLogic.getPossibleMoves("e3", match);
+    // Assert
+    assertNotNull(possibleMoves);
+    assertTrue(possibleMoves.isEmpty());
+    assertEquals(0, possibleMoves.size(), "Loaded matches list should be empty for an empty file");
+  }
+
+
+
 }

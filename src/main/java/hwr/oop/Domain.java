@@ -4,6 +4,8 @@ import hwr.oop.match.Match;
 import hwr.oop.pieces.IllegalMoveException;
 import hwr.oop.player.Player;
 
+import java.util.List;
+
 /** Interface defining the basic functionalities for the chess game. */
 public interface Domain {
 
@@ -75,4 +77,21 @@ public interface Domain {
    * @param match The match in which the resignation occurs.
    */
   void resign(Match match);
+
+  /**
+   * Ends the game, declaring the winner and updating players' ELO ratings.
+   *
+   * @param match The match to end.
+   * @return A message indicating the outcome of the game, including the winner and their new ELO rating.
+   * @throws TheMatchHasNotEndedException If the match has not yet finished.
+   */
+  String endGame(Match match);
+  /**
+   * Gets a list of possible moves for the piece at the given position in the specified match.
+   *
+   * @param currentPositionString The current position of the piece as a string (e.g., "e2").
+   * @param match The match in which to check possible moves.
+   * @return A list of possible positions to which the piece can move. Returns an empty list if there is no piece at the specified position.
+   */
+  List<Position> getPossibleMoves (String currentPositionString, Match match);
 }

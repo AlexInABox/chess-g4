@@ -4,6 +4,8 @@ import hwr.oop.match.Match;
 import hwr.oop.persistence.Persistence;
 import hwr.oop.pieces.*;
 import hwr.oop.player.Player;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -133,6 +135,16 @@ public class GameLogic implements Domain {
   }
 
   @Override
+  public List<Position> getPossibleMoves(String currentPositionString, Match match) {
+    Position currentPosition = convertInputToPosition(currentPositionString);
+    Piece currentPiece = match.getBoard().getPieceAtPosition(currentPosition);
+    if (currentPiece == null) {
+      return new ArrayList<>();
+    }
+    return currentPiece.possibleMoves();
+  }
+
+  @Override
   public void acceptRemi(Match match) {
     match.declareWinner(MatchOutcome.REMI);
   }
@@ -147,6 +159,7 @@ public class GameLogic implements Domain {
     }
   }
 
+@Override
   public String endGame(Match match) {
     Player playerWhite = loadPlayer(match.getPlayerWhite().getName());
     Player playerBlack = loadPlayer(match.getPlayerBlack().getName());
