@@ -3,7 +3,6 @@ package hwr.oop.chess.pieces;
 import hwr.oop.chess.Color;
 import hwr.oop.chess.Position;
 import hwr.oop.chess.board.ChessBoard;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -137,7 +136,7 @@ public class King implements Piece, Serializable {
   private boolean kingThreatensPosition(Position target) {
     Position oldPosition = position;
     position = target;
-    for (Position visiblePosition : possibleMoves()) {
+    for (Position visiblePosition : visiblePositions()) {
       Piece pieceAtPosition = chessBoard.getPieceAtPosition(visiblePosition);
       if (pieceAtPosition == null) continue;
       if ((pieceAtPosition.getColor() != color) && (pieceAtPosition.getType() == PieceType.KING)) {
@@ -152,6 +151,18 @@ public class King implements Piece, Serializable {
   @Override
   public List<Position> possibleMoves() {
     List<Position> possibleMoves = new ArrayList<>();
+    List<Position> visiblePositions = visiblePositions();
+
+    for (Position visiblePosition : visiblePositions) {
+      if (!isContestedPosition(visiblePosition)) {
+        possibleMoves.add(visiblePosition);
+      }
+    }
+    return possibleMoves;
+  }
+
+  public List<Position> visiblePositions() {
+    List<Position> visiblePositions = new ArrayList<>();
     int[] directions = {-1, 0, 1};
 
     for (int rowChange : directions) {
@@ -162,15 +173,16 @@ public class King implements Piece, Serializable {
         if (!chessBoard.isValidPosition(newRow, newCol)) {
           continue;
         }
+
         Position newPosition = new Position(newRow, newCol);
         Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
 
         if (pieceAtNewPosition == null || pieceAtNewPosition.getColor() != color) {
-          possibleMoves.add(newPosition);
+          visiblePositions.add(newPosition);
         }
       }
     }
-    return possibleMoves;
+    return visiblePositions;
   }
 
   public boolean isInCheck() {

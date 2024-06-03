@@ -100,9 +100,8 @@ public class ChessBoard implements Serializable {
 
     for (List<Piece> row : board) {
       for (Piece piece : row) {
-        if (piece != null && piece.getColor() == colorInCheck) {
-          if (!piece.possibleMoves().isEmpty()) return false;
-        }
+        if (piece != null && piece.getColor() == colorInCheck && !piece.possibleMoves().isEmpty())
+          return false;
       }
     }
 

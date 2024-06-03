@@ -174,4 +174,90 @@ class ChessBoardTest {
     ChessBoard board2 = new ChessBoard();
     assertThat(board.hashCode()).isNotEqualTo(board2.hashCode());
   }
+
+  @Test
+  void whiteInCheckMate() {
+    board.clearChessboard();
+
+    Position whiteKingPosition = new Position(0, 0);
+    Position blackKingPosition = new Position(7, 7);
+    Position blackRook1Position = new Position(0, 2);
+    Position blackRook2Position = new Position(1, 2);
+
+
+    Piece whiteKing = new King(Color.WHITE, whiteKingPosition, board);
+    Piece blackKing = new King(Color.BLACK, blackKingPosition, board);
+    Piece blackRook1 = new Rook(Color.BLACK, blackRook1Position, board);
+    Piece blackRook2 = new Rook(Color.BLACK, blackRook2Position, board);
+
+    board.setPieceAtPosition(whiteKingPosition, whiteKing);
+    board.setPieceAtPosition(blackKingPosition, blackKing);
+    board.setPieceAtPosition(blackRook1Position, blackRook1);
+    board.setPieceAtPosition(blackRook2Position, blackRook2);
+
+    assertThat(board.isCheckMate()).isTrue();
+  }
+
+  @Test
+  void blackInCheckMate() {
+    board.clearChessboard();
+
+    Position whiteKingPosition = new Position(7, 7);
+    Position blackKingPosition = new Position(0, 0);
+    Position whiteRook1Position = new Position(0, 2);
+    Position whiteRook2Position = new Position(1, 2);
+
+
+    Piece whiteKing = new King(Color.WHITE, whiteKingPosition, board);
+    Piece blackKing = new King(Color.BLACK, blackKingPosition, board);
+    Piece whiteRook1 = new Rook(Color.WHITE, whiteRook1Position, board);
+    Piece whiteRook2 = new Rook(Color.WHITE, whiteRook2Position, board);
+
+    board.setPieceAtPosition(whiteKingPosition, whiteKing);
+    board.setPieceAtPosition(blackKingPosition, blackKing);
+    board.setPieceAtPosition(whiteRook1Position, whiteRook1);
+    board.setPieceAtPosition(whiteRook2Position, whiteRook2);
+
+    assertThat(board.isCheckMate()).isTrue();
+  }
+
+  @Test
+  void whiteInCheckButNotMate() {
+    board.clearChessboard();
+
+    Position whiteKingPosition = new Position(0, 0);
+    Position blackKingPosition = new Position(7, 7);
+    Position blackRook1Position = new Position(0, 2);
+
+
+    Piece whiteKing = new King(Color.WHITE, whiteKingPosition, board);
+    Piece blackKing = new King(Color.BLACK, blackKingPosition, board);
+    Piece blackRook1 = new Rook(Color.BLACK, blackRook1Position, board);
+
+    board.setPieceAtPosition(whiteKingPosition, whiteKing);
+    board.setPieceAtPosition(blackKingPosition, blackKing);
+    board.setPieceAtPosition(blackRook1Position, blackRook1);
+
+    assertThat(board.isCheckMate()).isFalse();
+  }
+
+  @Test
+  void noCheckMate() {
+    board.clearChessboard();
+
+    Position whiteKingPosition = new Position(0, 0);
+    Position blackKingPosition = new Position(7, 7);
+    Position blackRook2Position = new Position(1, 2);
+
+
+    Piece whiteKing = new King(Color.WHITE, whiteKingPosition, board);
+    Piece blackKing = new King(Color.BLACK, blackKingPosition, board);
+    Piece blackRook2 = new Rook(Color.BLACK, blackRook2Position, board);
+
+    board.setPieceAtPosition(whiteKingPosition, whiteKing);
+    board.setPieceAtPosition(blackKingPosition, blackKing);
+    board.setPieceAtPosition(blackRook2Position, blackRook2);
+
+    assertThat(board.isCheckMate()).isFalse();
+  }
 }
