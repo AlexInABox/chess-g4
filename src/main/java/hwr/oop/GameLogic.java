@@ -163,7 +163,6 @@ public class GameLogic implements Domain {
   public String endGame(Match match) {
     Player playerWhite = loadPlayer(match.getPlayerWhite().getName());
     Player playerBlack = loadPlayer(match.getPlayerBlack().getName());
-    // TODO: Adjust ELO for playerWhite and playerBlack
     String victoryMessage = "";
     switch (match.getWinner()) {
       case MatchOutcome.REMI -> victoryMessage = "The game ended in Remi.";
