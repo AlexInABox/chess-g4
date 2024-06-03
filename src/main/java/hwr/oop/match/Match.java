@@ -87,13 +87,8 @@ public class Match implements Serializable {
     this.playerBlack = playerBlack;
   }
 
-  public ChessBoard getBoard() {
-    return board;
-  }
-
-  public String convertBoardToFEN() {
+  private StringBuilder buildFENPositionsFromBoard(){
     StringBuilder fen = new StringBuilder();
-
     for (int row = 7; row >= 0; row--) {
       int emptyCount = 0;
       for (int col = 0; col < 8; col++) {
@@ -115,12 +110,18 @@ public class Match implements Serializable {
         fen.append("/");
       }
     }
+    return fen;
+  }
+  public ChessBoard getBoard() {
+    return board;
+  }
+
+  public String convertBoardToFEN() {
+    StringBuilder fen = buildFENPositionsFromBoard();
     fen.append(" ");
     fen.append(nextToMove == Color.WHITE ? "w" : "b");
     fen.append(" ");
     fen.append(moveCount);
-    // TODO: Castling rights
-    // TODO: Possible en passant destinations
     return fen.toString();
   }
 
@@ -142,19 +143,35 @@ public class Match implements Serializable {
     };
   }
 
-  public ChessBoard convertFENToBoard(String fenNotation) throws FENException {
-    ChessBoard newBoard = new ChessBoard();
-    newBoard.clearChessboard();
+  private String[] getPartsFromFEN(String fenNotation){
     String[] parts = fenNotation.split(" ");
     if (parts.length < 2) {
       throw new FENException(
-          "Invalid FEN format: expected at least 2 parts (board layout and active color)");
+              "Invalid FEN format: expected at least 2 parts (board layout and active color)");
     }
-
+    return parts;
+  }
+  private String[] getRowsFromFEN(String[] parts){
     String[] rows = parts[0].split("/");
     if (rows.length != 8) {
       throw new FENException("Invalid FEN format: 8 rows expected");
     }
+    return rows;
+  }
+
+  private void setActiveColorFromFEN(String activeColor){
+    if (activeColor.equals("w")) {
+      nextToMove = Color.WHITE;
+    } else {
+      nextToMove = Color.BLACK;
+    }
+  }
+  public ChessBoard convertFENToBoard(String fenNotation) throws FENException {
+    ChessBoard newBoard = new ChessBoard();
+    newBoard.clearChessboard();
+    String[] parts = getPartsFromFEN(fenNotation);
+    String[] rows = getRowsFromFEN(parts);
+
     for (int i = 0; i < 8; i++) {
       int col = 0;
       for (char c : rows[7 - i].toCharArray()) {
@@ -174,11 +191,7 @@ public class Match implements Serializable {
 
     // Get the active color part
     String activeColor = parts[1];
-    if (activeColor.equals("w")) {
-      nextToMove = Color.WHITE;
-    } else {
-      nextToMove = Color.BLACK;
-    }
+    setActiveColorFromFEN(activeColor);
     if (parts.length >= 3) {
       try {
         moveCount = Short.parseShort(parts[2]);
@@ -186,9 +199,6 @@ public class Match implements Serializable {
         throw new FENException("Invalid FEN format: total number of moves is not a valid number");
       }
     }
-
-    // TODO: Castling rights
-    // TODO: Possible en passant destinations
     return newBoard;
   }
 
