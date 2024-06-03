@@ -15,7 +15,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-      - name: Build with Maven
+      - name: Generate Pitest Report
         run: mvn test-compile org.pitest:pitest-maven:mutationCoverage --file pom.xml
       - name: Upload Pitest Report
         uses: actions/upload-artifact@v2
@@ -32,5 +32,5 @@ jobs:
           mkdir -p main
           cp -r target/pit-reports/* main/
           git add main
-          git commit -m "Update mutation coverage report for PR #$pr_id"
+          git commit -m "Update mutation coverage report: ${{ github.event.head_commit.message }}"
           git push origin gh-pages

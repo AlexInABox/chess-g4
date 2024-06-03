@@ -15,7 +15,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-      - name: Build with Maven
+      - name: Generate Pitest Report
         run: mvn test-compile org.pitest:pitest-maven:mutationCoverage --file pom.xml
       - name: Upload Pitest Report
         uses: actions/upload-artifact@v2
