@@ -201,7 +201,7 @@ public class GameLogic implements Domain {
     return victoryMessage;
   }
 
-  public double calculateChanceToWinPlayerWhite(Player playerWhite, Player playerBlack) {
+  private double calculateChanceToWinPlayerWhite(Player playerWhite, Player playerBlack) {
     return (double)
             Math.round(
                 1
@@ -212,17 +212,17 @@ public class GameLogic implements Domain {
         / 100;
   }
 
-  public short calculateNewEloWinner(Player player, double chanceToWin) {
+  private short calculateNewEloWinner(Player player, double chanceToWin) {
 
     return (short) Math.round((player.getElo() + 20 * (1 - chanceToWin)));
   }
 
-  public short calculateNewEloLooser(Player player, double chanceToWin) {
+  private short calculateNewEloLooser(Player player, double chanceToWin) {
 
     return (short) Math.round((player.getElo() + 20 * (0 - chanceToWin)));
   }
 
-  public short calculateNewEloRemi(Player player, double chanceToWin) {
+  private short calculateNewEloRemi(Player player, double chanceToWin) {
     return (short) Math.round((player.getElo() + 20 * (0.5 - chanceToWin)));
   }
 
