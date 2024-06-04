@@ -220,7 +220,7 @@ public class ChessCli {
       gameLogic.moveTo(from, to, currentMatch);
       out.println("Moving piece in match " + matchID + " from " + from + " to " + to);
       gameLogic.saveMatch(currentMatch);
-      loadCurrentMatchIfNecessary(matchID);
+      loadCurrentMatchIfNecessary(matchID); //TODO: es könnte sein, dass wir diese Zeile nicht brauchen @Gero mal testen
       printChessboard(matchID);
     } catch (MatchNotFoundException e) {
       out.println(MATCH_NOT_EXIST);
@@ -290,7 +290,7 @@ public class ChessCli {
     for (Position pos : positions) {
       sb.append(positionToString(pos)).append(", ");
     }
-    return sb.length() > 0 ? sb.substring(0, sb.length() - 2) : "";
+    return !sb.isEmpty() ? sb.substring(0, sb.length() - 2) : "";
   }
 
   private String positionToString(Position position) {
