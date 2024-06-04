@@ -1,6 +1,6 @@
 package hwr.oop.chess;
 
-import hwr.oop.chess.match.Match;
+import hwr.oop.chess.game.Game;
 import hwr.oop.chess.persistence.Persistence;
 import hwr.oop.chess.pieces.IllegalMoveException;
 import hwr.oop.chess.pieces.Piece;
@@ -18,48 +18,48 @@ public class GameLogic implements Domain {
   }
 
   @Override
-  public Match loadMatch(String matchId) {
+  public Game loadGame(String gameId) {
 
-    List<Match> matches = persistence.loadMatches();
+    List<Game> games = persistence.loadGames();
 
-    for (Match match : matches) {
-      if (match.getId().equals(matchId)) {
-        Player playerWhite = loadPlayer(match.getPlayerWhite().getName());
-        Player playerBlack = loadPlayer(match.getPlayerBlack().getName());
-        match.updatePlayers(playerWhite, playerBlack);
+    for (Game game : games) {
+      if (game.getId().equals(gameId)) {
+        Player playerWhite = loadPlayer(game.getPlayerWhite().getName());
+        Player playerBlack = loadPlayer(game.getPlayerBlack().getName());
+        game.updatePlayers(playerWhite, playerBlack);
 
-        return match;}}
-    throw new MatchNotFoundException(matchId);
+        return game;}}
+    throw new GameNotFoundException(gameId);
   }
 
   @Override
-  public void saveMatch(Match newMatch) {
-    List<Match> matches = persistence.loadMatches();
-    boolean matchExists = false;
-    for (int i = 0; i < matches.size(); i++) {
-      if (matches.get(i).getId().equals(newMatch.getId())) {
-        matches.set(i, newMatch);
-        matchExists = true;
+  public void saveGame(Game newGame) {
+    List<Game> games = persistence.loadGames();
+    boolean gameExists = false;
+    for (int i = 0; i < games.size(); i++) {
+      if (games.get(i).getId().equals(newGame.getId())) {
+        games.set(i, newGame);
+        gameExists = true;
         break;
       }
     }
-    if (!matchExists) {
-      matches.add(newMatch);
+    if (!gameExists) {
+      games.add(newGame);
     }
-    persistence.saveMatches(matches);
+    persistence.saveGames(games);
   }
 
   @Override
-  public void createMatch(Player playerWhite, Player playerBlack, String id) {
+  public void createGame(Player playerWhite, Player playerBlack, String id) {
     Player loadedPlayerWhite = loadPlayer(playerWhite.getName());
     Player loadedPlayerBlack = loadPlayer(playerBlack.getName());
 
-    if (matchExists(id)) {
-      throw new MatchAlreadyExistsException(id);
+    if (gameExists(id)) {
+      throw new GameAlreadyExistsException(id);
     }
 
-    Match newMatch = new Match(loadedPlayerWhite, loadedPlayerBlack, id);
-    saveMatch(newMatch);
+    Game newGame = new Game(loadedPlayerWhite, loadedPlayerBlack, id);
+    saveGame(newGame);
   }
 
   @Override
@@ -86,7 +86,7 @@ public class GameLogic implements Domain {
   }
 
   @Override
-  public void moveTo(String oldPositionString, String newPositionString, Match match)
+  public void moveTo(String oldPositionString, String newPositionString, Game game)
       throws IllegalMoveException, ConvertInputToPositionException {
 
     Position oldPosition = convertInputToPosition(oldPositionString);
@@ -99,16 +99,16 @@ public class GameLogic implements Domain {
               + ". The start and end positions are the same.");
     }
 
-    Piece currentPiece = match.getBoard().getPieceAtPosition(oldPosition);
+    Piece currentPiece = game.getBoard().getPieceAtPosition(oldPosition);
 
     if (currentPiece == null) {
       throw new IllegalMoveException("No piece at the specified position: " + oldPosition);
     }
 
-    if (currentPiece.getColor() != match.getNextToMove()) {
+    if (currentPiece.getColor() != game.getNextToMove()) {
       throw new IllegalMoveException(
           "It's not your turn. Expected: "
-              + match.getNextToMove()
+              + game.getNextToMove()
               + ", but got: "
               + currentPiece.getColor());
     }
@@ -125,13 +125,13 @@ public class GameLogic implements Domain {
     }
 
     currentPiece.moveTo(newPosition);
-    match.toggleNextToMove();
+    game.toggleNextToMove();
   }
 
   @Override
-  public List<Position> getPossibleMoves(String currentPositionString, Match match) {
+  public List<Position> getPossibleMoves(String currentPositionString, Game game) {
     Position currentPosition = convertInputToPosition(currentPositionString);
-    Piece currentPiece = match.getBoard().getPieceAtPosition(currentPosition);
+    Piece currentPiece = game.getBoard().getPieceAtPosition(currentPosition);
     if (currentPiece == null) {
       return new ArrayList<>();
     }
@@ -139,37 +139,37 @@ public class GameLogic implements Domain {
   }
 
   @Override
-  public void acceptRemi(Match match) {
+  public void acceptRemi(Game game) {
 
-    match.declareWinner(MatchOutcome.REMI);
-    endGame(match);
+    game.declareWinner(GameOutcome.REMI);
+    endGame(game);
   }
 
   @Override
-  public void resign(Match match) {
-    Color currentPlayer = match.getNextToMove();
+  public void resign(Game game) {
+    Color currentPlayer = game.getNextToMove();
     if (currentPlayer == Color.WHITE) {
-      match.declareWinner(MatchOutcome.BLACK);
+      game.declareWinner(GameOutcome.BLACK);
     } else {
-      match.declareWinner(MatchOutcome.WHITE);
+      game.declareWinner(GameOutcome.WHITE);
     }
   }
 
   @Override
-  public String endGame(Match match) {
-    Player playerWhite = loadPlayer(match.getPlayerWhite().getName());
-    Player playerBlack = loadPlayer(match.getPlayerBlack().getName());
+  public String endGame(Game game) {
+    Player playerWhite = loadPlayer(game.getPlayerWhite().getName());
+    Player playerBlack = loadPlayer(game.getPlayerBlack().getName());
     double chanceToWinPlayerWhite = calculateChanceToWinPlayerWhite(playerWhite, playerBlack);
     double chanceToWinPlayerBlack = 1 - chanceToWinPlayerWhite;
     String victoryMessage = "";
-    switch (match.getWinner()) {
-      case MatchOutcome.REMI -> {
+    switch (game.getWinner()) {
+      case GameOutcome.REMI -> {
         playerWhite.setElo(calculateNewEloRemi(playerWhite, chanceToWinPlayerWhite));
         playerBlack.setElo(calculateNewEloRemi(playerBlack, chanceToWinPlayerBlack));
         victoryMessage = "The game ended in Remi.";
       }
 
-      case MatchOutcome.WHITE -> {
+      case GameOutcome.WHITE -> {
         playerWhite.setElo(calculateNewEloWinner(playerWhite, chanceToWinPlayerWhite));
         playerBlack.setElo(calculateNewEloLooser(playerBlack, chanceToWinPlayerBlack));
         victoryMessage =
@@ -179,7 +179,7 @@ public class GameLogic implements Domain {
                 + playerWhite.getElo()
                 + ")";
       }
-      case MatchOutcome.BLACK -> {
+      case GameOutcome.BLACK -> {
         playerWhite.setElo(calculateNewEloLooser(playerWhite, chanceToWinPlayerWhite));
         playerBlack.setElo(calculateNewEloWinner(playerBlack, chanceToWinPlayerBlack));
         victoryMessage =
@@ -189,12 +189,12 @@ public class GameLogic implements Domain {
                 + playerBlack.getElo()
                 + ")";
       }
-      case MatchOutcome.NOT_FINISHED_YET ->
-          throw new TheMatchHasNotEndedException("The game has not ended yet");
+      case GameOutcome.NOT_FINISHED_YET ->
+          throw new GameHasNotEndedException("The game has not ended yet");
     }
     savePlayer(playerWhite);
     savePlayer(playerBlack);
-    deleteMatch(match.getId());
+    deleteGame(game.getId());
     return victoryMessage;
   }
 
@@ -223,10 +223,10 @@ public class GameLogic implements Domain {
     return (short) Math.round((player.getElo() + 20 * (0.5 - chanceToWin)));
   }
 
-  private void deleteMatch(String matchId) {
-    List<Match> matches = persistence.loadMatches();
-    matches.removeIf(match -> match.getId().equals(matchId));
-    persistence.saveMatches(matches);
+  private void deleteGame(String gameId) {
+    List<Game> games = persistence.loadGames();
+    games.removeIf(game -> game.getId().equals(gameId));
+    persistence.saveGames(games);
   }
 
   public static Position convertInputToPosition(String input)
@@ -249,10 +249,10 @@ public class GameLogic implements Domain {
     return new Position(row, column);
   }
 
-  private boolean matchExists(String matchId) {
-    List<Match> matches = persistence.loadMatches();
-    for (Match match : matches) {
-      if (match.getId().equals(matchId)) {
+  private boolean gameExists(String gameId) {
+    List<Game> games = persistence.loadGames();
+    for (Game game : games) {
+      if (game.getId().equals(gameId)) {
         return true;
       }
     }

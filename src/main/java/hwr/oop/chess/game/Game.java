@@ -1,7 +1,7 @@
-package hwr.oop.chess.match;
+package hwr.oop.chess.game;
 
 import hwr.oop.chess.Color;
-import hwr.oop.chess.MatchOutcome;
+import hwr.oop.chess.GameOutcome;
 import hwr.oop.chess.Position;
 import hwr.oop.chess.board.ChessBoard;
 import hwr.oop.chess.pieces.*;
@@ -10,7 +10,7 @@ import hwr.oop.chess.player.Player;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Match implements Serializable {
+public class Game implements Serializable {
   private final String id;
   private Player playerWhite;
   private Player playerBlack;
@@ -21,9 +21,9 @@ public class Match implements Serializable {
   private Color nextToMove = Color.WHITE;
   private short moveCount = 0;
   private boolean gameEnded = false;
-  private MatchOutcome winner;
+  private GameOutcome winner;
 
-  public MatchOutcome getWinner() {
+  public GameOutcome getWinner() {
     return winner;
   }
 
@@ -35,22 +35,22 @@ public class Match implements Serializable {
     return gameEnded;
   }
 
-  public Match(Player playerWhite, Player playerBlack, String id) {
+  public Game(Player playerWhite, Player playerBlack, String id) {
     this.playerWhite = playerWhite;
     this.playerBlack = playerBlack;
     this.board = new ChessBoard();
     this.id = id;
-    winner = MatchOutcome.NOT_FINISHED_YET;
+    winner = GameOutcome.NOT_FINISHED_YET;
   }
 
-  public Match(Player playerWhite, Player playerBlack, String fenNotation, String id)
+  public Game(Player playerWhite, Player playerBlack, String fenNotation, String id)
       throws FENException {
     this.playerWhite = playerWhite;
     this.playerBlack = playerBlack;
     this.fenNotation = fenNotation;
     board = convertFENToBoard(fenNotation);
     this.id = id;
-    winner = MatchOutcome.NOT_FINISHED_YET;
+    winner = GameOutcome.NOT_FINISHED_YET;
   }
 
   public Player getPlayerWhite() {
@@ -78,7 +78,7 @@ public class Match implements Serializable {
     moveCount++;
   }
 
-  public void declareWinner(MatchOutcome winner) {
+  public void declareWinner(GameOutcome winner) {
     this.winner = winner;
     gameEnded = true;
   }
@@ -207,15 +207,15 @@ public class Match implements Serializable {
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    Match match = (Match) o;
-    return moveCount == match.moveCount
-        && gameEnded == match.gameEnded
-        && Objects.equals(id, match.id)
-        && Objects.equals(playerWhite, match.playerWhite)
-        && Objects.equals(playerBlack, match.playerBlack)
-        && Objects.equals(board, match.board)
-        && Objects.equals(fenNotation, match.fenNotation)
-        && nextToMove == match.nextToMove;
+    Game game = (Game) o;
+    return moveCount == game.moveCount
+        && gameEnded == game.gameEnded
+        && Objects.equals(id, game.id)
+        && Objects.equals(playerWhite, game.playerWhite)
+        && Objects.equals(playerBlack, game.playerBlack)
+        && Objects.equals(board, game.board)
+        && Objects.equals(fenNotation, game.fenNotation)
+        && nextToMove == game.nextToMove;
   }
 
   @Override
@@ -226,7 +226,7 @@ public class Match implements Serializable {
 
   @Override
   public String toString() {
-    return "Match{"
+    return "Game{"
         + "id='"
         + id
         + '\''

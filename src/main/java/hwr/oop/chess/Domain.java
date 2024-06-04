@@ -1,6 +1,6 @@
 package hwr.oop.chess;
 
-import hwr.oop.chess.match.Match;
+import hwr.oop.chess.game.Game;
 import hwr.oop.chess.pieces.IllegalMoveException;
 import hwr.oop.chess.player.Player;
 
@@ -10,31 +10,31 @@ import java.util.List;
 public interface Domain {
 
   /**
-   * Loads a match based on its ID.
+   * Loads a game based on its ID.
    *
-   * @param matchId The ID of the match to load.
-   * @return The loaded match.
-   * @throws MatchNotFoundException If no match is found with the specified ID.
+   * @param gameId The ID of the game to load.
+   * @return The loaded game.
+   * @throws GameNotFoundException If no game is found with the specified ID.
    */
-  Match loadMatch(String matchId) throws MatchNotFoundException;
+  Game loadGame(String gameId) throws GameNotFoundException;
 
   /**
-   * Saves a new match or updates an existing one.
+   * Saves a new game or updates an existing one.
    *
-   * @param newMatch The match to save.
+   * @param newGame The game to save.
    */
-  void saveMatch(Match newMatch);
+  void saveGame(Game newGame);
 
   /**
-   * Creates a new match with the given players and a unique ID.
+   * Creates a new game with the given players and a unique ID.
    *
    * @param playerWhite The name of the white player.
    * @param playerBlack The name of the black player.
-   * @param id The unique ID of the match.
-   * @throws MatchAlreadyExistsException If a match with the same ID already exists.
+   * @param id The unique ID of the game.
+   * @throws GameAlreadyExistsException If a game with the same ID already exists.
    */
-  void createMatch(Player playerWhite, Player playerBlack, String id)
-      throws MatchAlreadyExistsException;
+  void createGame(Player playerWhite, Player playerBlack, String id)
+      throws GameAlreadyExistsException;
 
   /**
    * Loads a player based on their name or creates a new player, if there is no player with this
@@ -58,40 +58,40 @@ public interface Domain {
    *
    * @param oldPositionString The old position of the piece.
    * @param newPositionString The new position of the piece.
-   * @param match The match in which the move is performed.
+   * @param game The game in which the move is performed.
    * @throws IllegalMoveException If the move is illegal.
    */
-  void moveTo(String oldPositionString, String newPositionString, Match match)
+  void moveTo(String oldPositionString, String newPositionString, Game game)
       throws IllegalMoveException, ConvertInputToPositionException;
 
   /**
-   * Accepts a draw offer, ending the match in a draw.
+   * Accepts a draw offer, ending the game in a draw.
    *
-   * @param match The match in which the draw offer is accepted.
+   * @param game The game in which the draw offer is accepted.
    */
-  void acceptRemi(Match match);
+  void acceptRemi(Game game);
 
   /**
-   * Resigns from the match, declaring the opponent as the winner.
+   * Resigns from the game, declaring the opponent as the winner.
    *
-   * @param match The match in which the resignation occurs.
+   * @param game The game in which the resignation occurs.
    */
-  void resign(Match match);
+  void resign(Game game);
 
   /**
    * Ends the game, declaring the winner and updating players' ELO ratings.
    *
-   * @param match The match to end.
+   * @param game The game to end.
    * @return A message indicating the outcome of the game, including the winner and their new ELO rating.
-   * @throws TheMatchHasNotEndedException If the match has not yet finished.
+   * @throws GameHasNotEndedException If the game has not yet finished.
    */
-  String endGame(Match match);
+  String endGame(Game game);
   /**
    * Gets a list of possible moves for the piece at the given position in the specified match.
    *
    * @param currentPositionString The current position of the piece as a string (e.g., "e2").
-   * @param match The match in which to check possible moves.
+   * @param game The game in which to check possible moves.
    * @return A list of possible positions to which the piece can move. Returns an empty list if there is no piece at the specified position.
    */
-  List<Position> getPossibleMoves (String currentPositionString, Match match);
+  List<Position> getPossibleMoves (String currentPositionString, Game game);
 }

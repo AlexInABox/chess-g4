@@ -2,7 +2,7 @@ package hwr.oop.chess;
 
 import java.io.Serializable;
 
-public enum MatchOutcome implements Serializable {
+public enum GameOutcome implements Serializable {
   BLACK,
   WHITE,
   REMI,

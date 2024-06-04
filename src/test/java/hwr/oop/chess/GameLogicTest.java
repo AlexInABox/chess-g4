@@ -5,8 +5,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.*;
 
-import hwr.oop.chess.match.Match;
-import hwr.oop.chess.persistence.FileBasePersistence;
+import hwr.oop.chess.game.Game;
+import hwr.oop.chess.persistence.FileBasedPersistence;
 import hwr.oop.chess.persistence.Persistence;
 import hwr.oop.chess.pieces.*;
 import hwr.oop.chess.player.Player;
@@ -22,24 +22,24 @@ class GameLogicTest {
 
   private GameLogic gameLogic;
   private Persistence persistence;
-  private static final String TEST_FILE_PATH_MATCHES = "target/GameLogicTestMatches.txt";
+  private static final String TEST_FILE_PATH_GAMES = "target/GameLogicTestGames.txt";
   private static final String TEST_FILE_PATH_PLAYERS = "target/GameLogicTestPlayers.txt";
 
   @BeforeEach
   void setUp() {
-    File fileMatches = new File(TEST_FILE_PATH_MATCHES);
-    Path pathMatches = fileMatches.toPath();
+    File fileGames = new File(TEST_FILE_PATH_GAMES);
+    Path pathGames = fileGames.toPath();
     File filePlayers = new File(TEST_FILE_PATH_PLAYERS);
     Path pathPlayers = filePlayers.toPath();
-    persistence = new FileBasePersistence(pathMatches, pathPlayers);
+    persistence = new FileBasedPersistence(pathGames, pathPlayers);
     gameLogic = new GameLogic(persistence);
   }
 
   @AfterEach
   void tearDown() {
-    File fileMatches = new File(TEST_FILE_PATH_MATCHES);
-    if (fileMatches.exists()) {
-      if (!fileMatches.delete()) {
+    File fileGames = new File(TEST_FILE_PATH_GAMES);
+    if (fileGames.exists()) {
+      if (!fileGames.delete()) {
         throw new RuntimeException("Deleting the file was unsuccessful.");
       }
     }
@@ -52,102 +52,102 @@ class GameLogicTest {
   }
 
   @Test
-  void testLoadMatch_MatchFound() {
+  void testLoadGame_GameFound() {
     // Arrange
-    String matchId = "shortestGame";
+    String gameId = "shortestGame";
     Player playerWhite = gameLogic.loadPlayer("Player1");
     Player playerBlack = gameLogic.loadPlayer("Player2");
-    List<Match> matches = new ArrayList<>();
-    Match expectedMatch = new Match(playerWhite, playerBlack, matchId);
+    List<Game> games = new ArrayList<>();
+    Game expectedGame = new Game(playerWhite, playerBlack, gameId);
 
-    matches.add(expectedMatch);
-    persistence.saveMatches(matches);
+    games.add(expectedGame);
+    persistence.saveGames(games);
 
     // Act
-    Match loadedMatch = gameLogic.loadMatch("shortestGame");
+    Game loadedGame = gameLogic.loadGame("shortestGame");
 
     // Assert
-    assertNotNull(loadedMatch);
-    assertEquals(expectedMatch, loadedMatch);
-    assertEquals(expectedMatch.getPlayerWhite().getElo(), gameLogic.loadPlayer("Player1").getElo());
+    assertNotNull(loadedGame);
+    assertEquals(expectedGame, loadedGame);
+    assertEquals(expectedGame.getPlayerWhite().getElo(), gameLogic.loadPlayer("Player1").getElo());
   }
 
   @Test
-  void testLoadMatch_MatchNotFound() {
+  void testLoadGame_GameNotFound() {
     // Act & Assert
-    assertThrows(MatchNotFoundException.class, () -> gameLogic.loadMatch("123"));
-    MatchNotFoundException exception =
-        assertThrows(MatchNotFoundException.class, () -> gameLogic.loadMatch("123"));
-    String expectedMessage = "Match with ID '123' not found.";
+    assertThrows(GameNotFoundException.class, () -> gameLogic.loadGame("123"));
+    GameNotFoundException exception =
+        assertThrows(GameNotFoundException.class, () -> gameLogic.loadGame("123"));
+    String expectedMessage = "Game with ID '123' not found.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
 
   @Test
-  void testSaveMatch_NewMatch() {
+  void testSaveGame_NewGame() {
     // Arrange
-    List<Match> matches = new ArrayList<>();
-    persistence.saveMatches(matches);
-    Match newMatch = new Match(new Player("Alice"), new Player("Bob"), "67");
+    List<Game> games = new ArrayList<>();
+    persistence.saveGames(games);
+    Game newGame = new Game(new Player("Alice"), new Player("Bob"), "67");
     // Act
-    gameLogic.saveMatch(newMatch);
+    gameLogic.saveGame(newGame);
 
     // Assert
-    List<Match> loadedMatches = persistence.loadMatches();
-    assertTrue(loadedMatches.contains(newMatch));
+    List<Game> loadedGames = persistence.loadGames();
+    assertTrue(loadedGames.contains(newGame));
   }
 
   @Test
-  void testSaveMatch_OverwriteExistingMatch() {
+  void testSaveGame_OverwriteExistingGame() {
     Player playerWhite = gameLogic.loadPlayer("Player1");
     Player playerBlack = gameLogic.loadPlayer("Player2");
     Player playerWhite2 = gameLogic.loadPlayer("Player3");
 
     // Arrange
-    Match existingMatch = new Match(playerWhite, playerBlack, "123");
-    Match updatedMatch = new Match(playerWhite2, playerBlack, "123");
-    List<Match> matches = new ArrayList<>();
-    matches.add(existingMatch);
-    persistence.saveMatches(matches);
+    Game existingGame = new Game(playerWhite, playerBlack, "123");
+    Game updatedGame = new Game(playerWhite2, playerBlack, "123");
+    List<Game> games = new ArrayList<>();
+    games.add(existingGame);
+    persistence.saveGames(games);
 
     // Act
-    gameLogic.saveMatch(updatedMatch);
+    gameLogic.saveGame(updatedGame);
 
     // Assert
-    List<Match> loadedMatches = persistence.loadMatches();
-    assertTrue(loadedMatches.contains(updatedMatch));
+    List<Game> loadedGames = persistence.loadGames();
+    assertTrue(loadedGames.contains(updatedGame));
   }
 
   @Test
-  void testCreateMatch_Successful() {
+  void testCreateGame_Successful() {
     // Arrange
-    String matchId = "456";
+    String gameId = "456";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
 
     // Act
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
 
     // Assert
-    List<Match> loadedMatches = persistence.loadMatches();
-    assertTrue(loadedMatches.contains(new Match(playerWhite, playerBlack, matchId)));
+    List<Game> loadedGames = persistence.loadGames();
+    assertTrue(loadedGames.contains(new Game(playerWhite, playerBlack, gameId)));
   }
 
   @Test
-  void testCreateMatch_MatchAlreadyExists() {
+  void testCreateGame_GameAlreadyExists() {
     // Arrange
-    String matchId = "456";
+    String gameId = "456";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
 
-    // Arrange: Save a match with the same ID
-    List<Match> matches = new ArrayList<>();
-    matches.add(new Match(playerWhite, playerBlack, matchId));
-    persistence.saveMatches(matches);
+    // Arrange: Save a game with the same ID
+    List<Game> games = new ArrayList<>();
+    games.add(new Game(playerWhite, playerBlack, gameId));
+    persistence.saveGames(games);
 
     // Act & Assert
     assertThrows(
-        MatchAlreadyExistsException.class,
-        () -> gameLogic.createMatch(playerWhite, playerBlack, matchId));
+        GameAlreadyExistsException.class,
+        () -> gameLogic.createGame(playerWhite, playerBlack, gameId));
   }
 
   @Test
@@ -234,22 +234,22 @@ class GameLogicTest {
   @Test
   void testMoveTo_ValidMove1() throws ConvertInputToPositionException, IllegalMoveException {
     // Arrange
-    String matchId = "match1";
+    String gameId = "game1";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
 
     String initialPosition = "e2";
     String targetPosition = "e4";
 
     // Act
 
-    gameLogic.moveTo(initialPosition, targetPosition, match);
-    gameLogic.saveMatch(match);
+    gameLogic.moveTo(initialPosition, targetPosition, game);
+    gameLogic.saveGame(game);
 
     // Assert
-    Piece movedPiece = match.getBoard().getPieceAtPosition(convertInputToPosition(targetPosition));
+    Piece movedPiece = game.getBoard().getPieceAtPosition(convertInputToPosition(targetPosition));
     assertNotNull(movedPiece);
     assertEquals(convertInputToPosition(targetPosition), movedPiece.getPosition());
   }
@@ -257,11 +257,11 @@ class GameLogicTest {
   @Test
   void testMoveTo_InvalidMove_NoPieceAtStartPosition() {
     // Arrange
-    String matchId = "match1";
+    String gameId = "game1";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
     String initialPosition = "d3";
     String targetPosition = "d4";
 
@@ -269,7 +269,7 @@ class GameLogicTest {
     IllegalMoveException exception =
         assertThrows(
             IllegalMoveException.class,
-            () -> gameLogic.moveTo(initialPosition, targetPosition, match));
+            () -> gameLogic.moveTo(initialPosition, targetPosition, game));
     assertEquals(
         "No piece at the specified position: Position[row=2, column=3]", exception.getMessage());
   }
@@ -277,11 +277,11 @@ class GameLogicTest {
   @Test
   void testMoveTo_InvalidMove_WrongPlayerTurn() {
     // Arrange
-    String matchId = "match1";
+    String gameId = "game1";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
     String initialPosition = "e7";
     String targetPosition = "e6";
 
@@ -289,18 +289,18 @@ class GameLogicTest {
     IllegalMoveException exception =
         assertThrows(
             IllegalMoveException.class,
-            () -> gameLogic.moveTo(initialPosition, targetPosition, match));
+            () -> gameLogic.moveTo(initialPosition, targetPosition, game));
     assertEquals("It's not your turn. Expected: WHITE, but got: BLACK", exception.getMessage());
   }
 
   @Test
   void testMoveTo_InvalidMove_TargetPositionOutOfBounds() {
     // Arrange
-    String matchId = "match1";
+    String gameId = "game1";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
     String initialPosition = "e2";
     String targetPosition = "e9";
 
@@ -308,7 +308,7 @@ class GameLogicTest {
     ConvertInputToPositionException exception =
         assertThrows(
             ConvertInputToPositionException.class,
-            () -> gameLogic.moveTo(initialPosition, targetPosition, match));
+            () -> gameLogic.moveTo(initialPosition, targetPosition, game));
     assertEquals(
         "Invalid position. Position must be within the chessboard.", exception.getMessage());
   }
@@ -316,11 +316,11 @@ class GameLogicTest {
   @Test
   void testMoveTo_InvalidMove_InvalidDirectionForPiece() {
     // Arrange
-    String matchId = "match1";
+    String gameId = "game1";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
     String initialPosition = "b1";
     String targetPosition = "b5";
 
@@ -328,7 +328,7 @@ class GameLogicTest {
     IllegalMoveException exception =
         assertThrows(
             IllegalMoveException.class,
-            () -> gameLogic.moveTo(initialPosition, targetPosition, match));
+            () -> gameLogic.moveTo(initialPosition, targetPosition, game));
     assertEquals(
         "Illegal move to position: Position[row=4, column=1]. Possible possible moves are for example: Position[row=2, column=2], Position[row=2, column=0]",
         exception.getMessage());
@@ -337,27 +337,27 @@ class GameLogicTest {
   @Test
   void testMoveTo_InvalidMove_BlockingPieceInPath() {
     // Arrange
-    String matchId = "match1";
+    String gameId = "game1";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
-    match.getBoard().clearChessboard();
-    match
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+    game.getBoard().clearChessboard();
+    game
         .getBoard()
         .setPieceAtPosition(
-            new Position(0, 0), new King(Color.WHITE, new Position(0, 0), match.getBoard()));
-    match
+            new Position(0, 0), new King(Color.WHITE, new Position(0, 0), game.getBoard()));
+    game
         .getBoard()
         .setPieceAtPosition(
             new Position(2, 4),
-            new Rook(Color.WHITE, new Position(2, 4), match.getBoard())); // Rook blocking the path
-    match
+            new Rook(Color.WHITE, new Position(2, 4), game.getBoard())); // Rook blocking the path
+    game
         .getBoard()
         .setPieceAtPosition(
             new Position(3, 4),
             new Pawn(
-                Color.BLACK, new Position(3, 4), match.getBoard())); // Pawn trying to move here
+                Color.BLACK, new Position(3, 4), game.getBoard())); // Pawn trying to move here
     String initialPosition = "e3";
     String targetPosition = "e5";
 
@@ -365,48 +365,48 @@ class GameLogicTest {
     IllegalMoveException exception =
         assertThrows(
             IllegalMoveException.class,
-            () -> gameLogic.moveTo(initialPosition, targetPosition, match));
+            () -> gameLogic.moveTo(initialPosition, targetPosition, game));
     assertEquals(
         "Illegal move to position: Position[row=4, column=4]. Possible possible moves are for example: Position[row=3, column=4], Position[row=1, column=4]",
         exception.getMessage());
   }
 
   @Test
-  void testSaveMatch_AddNewMatchWhenNotExists() {
+  void testSaveGame_AddNewGameWhenNotExists() {
     // Arrange
-    String matchId = "match1";
+    String gameId = "game1";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    Match newMatch = new Match(playerWhite, playerBlack, matchId);
+    Game newGame = new Game(playerWhite, playerBlack, gameId);
 
     // Act
-    gameLogic.saveMatch(newMatch);
+    gameLogic.saveGame(newGame);
 
     // Assert
-    List<Match> loadedMatches = persistence.loadMatches();
-    assertTrue(loadedMatches.contains(newMatch));
+    List<Game> loadedGames = persistence.loadGames();
+    assertTrue(loadedGames.contains(newGame));
   }
 
   @Test
-  void testSaveMatch_onlyOverwritesOneMatch() {
+  void testSaveGame_onlyOverwritesOneGame() {
     // Arrange
-    String matchId2 = "match2";
+    String gameId2 = "game2";
     Player playerWhite2 = gameLogic.loadPlayer("Luisa");
     Player playerBlack2 = gameLogic.loadPlayer("Jake");
-    gameLogic.createMatch(playerWhite2, playerBlack2, matchId2);
-    String matchId = "match1";
+    gameLogic.createGame(playerWhite2, playerBlack2, gameId2);
+    String gameId = "game1";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    Match newMatch = new Match(playerWhite, playerBlack, matchId);
+    Game newGame = new Game(playerWhite, playerBlack, gameId);
 
     // Act
-    gameLogic.saveMatch(newMatch);
+    gameLogic.saveGame(newGame);
 
     // Assert
-    List<Match> loadedMatches = persistence.loadMatches();
-    assertTrue(loadedMatches.contains(newMatch));
-    assertThat(loadedMatches.getFirst().getPlayerWhite().getName()).isEqualTo("Luisa");
-    assertThat(loadedMatches.get(1).getPlayerWhite().getName()).isEqualTo("Alice");
+    List<Game> loadedGames = persistence.loadGames();
+    assertTrue(loadedGames.contains(newGame));
+    assertThat(loadedGames.getFirst().getPlayerWhite().getName()).isEqualTo("Luisa");
+    assertThat(loadedGames.get(1).getPlayerWhite().getName()).isEqualTo("Alice");
   }
 
   @Test
@@ -425,23 +425,23 @@ class GameLogicTest {
   @Test
   void testMoveTo_InvalidMove_SameStartAndEndPosition() throws ConvertInputToPositionException {
     // Arrange
-    String matchId = "match1";
+    String gameId = "game1";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
 
     String startPosition = "b5";
     String endPosition = "b5"; // Same as start position
 
     // Set a piece at the start position
-    Piece piece = new Pawn(Color.WHITE, convertInputToPosition(startPosition), match.getBoard());
-    match.getBoard().setPieceAtPosition(convertInputToPosition(startPosition), piece);
+    Piece piece = new Pawn(Color.WHITE, convertInputToPosition(startPosition), game.getBoard());
+    game.getBoard().setPieceAtPosition(convertInputToPosition(startPosition), piece);
 
     // Act & Assert
     IllegalMoveException exception =
         assertThrows(
-            IllegalMoveException.class, () -> gameLogic.moveTo(startPosition, endPosition, match));
+            IllegalMoveException.class, () -> gameLogic.moveTo(startPosition, endPosition, game));
 
     assertEquals(
         "Illegal move to position: "
@@ -453,7 +453,7 @@ class GameLogicTest {
   @Test
   void testAcceptRemi() {
     // Arrange
-    String matchId = "match1";
+    String gameId = "game1";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
     playerWhite.setElo((short) 2950);
@@ -462,15 +462,15 @@ class GameLogicTest {
     gameLogic.savePlayer(playerBlack);
     playerWhite = gameLogic.loadPlayer("Alice");
     playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
 
     // Act
-    gameLogic.acceptRemi(match);
+    gameLogic.acceptRemi(game);
 
     // Assert
-    assertEquals(MatchOutcome.REMI, match.getWinner());
-    assertTrue(match.isGameEnded());
+    assertEquals(GameOutcome.REMI, game.getWinner());
+    assertTrue(game.isGameEnded());
     assertThat(gameLogic.loadPlayer("Alice").getElo()).isEqualTo((short) 2943);
     assertThat(gameLogic.loadPlayer("Bob").getElo()).isEqualTo((short) 2637);
   }
@@ -478,62 +478,62 @@ class GameLogicTest {
   @Test
   void testResign_WhitePlayerResigns() {
     // Arrange
-    String matchId = "match1";
+    String gameId = "game1";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
 
     // Act
-    gameLogic.resign(match);
+    gameLogic.resign(game);
 
     // Assert
-    assertEquals(MatchOutcome.BLACK, match.getWinner());
-    assertTrue(match.isGameEnded());
+    assertEquals(GameOutcome.BLACK, game.getWinner());
+    assertTrue(game.isGameEnded());
   }
 
   @Test
   void testResign_BlackPlayerResigns() {
     // Arrange
-    String matchId = "match1";
+    String gameId = "game1";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
 
-    match.toggleNextToMove();
+    game.toggleNextToMove();
 
     // Act
-    gameLogic.resign(match);
+    gameLogic.resign(game);
 
     // Assert
-    assertEquals(MatchOutcome.WHITE, match.getWinner());
-    assertTrue(match.isGameEnded());
+    assertEquals(GameOutcome.WHITE, game.getWinner());
+    assertTrue(game.isGameEnded());
   }
 
   @Test
   void testShortestGame() {
     // Arrange
-    String matchId = "shortestGame";
+    String gameId = "shortestGame";
 
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
 
     try {
-      gameLogic.moveTo("f2", "f3", match);
-      gameLogic.moveTo("e7", "e5", match);
+      gameLogic.moveTo("f2", "f3", game);
+      gameLogic.moveTo("e7", "e5", game);
 
-      gameLogic.moveTo("g2", "g4", match);
-      gameLogic.moveTo("d8", "h4", match);
+      gameLogic.moveTo("g2", "g4", game);
+      gameLogic.moveTo("d8", "h4", game);
 
       // TODO: Expand with check and checkmate
-      match.declareWinner(MatchOutcome.BLACK);
-      System.out.println(gameLogic.endGame(match));
-      assertTrue(match.isGameEnded());
-      assertEquals(MatchOutcome.BLACK, match.getWinner());
-      assertEquals(4, match.getMoveCount());
+      game.declareWinner(GameOutcome.BLACK);
+      System.out.println(gameLogic.endGame(game));
+      assertTrue(game.isGameEnded());
+      assertEquals(GameOutcome.BLACK, game.getWinner());
+      assertEquals(4, game.getMoveCount());
       assertEquals((short) 1190, gameLogic.loadPlayer("Alice").getElo());
       assertEquals((short) 1210, gameLogic.loadPlayer("Bob").getElo());
     } catch (IllegalMoveException e) {
@@ -544,53 +544,53 @@ class GameLogicTest {
   }
 
   @Test
-  void testLoadMatch_UpdatePlayers() {
+  void testLoadGame_UpdatePlayers() {
     // Arrange
-    String matchId = "testMatch";
+    String gameId = "testGame";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
 
-    List<Match> matches = new ArrayList<>();
-    Match match = new Match(playerWhite, playerBlack, matchId);
-    matches.add(match);
-    persistence.saveMatches(matches);
+    List<Game> games = new ArrayList<>();
+    Game game = new Game(playerWhite, playerBlack, gameId);
+    games.add(game);
+    persistence.saveGames(games);
 
     playerWhite.setElo((short) 1299);
     playerBlack.setElo((short) 1266);
     gameLogic.savePlayer(playerWhite);
     gameLogic.savePlayer(playerBlack);
     // Act
-    Match loadedMatch = gameLogic.loadMatch(matchId);
+    Game loadedGame = gameLogic.loadGame(gameId);
 
     // Assert
-    assertNotNull(loadedMatch);
+    assertNotNull(loadedGame);
     assertSoftly(
         softly -> {
-          softly.assertThat(loadedMatch.getPlayerWhite().getName()).isEqualTo("Alice");
-          softly.assertThat(loadedMatch.getPlayerBlack().getName()).isEqualTo("Bob");
-          softly.assertThat(loadedMatch.getPlayerWhite()).isEqualTo(playerWhite);
-          softly.assertThat(loadedMatch.getPlayerBlack()).isEqualTo(playerBlack);
+          softly.assertThat(loadedGame.getPlayerWhite().getName()).isEqualTo("Alice");
+          softly.assertThat(loadedGame.getPlayerBlack().getName()).isEqualTo("Bob");
+          softly.assertThat(loadedGame.getPlayerWhite()).isEqualTo(playerWhite);
+          softly.assertThat(loadedGame.getPlayerBlack()).isEqualTo(playerBlack);
         });
   }
 
   @Test
   void testEndGame_DeclareWinnerRemi() {
     // Arrange
-    String matchId = "matchToEnd";
+    String gameId = "gameToEnd";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
 
     // Act
-    gameLogic.acceptRemi(match);
-    String result = gameLogic.endGame(match);
+    gameLogic.acceptRemi(game);
+    String result = gameLogic.endGame(game);
 
     // Assert
     assertSoftly(
         softly -> {
-          softly.assertThat(match.isGameEnded()).isTrue();
-          softly.assertThat(match.getWinner()).isEqualTo(MatchOutcome.REMI);
+          softly.assertThat(game.isGameEnded()).isTrue();
+          softly.assertThat(game.getWinner()).isEqualTo(GameOutcome.REMI);
           softly.assertThat(result).contains("The game ended in Remi.");
         });
   }
@@ -598,21 +598,21 @@ class GameLogicTest {
   @Test
   void testEndGame_DeclareWinnerWhite() {
     // Arrange
-    String matchId = "matchToEnd";
+    String gameId = "gameToEnd";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
-    match.declareWinner(MatchOutcome.WHITE);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+    game.declareWinner(GameOutcome.WHITE);
 
     // Act
-    String result = gameLogic.endGame(match);
+    String result = gameLogic.endGame(game);
 
     // Assert
     assertSoftly(
         softly -> {
-          softly.assertThat(match.isGameEnded()).isTrue();
-          softly.assertThat(match.getWinner()).isEqualTo(MatchOutcome.WHITE);
+          softly.assertThat(game.isGameEnded()).isTrue();
+          softly.assertThat(game.getWinner()).isEqualTo(GameOutcome.WHITE);
           softly.assertThat(result).contains("WHITE won this game. Congrats Alice (new ELO: 1210)");
           softly.assertThat(gameLogic.loadPlayer("Alice").getElo()).isEqualTo((short) 1210);
           softly.assertThat(gameLogic.loadPlayer("Bob").getElo()).isEqualTo((short) 1190);
@@ -622,105 +622,105 @@ class GameLogicTest {
   @Test
   void testEndGame_DeclareWinnerBlack() {
     // Arrange
-    String matchId = "matchToEnd";
+    String gameId = "gameToEnd";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
-    match.declareWinner(MatchOutcome.BLACK);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+    game.declareWinner(GameOutcome.BLACK);
 
     // Act
-    String result = gameLogic.endGame(match);
+    String result = gameLogic.endGame(game);
 
     // Assert
     assertSoftly(
         softly -> {
-          softly.assertThat(match.isGameEnded()).isTrue();
-          softly.assertThat(match.getWinner()).isEqualTo(MatchOutcome.BLACK);
+          softly.assertThat(game.isGameEnded()).isTrue();
+          softly.assertThat(game.getWinner()).isEqualTo(GameOutcome.BLACK);
           softly.assertThat(result).contains("BLACK won this game. Congrats Bob (new ELO: 1210)");
         });
   }
 
   @Test
-  void testDeleteMatch_MatchExists() {
+  void testDeleteGame_GameExists() {
     // Arrange
-    String matchId = "matchToDelete";
+    String gameId = "gameToDelete";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
 
     // Act & Assert
-    TheMatchHasNotEndedException exception =
-        assertThrows(TheMatchHasNotEndedException.class, () -> gameLogic.endGame(match));
+    GameHasNotEndedException exception =
+        assertThrows(GameHasNotEndedException.class, () -> gameLogic.endGame(game));
 
     assertEquals("The game has not ended yet", exception.getMessage());
   }
 
   @Test
-  void testDeleteMatch_MatchDoesNotExist() {
+  void testDeleteGame_GameDoesNotExist() {
     // Arrange
-    String matchId = "nonExistentMatch";
+    String gameId = "nonExistentGame";
 
     // Act
-    List<Match> loadedMatches = persistence.loadMatches();
-    int initialSize = loadedMatches.size();
+    List<Game> loadedGames = persistence.loadGames();
+    int initialSize = loadedGames.size();
 
     // Assert
     assertSoftly(
         softly -> {
-          softly.assertThat(initialSize).isEqualTo(loadedMatches.size());
+          softly.assertThat(initialSize).isEqualTo(loadedGames.size());
           softly
-              .assertThat(loadedMatches.stream().noneMatch(m -> m.getId().equals(matchId)))
+              .assertThat(loadedGames.stream().noneMatch(m -> m.getId().equals(gameId)))
               .isTrue();
         });
   }
 
   @Test
-  void testEndGame_DeleteMatchAfterEnding() {
+  void testEndGame_DeleteGameAfterEnding() {
     // Arrange
-    String matchId = "matchToEnd";
+    String gameId = "gameToEnd";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
-    match.declareWinner(MatchOutcome.BLACK);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+    game.declareWinner(GameOutcome.BLACK);
 
     // Act
-    String result = gameLogic.endGame(match);
+    String result = gameLogic.endGame(game);
 
     // Assert
     assertSoftly(
         softly -> {
-          softly.assertThat(match.isGameEnded()).isTrue();
-          softly.assertThat(match.getWinner()).isEqualTo(MatchOutcome.BLACK);
+          softly.assertThat(game.isGameEnded()).isTrue();
+          softly.assertThat(game.getWinner()).isEqualTo(GameOutcome.BLACK);
           softly.assertThat(result).contains("BLACK won this game. Congrats Bob (new ELO: 1210)");
           softly
               .assertThat(
-                  persistence.loadMatches().stream().anyMatch(m -> m.getId().equals(matchId)))
+                  persistence.loadGames().stream().anyMatch(m -> m.getId().equals(gameId)))
               .isFalse();
         });
   }
 
   @Test
-  void testDeleteMatch_OnlyDeletesOneMatch() {
+  void testDeleteGame_OnlyDeletesOneGame() {
     // Arrange
-    String matchId = "matchToDelete";
+    String gameId = "gameToDelete";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    gameLogic.createMatch(playerWhite, playerBlack, "matchNotToDelete");
-    Match match = gameLogic.loadMatch(matchId);
-    match.declareWinner(MatchOutcome.BLACK);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    gameLogic.createGame(playerWhite, playerBlack, "gameNotToDelete");
+    Game game = gameLogic.loadGame(gameId);
+    game.declareWinner(GameOutcome.BLACK);
 
     // Act
-    gameLogic.endGame(match);
-    List<Match> loadedMatches = persistence.loadMatches();
+    gameLogic.endGame(game);
+    List<Game> loadedGames = persistence.loadGames();
 
 
     // Act & Assert
 
-    assertThat(loadedMatches.getFirst().getId()).isEqualTo("matchNotToDelete");
+    assertThat(loadedGames.getFirst().getId()).isEqualTo("gameNotToDelete");
   }
 
   @Test
@@ -758,17 +758,17 @@ class GameLogicTest {
   @Test
   void testGetPossibleMoves_PieceAtPosition() {
     // Arrange
-    String matchId = "testMatch";
+    String gameId = "testGame";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
     Position initialPosition = convertInputToPosition("e2");
-    Piece piece = new Pawn(Color.WHITE, initialPosition, match.getBoard());
-    match.getBoard().setPieceAtPosition(initialPosition, piece);
+    Piece piece = new Pawn(Color.WHITE, initialPosition, game.getBoard());
+    game.getBoard().setPieceAtPosition(initialPosition, piece);
 
     // Act
-    List<Position> possibleMoves = gameLogic.getPossibleMoves("e2", match);
+    List<Position> possibleMoves = gameLogic.getPossibleMoves("e2", game);
 
     // Assert
     assertNotNull(possibleMoves);
@@ -778,14 +778,14 @@ class GameLogicTest {
   @Test
   void testGetPossibleMoves_NoPieceAtPosition() {
     // Arrange
-    String matchId = "testMatch";
+    String gameId = "testGame";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
-    gameLogic.createMatch(playerWhite, playerBlack, matchId);
-    Match match = gameLogic.loadMatch(matchId);
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
 
     // Act
-    List<Position> possibleMoves = gameLogic.getPossibleMoves("e3", match);
+    List<Position> possibleMoves = gameLogic.getPossibleMoves("e3", game);
     // Assert
     assertNotNull(possibleMoves);
     assertTrue(possibleMoves.isEmpty());
