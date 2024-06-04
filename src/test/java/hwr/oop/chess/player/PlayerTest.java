@@ -11,7 +11,7 @@ class PlayerTest {
   @Test
   void testOnlyNameConstructor() {
     String name = "Dummy";
-    short expectedElo = 100;
+    short expectedElo = 1200;
     Player player = new Player(name);
 
     SoftAssertions.assertSoftly(
