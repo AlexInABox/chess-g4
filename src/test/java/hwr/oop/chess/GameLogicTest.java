@@ -10,7 +10,6 @@ import hwr.oop.chess.persistence.FileBasePersistence;
 import hwr.oop.chess.persistence.Persistence;
 import hwr.oop.chess.pieces.*;
 import hwr.oop.chess.player.Player;
-
 import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -581,7 +580,7 @@ class GameLogicTest {
           softly
               .assertThat(result)
               .contains(
-                  "WHITE won this game. Congrats Alice (new ELO: " + playerWhite.getElo() + ")");
+                  "WHITE won this game. Congrats Alice (new ELO: 1210)");
         });
   }
 
@@ -606,7 +605,7 @@ class GameLogicTest {
           softly
               .assertThat(result)
               .contains(
-                  "BLACK won this game. Congrats Bob (new ELO: " + playerBlack.getElo() + ")");
+                  "BLACK won this game. Congrats Bob (new ELO: 1210)");
         });
   }
 
@@ -666,7 +665,7 @@ class GameLogicTest {
           softly
               .assertThat(result)
               .contains(
-                  "BLACK won this game. Congrats Bob (new ELO: " + playerBlack.getElo() + ")");
+                  "BLACK won this game. Congrats Bob (new ELO: 1210)");
           softly
               .assertThat(
                   persistence.loadMatches().stream()

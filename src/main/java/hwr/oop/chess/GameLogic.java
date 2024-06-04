@@ -160,32 +160,70 @@ public class GameLogic implements Domain {
     }
   }
 
-@Override
+  @Override
   public String endGame(Match match) {
     Player playerWhite = loadPlayer(match.getPlayerWhite().getName());
     Player playerBlack = loadPlayer(match.getPlayerBlack().getName());
+    double chanceToWinPlayerWhite = calculateChanceToWinPlayerWhite(playerWhite, playerBlack);
+    double chanceToWinPlayerBlack = 1 - chanceToWinPlayerWhite;
     String victoryMessage = "";
     switch (match.getWinner()) {
-      case MatchOutcome.REMI -> victoryMessage = "The game ended in Remi.";
-      case MatchOutcome.WHITE ->
-          victoryMessage =
-              "WHITE won this game. Congrats "
-                  + playerWhite.getName()
-                  + " (new ELO: "
-                  + playerWhite.getElo()
-                  + ")";
-      case MatchOutcome.BLACK ->
-          victoryMessage =
-              "BLACK won this game. Congrats "
-                  + playerBlack.getName()
-                  + " (new ELO: "
-                  + playerBlack.getElo()
-                  + ")";
+      case MatchOutcome.REMI -> {
+        playerWhite.setElo(calculateNewEloRemi(playerWhite, chanceToWinPlayerWhite));
+        playerBlack.setElo(calculateNewEloRemi(playerBlack, chanceToWinPlayerBlack));
+        victoryMessage = "The game ended in Remi.";
+      }
+
+      case MatchOutcome.WHITE -> {
+        playerWhite.setElo(calculateNewEloWinner(playerWhite, chanceToWinPlayerWhite));
+        playerBlack.setElo(calculateNewEloLooser(playerBlack, chanceToWinPlayerBlack));
+        victoryMessage =
+            "WHITE won this game. Congrats "
+                + playerWhite.getName()
+                + " (new ELO: "
+                + playerWhite.getElo()
+                + ")";
+      }
+      case MatchOutcome.BLACK -> {
+        playerWhite.setElo(calculateNewEloLooser(playerWhite, chanceToWinPlayerWhite));
+        playerBlack.setElo(calculateNewEloWinner(playerBlack, chanceToWinPlayerBlack));
+        victoryMessage =
+            "BLACK won this game. Congrats "
+                + playerBlack.getName()
+                + " (new ELO: "
+                + playerBlack.getElo()
+                + ")";
+      }
       case MatchOutcome.NOT_FINISHED_YET ->
           throw new TheMatchHasNotEndedException("The game has not ended yet");
     }
     deleteMatch(match.getId());
     return victoryMessage;
+  }
+
+  public double calculateChanceToWinPlayerWhite(Player playerWhite, Player playerBlack) {
+    return (double)
+            Math.round(
+                1
+                    / (1
+                        + Math.pow(
+                            10, ((double) (playerBlack.getElo() - playerWhite.getElo()) / 400)))
+                    * 100)
+        / 100;
+  }
+
+  public short calculateNewEloWinner(Player player, double chanceToWin) {
+
+    return (short) Math.round((player.getElo() + 20 * (1 - chanceToWin)));
+  }
+
+  public short calculateNewEloLooser(Player player, double chanceToWin) {
+
+    return (short) Math.round((player.getElo() + 20 * (0 - chanceToWin)));
+  }
+
+  public short calculateNewEloRemi(Player player, double chanceToWin) {
+    return (short) Math.round((player.getElo() + 20 * (0.5 - chanceToWin)));
   }
 
   private void deleteMatch(String matchId) {
