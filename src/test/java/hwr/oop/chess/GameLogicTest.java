@@ -69,6 +69,7 @@ class GameLogicTest {
     // Assert
     assertNotNull(loadedMatch);
     assertEquals(expectedMatch, loadedMatch);
+    assertEquals(expectedMatch.getPlayerWhite().getElo(), gameLogic.loadPlayer("Player1").getElo());
   }
 
   @Test
@@ -343,10 +344,9 @@ class GameLogicTest {
     Match match = gameLogic.loadMatch(matchId);
     match.getBoard().clearChessboard();
     match
-            .getBoard()
-            .setPieceAtPosition(
-                    new Position(0, 0),
-                    new King(Color.WHITE, new Position(0, 0), match.getBoard()));
+        .getBoard()
+        .setPieceAtPosition(
+            new Position(0, 0), new King(Color.WHITE, new Position(0, 0), match.getBoard()));
     match
         .getBoard()
         .setPieceAtPosition(
@@ -385,6 +385,28 @@ class GameLogicTest {
     // Assert
     List<Match> loadedMatches = persistence.loadMatches();
     assertTrue(loadedMatches.contains(newMatch));
+  }
+
+  @Test
+  void testSaveMatch_onlyOverwritesOneMatch() {
+    // Arrange
+    String matchId2 = "match2";
+    Player playerWhite2 = gameLogic.loadPlayer("Luisa");
+    Player playerBlack2 = gameLogic.loadPlayer("Jake");
+    gameLogic.createMatch(playerWhite2, playerBlack2, matchId2);
+    String matchId = "match1";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    Match newMatch = new Match(playerWhite, playerBlack, matchId);
+
+    // Act
+    gameLogic.saveMatch(newMatch);
+
+    // Assert
+    List<Match> loadedMatches = persistence.loadMatches();
+    assertTrue(loadedMatches.contains(newMatch));
+    assertThat(loadedMatches.getFirst().getPlayerWhite().getName()).isEqualTo("Luisa");
+    assertThat(loadedMatches.get(1).getPlayerWhite().getName()).isEqualTo("Alice");
   }
 
   @Test
@@ -434,6 +456,12 @@ class GameLogicTest {
     String matchId = "match1";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
+    playerWhite.setElo((short) 2950);
+    playerBlack.setElo((short) 2630);
+    gameLogic.savePlayer(playerWhite);
+    gameLogic.savePlayer(playerBlack);
+    playerWhite = gameLogic.loadPlayer("Alice");
+    playerBlack = gameLogic.loadPlayer("Bob");
     gameLogic.createMatch(playerWhite, playerBlack, matchId);
     Match match = gameLogic.loadMatch(matchId);
 
@@ -443,6 +471,8 @@ class GameLogicTest {
     // Assert
     assertEquals(MatchOutcome.REMI, match.getWinner());
     assertTrue(match.isGameEnded());
+    assertThat(gameLogic.loadPlayer("Alice").getElo()).isEqualTo((short) 2943);
+    assertThat(gameLogic.loadPlayer("Bob").getElo()).isEqualTo((short) 2637);
   }
 
   @Test
@@ -504,6 +534,8 @@ class GameLogicTest {
       assertTrue(match.isGameEnded());
       assertEquals(MatchOutcome.BLACK, match.getWinner());
       assertEquals(4, match.getMoveCount());
+      assertEquals((short) 1190, gameLogic.loadPlayer("Alice").getElo());
+      assertEquals((short) 1210, gameLogic.loadPlayer("Bob").getElo());
     } catch (IllegalMoveException e) {
       fail(e.getMessage());
     } catch (ConvertInputToPositionException e) {
@@ -523,6 +555,10 @@ class GameLogicTest {
     matches.add(match);
     persistence.saveMatches(matches);
 
+    playerWhite.setElo((short) 1299);
+    playerBlack.setElo((short) 1266);
+    gameLogic.savePlayer(playerWhite);
+    gameLogic.savePlayer(playerBlack);
     // Act
     Match loadedMatch = gameLogic.loadMatch(matchId);
 
@@ -577,10 +613,9 @@ class GameLogicTest {
         softly -> {
           softly.assertThat(match.isGameEnded()).isTrue();
           softly.assertThat(match.getWinner()).isEqualTo(MatchOutcome.WHITE);
-          softly
-              .assertThat(result)
-              .contains(
-                  "WHITE won this game. Congrats Alice (new ELO: 1210)");
+          softly.assertThat(result).contains("WHITE won this game. Congrats Alice (new ELO: 1210)");
+          softly.assertThat(gameLogic.loadPlayer("Alice").getElo()).isEqualTo((short) 1210);
+          softly.assertThat(gameLogic.loadPlayer("Bob").getElo()).isEqualTo((short) 1190);
         });
   }
 
@@ -602,10 +637,7 @@ class GameLogicTest {
         softly -> {
           softly.assertThat(match.isGameEnded()).isTrue();
           softly.assertThat(match.getWinner()).isEqualTo(MatchOutcome.BLACK);
-          softly
-              .assertThat(result)
-              .contains(
-                  "BLACK won this game. Congrats Bob (new ELO: 1210)");
+          softly.assertThat(result).contains("BLACK won this game. Congrats Bob (new ELO: 1210)");
         });
   }
 
@@ -662,16 +694,33 @@ class GameLogicTest {
         softly -> {
           softly.assertThat(match.isGameEnded()).isTrue();
           softly.assertThat(match.getWinner()).isEqualTo(MatchOutcome.BLACK);
-          softly
-              .assertThat(result)
-              .contains(
-                  "BLACK won this game. Congrats Bob (new ELO: 1210)");
+          softly.assertThat(result).contains("BLACK won this game. Congrats Bob (new ELO: 1210)");
           softly
               .assertThat(
-                  persistence.loadMatches().stream()
-                      .anyMatch(m -> m.getId().equals(matchId)))
+                  persistence.loadMatches().stream().anyMatch(m -> m.getId().equals(matchId)))
               .isFalse();
         });
+  }
+
+  @Test
+  void testDeleteMatch_OnlyDeletesOneMatch() {
+    // Arrange
+    String matchId = "matchToDelete";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createMatch(playerWhite, playerBlack, matchId);
+    gameLogic.createMatch(playerWhite, playerBlack, "matchNotToDelete");
+    Match match = gameLogic.loadMatch(matchId);
+    match.declareWinner(MatchOutcome.BLACK);
+
+    // Act
+    gameLogic.endGame(match);
+    List<Match> loadedMatches = persistence.loadMatches();
+
+
+    // Act & Assert
+
+    assertThat(loadedMatches.getFirst().getId()).isEqualTo("matchNotToDelete");
   }
 
   @Test
@@ -705,6 +754,7 @@ class GameLogicTest {
     assertThrows(ConvertInputToPositionException.class, () -> convertInputToPosition("a9"));
     assertThrows(ConvertInputToPositionException.class, () -> convertInputToPosition("h9"));
   }
+
   @Test
   void testGetPossibleMoves_PieceAtPosition() {
     // Arrange
@@ -735,13 +785,11 @@ class GameLogicTest {
     Match match = gameLogic.loadMatch(matchId);
 
     // Act
-    final List<Position> possibleMoves = gameLogic.getPossibleMoves("e3", match);
+    List<Position> possibleMoves = gameLogic.getPossibleMoves("e3", match);
     // Assert
     assertNotNull(possibleMoves);
     assertTrue(possibleMoves.isEmpty());
-    assertEquals(0, possibleMoves.size(), "Loaded matches list should be empty for an empty file");
+    //Test, return value can not be changed to Collections.emptyList
+    possibleMoves.add(new Position(2,3));
   }
-
-
-
 }

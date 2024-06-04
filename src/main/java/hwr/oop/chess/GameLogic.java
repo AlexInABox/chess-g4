@@ -2,7 +2,6 @@ package hwr.oop.chess;
 
 import hwr.oop.chess.match.Match;
 import hwr.oop.chess.persistence.Persistence;
-import hwr.oop.chess.pieces.*;
 import hwr.oop.chess.pieces.IllegalMoveException;
 import hwr.oop.chess.pieces.Piece;
 import hwr.oop.chess.player.Player;
@@ -29,9 +28,7 @@ public class GameLogic implements Domain {
         Player playerBlack = loadPlayer(match.getPlayerBlack().getName());
         match.updatePlayers(playerWhite, playerBlack);
 
-        return match;
-      }
-    }
+        return match;}}
     throw new MatchNotFoundException(matchId);
   }
 
@@ -71,11 +68,7 @@ public class GameLogic implements Domain {
         .filter(player -> player.getName().equals(playerName))
         .findFirst()
         .orElseGet(
-            () -> {
-              Player newPlayer = new Player(playerName);
-              savePlayer(newPlayer);
-              return newPlayer;
-            });
+            () -> new Player(playerName));
   }
 
   @Override
@@ -147,7 +140,9 @@ public class GameLogic implements Domain {
 
   @Override
   public void acceptRemi(Match match) {
+
     match.declareWinner(MatchOutcome.REMI);
+    endGame(match);
   }
 
   @Override
@@ -197,6 +192,8 @@ public class GameLogic implements Domain {
       case MatchOutcome.NOT_FINISHED_YET ->
           throw new TheMatchHasNotEndedException("The game has not ended yet");
     }
+    savePlayer(playerWhite);
+    savePlayer(playerBlack);
     deleteMatch(match.getId());
     return victoryMessage;
   }
