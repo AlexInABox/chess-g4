@@ -1,4 +1,4 @@
-package hwr.oop.chess.match;
+package hwr.oop.chess.game;
 
 public class FENException extends RuntimeException {
   public FENException(String message) {

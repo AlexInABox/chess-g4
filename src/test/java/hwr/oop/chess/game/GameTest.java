@@ -1,4 +1,4 @@
-package hwr.oop.chess.match;
+package hwr.oop.chess.game;
 
 import hwr.oop.chess.Color;
 import hwr.oop.chess.board.ChessBoard;
@@ -9,19 +9,19 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-class MatchTest {
-  private Match match;
+class GameTest {
+  private Game game;
 
   @Test
   void testOnlyPlayerConstructors() {
     Player whitePlayer = new Player("White");
     Player blackPlayer = new Player("Black");
-    match = new Match(whitePlayer, blackPlayer, "1");
+    game = new Game(whitePlayer, blackPlayer, "1");
 
     SoftAssertions.assertSoftly(
         softly -> {
-          softly.assertThat(match.getPlayerWhite()).isEqualTo(whitePlayer);
-          softly.assertThat(match.getPlayerBlack()).isEqualTo(blackPlayer);
+          softly.assertThat(game.getPlayerWhite()).isEqualTo(whitePlayer);
+          softly.assertThat(game.getPlayerBlack()).isEqualTo(blackPlayer);
         });
   }
 
@@ -29,12 +29,12 @@ class MatchTest {
   void testPlayerAndBoardConstructors() {
     Player whitePlayer = new Player("White");
     Player blackPlayer = new Player("Black");
-    match = new Match(whitePlayer, blackPlayer, "1");
+    game = new Game(whitePlayer, blackPlayer, "1");
 
     SoftAssertions.assertSoftly(
         softly -> {
-          softly.assertThat(match.getPlayerWhite()).isEqualTo(whitePlayer);
-          softly.assertThat(match.getPlayerBlack()).isEqualTo(blackPlayer);
+          softly.assertThat(game.getPlayerWhite()).isEqualTo(whitePlayer);
+          softly.assertThat(game.getPlayerBlack()).isEqualTo(blackPlayer);
         });
   }
 
@@ -43,14 +43,14 @@ class MatchTest {
     Player whitePlayer = new Player("White");
     Player blackPlayer = new Player("Black");
     String fenNotation = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b";
-    match = new Match(whitePlayer, blackPlayer, fenNotation, "1");
+    game = new Game(whitePlayer, blackPlayer, fenNotation, "1");
 
     SoftAssertions.assertSoftly(
         softly -> {
-          softly.assertThat(match.getPlayerWhite()).isEqualTo(whitePlayer);
-          softly.assertThat(match.getPlayerBlack()).isEqualTo(blackPlayer);
-          softly.assertThat(match.getFEN()).isEqualTo(fenNotation);
-          softly.assertThat(match.getNextToMove()).isEqualTo(Color.BLACK);
+          softly.assertThat(game.getPlayerWhite()).isEqualTo(whitePlayer);
+          softly.assertThat(game.getPlayerBlack()).isEqualTo(blackPlayer);
+          softly.assertThat(game.getFEN()).isEqualTo(fenNotation);
+          softly.assertThat(game.getNextToMove()).isEqualTo(Color.BLACK);
         });
   }
 
@@ -58,9 +58,9 @@ class MatchTest {
   void testEquals_IdenticalInstances() {
     Player playerWhite = new Player("White");
     Player playerBlack = new Player("Black");
-    Match match1 = new Match(playerWhite, playerBlack, "1");
-    Match match2 = new Match(playerWhite, playerBlack, "1");
-    assertThat(match1.equals(match2)).isTrue();
+    Game game1 = new Game(playerWhite, playerBlack, "1");
+    Game game2 = new Game(playerWhite, playerBlack, "1");
+    assertThat(game1.equals(game2)).isTrue();
   }
 
   @SuppressWarnings("EqualsWithItself")
@@ -68,8 +68,8 @@ class MatchTest {
   void testEquals_SameInstance() {
     Player playerWhite = new Player("White");
     Player playerBlack = new Player("Black");
-    Match match = new Match(playerWhite, playerBlack, "1");
-    assertThat(match.equals(match)).isTrue();
+    Game game = new Game(playerWhite, playerBlack, "1");
+    assertThat(game.equals(game)).isTrue();
   }
 
   @SuppressWarnings("ConstantConditions")
@@ -77,8 +77,8 @@ class MatchTest {
   void testEquals_InstanceNull() {
     Player playerWhite = new Player("White");
     Player playerBlack = new Player("Black");
-    Match match = new Match(playerWhite, playerBlack, "1");
-    assertThat(match.equals(null)).isFalse();
+    Game game = new Game(playerWhite, playerBlack, "1");
+    assertThat(game.equals(null)).isFalse();
   }
 
   @SuppressWarnings("EqualsBetweenInconvertibleTypes")
@@ -87,30 +87,30 @@ class MatchTest {
     Player playerWhite = new Player("White");
     Player playerBlack = new Player("Black");
     ChessBoard board = new ChessBoard();
-    Match match = new Match(playerWhite, playerBlack, "1");
-    assertThat(match.equals(board)).isFalse();
+    Game game = new Game(playerWhite, playerBlack, "1");
+    assertThat(game.equals(board)).isFalse();
   }
 
   @Test
   void testHashCode_IdenticalHashCode() {
     Player playerWhite = new Player("White");
     Player playerBlack = new Player("Black");
-    Match match1 = new Match(playerWhite, playerBlack, "1");
-    Match match2 = new Match(playerWhite, playerBlack, "1");
-    assertThat(match1.hashCode()).isEqualTo(match2.hashCode());
+    Game game1 = new Game(playerWhite, playerBlack, "1");
+    Game game2 = new Game(playerWhite, playerBlack, "1");
+    assertThat(game1.hashCode()).isEqualTo(game2.hashCode());
   }
 
   @Test
   void testHashCode_DifferentHashCode() {
     Player playerWhite1 = new Player("White");
     Player playerBlack1 = new Player("Black");
-    Match match1 = new Match(playerWhite1, playerBlack1, "1");
+    Game game1 = new Game(playerWhite1, playerBlack1, "1");
 
     Player playerWhite2 = new Player("Alice");
     Player playerBlack2 = new Player("James");
-    Match match2 = new Match(playerWhite2, playerBlack2, "1");
+    Game game2 = new Game(playerWhite2, playerBlack2, "1");
 
-    assertThat(match1.hashCode()).isNotEqualTo(match2.hashCode());
+    assertThat(game1.hashCode()).isNotEqualTo(game2.hashCode());
   }
 
   @Test
@@ -119,9 +119,9 @@ class MatchTest {
     Player playerBlack = new Player("Black");
     ChessBoard board = new ChessBoard();
     String id = "1";
-    Match match = new Match(playerWhite, playerBlack, id);
+    Game game = new Game(playerWhite, playerBlack, id);
     String expectedString =
-        "Match{"
+        "Game{"
             + "id='1', playerWhite="
             + playerWhite
             + ", playerBlack="
@@ -135,15 +135,15 @@ class MatchTest {
             + ", moveCount=0"
             + ", gameEnded=false"
             + '}';
-    assertThat(match.toString()).isEqualTo(expectedString);
+    assertThat(game.toString()).isEqualTo(expectedString);
   }
 
   @Test
   void testToFEN_InitialSetUp() {
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
-    final Match match = new Match(playerWhite, playerBlack, "1");
-    assertThat(match.convertBoardToFEN())
+    final Game game = new Game(playerWhite, playerBlack, "1");
+    assertThat(game.convertBoardToFEN())
         .isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w 0");
   }
 
@@ -152,9 +152,8 @@ class MatchTest {
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     String fen = "5b1r/8/8/3Q4/8/8/8/8 w 0";
-    final Match match = new Match(playerWhite, playerBlack, fen, "1");
-    System.out.println("Match: " + match.convertBoardToFEN());
-    assertThat(match.convertBoardToFEN()).isEqualTo(fen);
+    final Game game = new Game(playerWhite, playerBlack, fen, "1");
+    assertThat(game.convertBoardToFEN()).isEqualTo(fen);
   }
 
   @Test
@@ -162,9 +161,9 @@ class MatchTest {
     final String fenNotation = "rnbqkbnr/pppppppp/8/4p1p1/2P5/5P2/PPPPPPPP/RNBQKBNR b 0";
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
-    final Match match = new Match(playerWhite, playerBlack, fenNotation, "1");
+    final Game game = new Game(playerWhite, playerBlack, fenNotation, "1");
 
-    assertThat(match.convertBoardToFEN()).isEqualTo(fenNotation);
+    assertThat(game.convertBoardToFEN()).isEqualTo(fenNotation);
   }
 
   @Test
@@ -173,7 +172,7 @@ class MatchTest {
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     FENException exception =
-        assertThrows(FENException.class, () -> new Match(playerWhite, playerBlack, fen, "1"));
+        assertThrows(FENException.class, () -> new Game(playerWhite, playerBlack, fen, "1"));
     String expectedMessage = "Invalid FEN format: 8 rows expected";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
@@ -184,7 +183,7 @@ class MatchTest {
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     FENException exception =
-        assertThrows(FENException.class, () -> new Match(playerWhite, playerBlack, fen, "1"));
+        assertThrows(FENException.class, () -> new Game(playerWhite, playerBlack, fen, "1"));
     String expectedMessage = "Invalid FEN format: 8 rows expected";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
@@ -195,7 +194,7 @@ class MatchTest {
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     FENException exception =
-        assertThrows(FENException.class, () -> new Match(playerWhite, playerBlack, fen, "1"));
+        assertThrows(FENException.class, () -> new Game(playerWhite, playerBlack, fen, "1"));
     String expectedMessage = "FEN notation contains invalid Piece";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
@@ -206,7 +205,7 @@ class MatchTest {
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     FENException exception =
-        assertThrows(FENException.class, () -> new Match(playerWhite, playerBlack, fen, "1"));
+        assertThrows(FENException.class, () -> new Game(playerWhite, playerBlack, fen, "1"));
     String expectedMessage =
         "Invalid FEN format: expected at least 2 parts (board layout and active color)";
     assertThat(exception.getMessage()).contains(expectedMessage);
@@ -216,106 +215,106 @@ class MatchTest {
   void testEquals_SameAttributes() {
     Player white1 = new Player("White");
     Player black1 = new Player("Black");
-    Match match1 = new Match(white1, black1, "8/8/8/8/8/8/8/8 w 0");
+    Game game1 = new Game(white1, black1, "8/8/8/8/8/8/8/8 w 0");
 
     Player white2 = new Player("White");
     Player black2 = new Player("Black");
-    Match match2 = new Match(white2, black2, "8/8/8/8/8/8/8/8 w 0");
+    Game game2 = new Game(white2, black2, "8/8/8/8/8/8/8/8 w 0");
 
-    assertThat(match1).isEqualTo(match2);
+    assertThat(game1).isEqualTo(game2);
   }
 
   @Test
   void testEquals_DifferentPlayers() {
     Player white1 = new Player("White1");
     Player black1 = new Player("Black1");
-    Match match1 = new Match(white1, black1, "8/8/8/8/8/8/8/8 w 0");
+    Game game1 = new Game(white1, black1, "8/8/8/8/8/8/8/8 w 0");
 
     Player white2 = new Player("White2");
     Player black2 = new Player("Black2");
-    Match match2 = new Match(white2, black2, "8/8/8/8/8/8/8/8 w 0");
-    assertThat(match1).isNotEqualTo(match2);
+    Game game2 = new Game(white2, black2, "8/8/8/8/8/8/8/8 w 0");
+    assertThat(game1).isNotEqualTo(game2);
   }
 
   @Test
   void testEquals_DifferentBoard() {
     Player white = new Player("White");
     Player black = new Player("Black");
-    Match match1 = new Match(white, black, "8/8/8/8/8/8/8/8 w 0");
-    Match match2 = new Match(white, black, "8/8/8/8/8/8/8/7k w 0");
+    Game game1 = new Game(white, black, "8/8/8/8/8/8/8/8 w 0");
+    Game game2 = new Game(white, black, "8/8/8/8/8/8/8/7k w 0");
 
-    assertThat(match1).isNotEqualTo(match2);
+    assertThat(game1).isNotEqualTo(game2);
   }
 
   @Test
   void testEquals_DifferentNextToMove() {
     Player white = new Player("White");
     Player black = new Player("Black");
-    Match match1 = new Match(white, black, "8/8/8/8/8/8/8/8 w 0");
-    Match match2 = new Match(white, black, "8/8/8/8/8/8/8/8 b 0");
+    Game game1 = new Game(white, black, "8/8/8/8/8/8/8/8 w 0");
+    Game game2 = new Game(white, black, "8/8/8/8/8/8/8/8 b 0");
 
-    assertThat(match1).isNotEqualTo(match2);
+    assertThat(game1).isNotEqualTo(game2);
   }
 
   @Test
   void testGetBoard() {
     Player whitePlayer = new Player("White");
     Player blackPlayer = new Player("Black");
-    Match match = new Match(whitePlayer, blackPlayer, "1");
+    Game game = new Game(whitePlayer, blackPlayer, "1");
 
-    ChessBoard boardFromMatch = match.getBoard();
+    ChessBoard boardFromGame = game.getBoard();
     ChessBoard expectedBoard = new ChessBoard();
 
-    assertThat(boardFromMatch).isNotNull().isEqualTo(expectedBoard);
+    assertThat(boardFromGame).isNotNull().isEqualTo(expectedBoard);
   }
 
   @Test
   void testToggleNextToMove() {
     Player playerWhite = new Player("White");
     Player playerBlack = new Player("Black");
-    Match match = new Match(playerWhite, playerBlack, "1");
+    Game game = new Game(playerWhite, playerBlack, "1");
 
-    assertThat(match.getNextToMove()).isEqualTo(Color.WHITE);
-    assertThat(match.getMoveCount()).isEqualTo((short) 0);
+    assertThat(game.getNextToMove()).isEqualTo(Color.WHITE);
+    assertThat(game.getMoveCount()).isEqualTo((short) 0);
 
-    match.toggleNextToMove();
-    assertThat(match.getNextToMove()).isEqualTo(Color.BLACK);
-    assertThat(match.getMoveCount()).isEqualTo((short) 1);
+    game.toggleNextToMove();
+    assertThat(game.getNextToMove()).isEqualTo(Color.BLACK);
+    assertThat(game.getMoveCount()).isEqualTo((short) 1);
 
-    match.toggleNextToMove();
-    assertThat(match.getNextToMove()).isEqualTo(Color.WHITE);
-    assertThat(match.getMoveCount()).isEqualTo((short) 2);
+    game.toggleNextToMove();
+    assertThat(game.getNextToMove()).isEqualTo(Color.WHITE);
+    assertThat(game.getMoveCount()).isEqualTo((short) 2);
   }
 
   @Test
   void testGetMoveCount_initiallyZero() {
     Player playerWhite = new Player("White");
     Player playerBlack = new Player("Black");
-    Match match = new Match(playerWhite, playerBlack, "1");
+    Game game = new Game(playerWhite, playerBlack, "1");
 
-    assertThat(match.getMoveCount()).isEqualTo((short) 0);
+    assertThat(game.getMoveCount()).isEqualTo((short) 0);
   }
 
   @Test
   void testGetMoveCount_afterTogglingNextToMove() {
     Player playerWhite = new Player("White");
     Player playerBlack = new Player("Black");
-    Match match = new Match(playerWhite, playerBlack, "1");
+    Game game = new Game(playerWhite, playerBlack, "1");
 
-    match.toggleNextToMove();
-    assertThat(match.getMoveCount()).isEqualTo((short) 1);
+    game.toggleNextToMove();
+    assertThat(game.getMoveCount()).isEqualTo((short) 1);
 
-    match.toggleNextToMove();
-    assertThat(match.getMoveCount()).isEqualTo((short) 2);
+    game.toggleNextToMove();
+    assertThat(game.getMoveCount()).isEqualTo((short) 2);
   }
 
   @Test
   void testIsGameEnded_initiallyFalse() {
     Player playerWhite = new Player("White");
     Player playerBlack = new Player("Black");
-    Match match = new Match(playerWhite, playerBlack, "1");
+    Game game = new Game(playerWhite, playerBlack, "1");
 
-    assertThat(match.isGameEnded()).isFalse();
+    assertThat(game.isGameEnded()).isFalse();
   }
 
   @Test
@@ -323,9 +322,9 @@ class MatchTest {
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w 0";
-    final Match match = new Match(playerWhite, playerBlack, fen, "1");
+    final Game game = new Game(playerWhite, playerBlack, fen, "1");
 
-    assertThat(match.getMoveCount()).isEqualTo((short) 0);
+    assertThat(game.getMoveCount()).isEqualTo((short) 0);
   }
 
   @Test
@@ -333,12 +332,12 @@ class MatchTest {
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w 5";
-    final Match match = new Match(playerWhite, playerBlack, fen, "1");
+    final Game game = new Game(playerWhite, playerBlack, fen, "1");
 
-    assertThat(match.getMoveCount()).isEqualTo((short) 5);
+    assertThat(game.getMoveCount()).isEqualTo((short) 5);
 
-    match.toggleNextToMove();
-    assertThat(match.getMoveCount()).isEqualTo((short) 6);
+    game.toggleNextToMove();
+    assertThat(game.getMoveCount()).isEqualTo((short) 6);
   }
 
   @Test
@@ -346,12 +345,12 @@ class MatchTest {
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b 10";
-    final Match match = new Match(playerWhite, playerBlack, fen, "1");
+    final Game game = new Game(playerWhite, playerBlack, fen, "1");
 
-    assertThat(match.convertBoardToFEN()).isEqualTo(fen);
+    assertThat(game.convertBoardToFEN()).isEqualTo(fen);
 
-    match.toggleNextToMove();
-    assertThat(match.convertBoardToFEN())
+    game.toggleNextToMove();
+    assertThat(game.convertBoardToFEN())
         .isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w 11");
   }
 
@@ -360,6 +359,6 @@ class MatchTest {
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     String fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w abc";
-    assertThrows(FENException.class, () -> new Match(playerWhite, playerBlack, fen, "1"));
+    assertThrows(FENException.class, () -> new Game(playerWhite, playerBlack, fen, "1"));
   }
 }

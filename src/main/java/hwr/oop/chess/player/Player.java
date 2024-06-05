@@ -6,7 +6,7 @@ import java.util.Objects;
 public class Player implements Serializable {
   private final String name;
 
-  private short elo = 100;
+  private short elo = 1200;
 
   public Player(String name) {
     this.name = name;

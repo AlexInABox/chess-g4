@@ -1,14 +1,14 @@
 package hwr.oop.chess.cli;
 
-import hwr.oop.MatchAlreadyExistsException;
-import hwr.oop.MatchNotFoundException;
-import hwr.oop.Position;
-import hwr.oop.pieces.IllegalMoveException;
-import hwr.oop.pieces.Piece;
-import hwr.oop.match.Match;
-import hwr.oop.GameLogic;
+import hwr.oop.chess.GameAlreadyExistsException;
+import hwr.oop.chess.GameNotFoundException;
+import hwr.oop.chess.Position;
+import hwr.oop.chess.pieces.IllegalMoveException;
+import hwr.oop.chess.pieces.Piece;
+import hwr.oop.chess.game.Game;
+import hwr.oop.chess.GameLogic;
 
-import hwr.oop.player.Player;
+import hwr.oop.chess.player.Player;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -17,14 +17,14 @@ import java.util.List;
 public class ChessCli {
 
   private static final String INVALID_COMMAND = "Oops... Invalid command.";
-  private static final String MATCH_WITH_ID = "Match with ID ";
-  private static final String MATCH_ALREADY_EXISTS = "The match already exists. Please use another match ID!";
-  private static final String MATCH_NOT_EXIST = "The match does not exist. Please use another match ID!";
+  private static final String GAME_WITH_ID = "Game with ID ";
+  private static final String GAME_ALREADY_EXISTS = "The game already exists. Please use another game ID!";
+  private static final String GAME_NOT_EXIST = "The game does not exist. Please use another game ID!";
 
 
   private final PrintStream out;
   private final GameLogic gameLogic;
-  private Match currentMatch;
+  private Game currentGame;
 
   public ChessCli(OutputStream out, GameLogic gameLogic) {
     this.out = new PrintStream(out);
@@ -43,7 +43,6 @@ public class ChessCli {
     switch (command) {
       case "help" -> handleHelp(arguments);
       case "create" -> handleCreate(arguments);
-      case "load" -> handleLoad(arguments);
       case "move" -> handleMove(arguments);
       case "show-moves" -> handleShowMoves(arguments);
       case "resign" -> handleResign(arguments);
@@ -69,22 +68,12 @@ public class ChessCli {
       return;
     }
 
-    String matchID = arguments.get(1);
+    String gameID = arguments.get(1);
     String playerWhiteName = arguments.get(2);
     String playerBlackName = arguments.get(3);
-    startMatch(playerWhiteName, playerBlackName, matchID);
+    startGame(playerWhiteName, playerBlackName, gameID);
   }
 
-  private void handleLoad(List<String> arguments) {
-    if (arguments.size() != 2) {
-      out.println(INVALID_COMMAND);
-      out.println("Usage: chess load <ID>");
-      return;
-    }
-
-    String matchToLoad = arguments.get(1);
-    loadMatch(matchToLoad);
-  }
 
   private void handleMove(List<String> arguments) {
     if (arguments.size() != 5) {
@@ -95,8 +84,8 @@ public class ChessCli {
 
     String from = arguments.get(1);
     String to = arguments.get(2);
-    String matchID = arguments.get(4);
-    movePiece(from, to, matchID);
+    String gameID = arguments.get(4);
+    movePiece(from, to, gameID);
   }
 
   private void handleShowMoves(List<String> arguments) {
@@ -118,8 +107,8 @@ public class ChessCli {
       return;
     }
 
-    String matchID = arguments.get(1);
-    resign(matchID);
+    String gameID = arguments.get(1);
+    resign(gameID);
   }
 
   private void handleAccept(List<String> arguments) {
@@ -129,8 +118,8 @@ public class ChessCli {
       return;
     }
 
-    String matchID = arguments.get(1);
-    acceptRemi(matchID);
+    String gameID = arguments.get(1);
+    acceptRemi(gameID);
   }
 
   private void handleUnknownCommand(String command) {
@@ -141,27 +130,26 @@ public class ChessCli {
 
   private void printHelp() {
     out.println("Supported commands:");
-    out.println("  - create <ID> <PlayerWhite> <PlayerBlack>: Start a new chess match");
-    out.println("  - save <ID>: Save a chess match");
-    out.println("  - load <ID>: Load a saved chess match");
+    out.println("  - create <ID> <PlayerWhite> <PlayerBlack>: Start a new chess game");
+    out.println("  - save <ID>: Save a chess game");
     out.println("  - move <FROM> <TO> on <ID>: Move a chess piece to a valid position");
-    out.println("  - resign <ID>: Resign the current match");
+    out.println("  - resign <ID>: Resign the current game");
     out.println("  - accept <ID>: Accept a remi");
     out.println("  - help: Display this help message");
   }
 
-  private void printChessboard(String matchID) {
-    printChessboardHighlighted(matchID, new ArrayList<>());
+  private void printChessboard(String gameID) {
+    printChessboardHighlighted(gameID, new ArrayList<>());
   }
 
-  private void printChessboardHighlighted(String matchID, List<Position> highlightPositions) {
+  private void printChessboardHighlighted(String gameID, List<Position> highlightPositions) {
     try {
-      loadCurrentMatchIfNecessary(matchID);
+      loadCurrentGameIfNecessary(gameID);
       out.println("________________");
       for (int row = 7; row >= 0; row--) {
         for (int column = 0; column < 8; column++) {
           Position pos = new Position(row, column);
-          Piece piece = currentMatch.getBoard().getBoard().get(row).get(column);
+          Piece piece = currentGame.getBoard().getBoard().get(row).get(column);
           if (highlightPositions.contains(pos)) {
             out.print((piece != null ? piece.getSymbol() : "*") + " ");
           } else {
@@ -172,137 +160,137 @@ public class ChessCli {
       }
       out.println("________________");
     } catch (NullPointerException e) {
-      out.println("You have to create a match first!");
+      out.println("You have to create a game first!");
       out.println(e.getMessage());
     }
   }
 
-  /*private void printChessboard(String matchID) {
+  /*private void printChessboard(String gameID) {
     try {
-      loadCurrentMatchIfNecessary(matchID);
+      loadCurrentGameIfNecessary(gameID);
       out.println("________________");
       for (int row = 7; row >= 0; row--) {
         for (int column = 0; column < 8; column++) {
-          Piece piece = currentMatch.getBoard().getBoard().get(row).get(column);
+          Piece piece = currentGame.getBoard().getBoard().get(row).get(column);
           out.print((piece != null ? piece.getSymbol() : ".")+" ");
         }
         out.println();
       }
       out.println("________________");
     } catch (NullPointerException e) {
-      out.println("You have to create a match first!");
+      out.println("You have to create a game first!");
       out.println(e.getMessage());
     }
   }*/
 
-  private void startMatch (String playerWhiteName, String playerBlackName, String matchID) {
+  private void startGame (String playerWhiteName, String playerBlackName, String gameID) {
     try {
       Player playerWhite = gameLogic.loadPlayer(playerWhiteName);
       Player playerBlack = gameLogic.loadPlayer(playerBlackName);
-      gameLogic.createMatch(playerWhite, playerBlack, matchID);
-      loadCurrentMatchIfNecessary(matchID);
+      gameLogic.createGame(playerWhite, playerBlack, gameID);
+      loadCurrentGameIfNecessary(gameID);
       out.println("Welcome to chess in Java!");
-      out.println("Chess match created with ID: " + matchID);
+      out.println("Chess game created with ID: " + gameID);
       out.println("Hello " + playerWhiteName + " and " + playerBlackName + ".");
-      out.println("Let's start the match.");
+      out.println("Let's start the game.");
       out.println("Have fun!");
-      printChessboard(matchID);
-    } catch (MatchAlreadyExistsException e) {
-      out.println(MATCH_ALREADY_EXISTS);
+      printChessboard(gameID);
+    } catch (GameAlreadyExistsException e) {
+      out.println(GAME_ALREADY_EXISTS);
       out.println(e.getMessage());
     }
   }
 
-  private void loadMatch (String matchID) {
-    try {
-      loadCurrentMatchIfNecessary(matchID);
-      out.println("Loading match with ID: " + matchID);
-      currentMatch = gameLogic.loadMatch(matchID);
-      out.println(MATCH_WITH_ID + matchID + " loaded successfully.");
-      printChessboard(matchID);
-    } catch (MatchNotFoundException e) {
-      out.println(MATCH_NOT_EXIST);
-      out.println(e.getMessage());
-    }
-  }
+//  private void loadGame (String gameID) {
+//    try {
+//      loadCurrentGameIfNecessary(gameID);
+//      out.println("Loading game with ID: " + gameID);
+//      currentGame = gameLogic.loadGame(gameID);
+//      out.println(GAME_WITH_ID + gameID + " loaded successfully.");
+//      printChessboard(gameID);
+//    } catch (GameNotFoundException e) {
+//      out.println(GAME_NOT_EXIST);
+//      out.println(e.getMessage());
+//    }
+//  }
 
-  private void movePiece (String from, String to, String matchID) {
+  private void movePiece (String from, String to, String gameID) {
     try {
-      loadCurrentMatchIfNecessary(matchID);
-      gameLogic.moveTo(from, to, currentMatch);
-      out.println("Moving piece in match " + matchID + " from " + from + " to " + to);
-      gameLogic.saveMatch(currentMatch);
-      printChessboard(matchID);
-    } catch (MatchNotFoundException e) {
-      out.println(MATCH_NOT_EXIST);
+      loadCurrentGameIfNecessary(gameID);
+      gameLogic.moveTo(from, to, currentGame);
+      out.println("Moving piece in game " + gameID + " from " + from + " to " + to);
+      gameLogic.saveGame(currentGame);
+      loadCurrentGameIfNecessary(gameID); //TODO: es könnte sein, dass wir diese Zeile nicht brauchen @Gero mal testen
+      printChessboard(gameID);
+    } catch (GameNotFoundException e) {
+      out.println(GAME_NOT_EXIST);
       out.println(e.getMessage());
     } catch (IllegalMoveException e) {
       out.println(e.getMessage());
     }
   }
 
-  private void showMoves(String from, String matchID) {
+  private void showMoves(String from, String gameID) {
     try {
-      loadCurrentMatchIfNecessary(matchID);
-      Position position = parsePosition(from);
-      List<Position> possibleMoves = getPossibleMoves(position, currentMatch);
+      loadCurrentGameIfNecessary(gameID);
+      List<Position> possibleMoves = gameLogic.getPossibleMoves(from, currentGame);
       out.println("Possible moves for piece at position " + from + ": " + possibleMovesToString(possibleMoves));
-      printChessboardHighlighted(matchID, possibleMoves);
-    } catch (MatchNotFoundException e) {
-      out.println(MATCH_NOT_EXIST);
+      printChessboardHighlighted(gameID, possibleMoves);
+    } catch (GameNotFoundException e) {
+      out.println(GAME_NOT_EXIST);
       out.println(e.getMessage());
     }
   }
 
-  private void resign (String matchID) {
+  private void resign (String gameID) {
     try {
-      loadCurrentMatchIfNecessary(matchID);
-      gameLogic.resign(currentMatch);
-      out.println(MATCH_WITH_ID + matchID + " resigned successfully.");
-    } catch (MatchNotFoundException e) {
-      out.println(MATCH_NOT_EXIST);
+      loadCurrentGameIfNecessary(gameID);
+      gameLogic.resign(currentGame);
+      out.println(GAME_WITH_ID + gameID + " resigned successfully.");
+    } catch (GameNotFoundException e) {
+      out.println(GAME_NOT_EXIST);
       out.println(e.getMessage());
     }
   }
 
-  private void acceptRemi (String matchID) {
+  private void acceptRemi (String gameID) {
     try {
-      loadCurrentMatchIfNecessary(matchID);
-      gameLogic.acceptRemi(currentMatch);
-      out.println(MATCH_WITH_ID + matchID + " accepted remi successfully.");
-    } catch (MatchNotFoundException e) {
-      out.println(MATCH_NOT_EXIST);
+      loadCurrentGameIfNecessary(gameID);
+      gameLogic.acceptRemi(currentGame);
+      out.println(GAME_WITH_ID + gameID + " accepted remi successfully.");
+    } catch (GameNotFoundException e) {
+      out.println(GAME_NOT_EXIST);
       out.println(e.getMessage());
     }
   }
 
-  private void loadCurrentMatchIfNecessary(String matchID) throws MatchNotFoundException {
-    if (currentMatch == null || !currentMatch.getId().equals(matchID)) {
-      currentMatch = gameLogic.loadMatch(matchID);
+  private void loadCurrentGameIfNecessary(String gameID) throws GameNotFoundException {
+    if (currentGame == null || !currentGame.getId().equals(gameID)) {
+      currentGame = gameLogic.loadGame(gameID);
     }
   }
 
-  private Position parsePosition(String positionStr) {
-    int column = positionStr.charAt(0) - 'a';
-    int row = Character.getNumericValue(positionStr.charAt(1)) - 1;
-    return new Position(row, column);
-  }
+//  private Position parsePosition(String positionStr) {
+//    int column = positionStr.charAt(0) - 'a';
+//    int row = Character.getNumericValue(positionStr.charAt(1)) - 1;
+//    return new Position(row, column);
+//  }
 
-  public List<Position> getPossibleMoves(Position position, Match match) {
-    List<Position> possibleMoves = new ArrayList<>();
-    Piece piece = match.getBoard().getPieceAtPosition(position);
-    if (piece != null) {
-      possibleMoves = piece.possibleMoves();
-    }
-    return possibleMoves;
-  }
+//  public List<Position> getPossibleMoves(Position position, Game game) {
+//    List<Position> possibleMoves = new ArrayList<>();
+//    Piece piece = game.getBoard().getPieceAtPosition(position);
+//    if (piece != null) {
+//      possibleMoves = piece.possibleMoves();
+//    }
+//    return possibleMoves;
+//  }
 
   private String possibleMovesToString(List<Position> positions) {
     StringBuilder sb = new StringBuilder();
     for (Position pos : positions) {
       sb.append(positionToString(pos)).append(", ");
     }
-    return sb.length() > 0 ? sb.substring(0, sb.length() - 2) : "";
+    return !sb.isEmpty() ? sb.substring(0, sb.length() - 2) : "";
   }
 
   private String positionToString(Position position) {
