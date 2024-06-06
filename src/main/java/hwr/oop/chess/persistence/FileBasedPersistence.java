@@ -1,6 +1,6 @@
 package hwr.oop.chess.persistence;
 
-import hwr.oop.chess.match.Match;
+import hwr.oop.chess.game.Game;
 import hwr.oop.chess.player.Player;
 import java.io.*;
 import java.nio.file.Files;
@@ -8,36 +8,36 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileBasePersistence implements Persistence {
-  private final Path filePathMatches;
+public class FileBasedPersistence implements Persistence {
+  private final Path filePathGames;
   private final Path filePathPlayers;
 
 
-  public FileBasePersistence(Path filePathMatches, Path filePathPlayers) {
-    this.filePathMatches = filePathMatches;
+  public FileBasedPersistence(Path filePathGames, Path filePathPlayers) {
+    this.filePathGames = filePathGames;
     this.filePathPlayers = filePathPlayers;
   }
   @Override
-  public void saveMatches(List<Match> matches) {
-    try (FileOutputStream f = new FileOutputStream(String.valueOf(filePathMatches))) {
+  public void saveGames(List<Game> games) {
+    try (FileOutputStream f = new FileOutputStream(String.valueOf(filePathGames))) {
       ObjectOutputStream o = new ObjectOutputStream(f);
-      o.writeObject(matches);
+      o.writeObject(games);
     } catch (IOException e) {
       throw new PersistenceException("Cannot write.");
     }
   }
 
   @Override
-  public List<Match> loadMatches() {
+  public List<Game> loadGames() {
     try {
-      if (!Files.exists(filePathMatches) || Files.size(filePathMatches) == 0) {
+      if (!Files.exists(filePathGames) || Files.size(filePathGames) == 0) {
         return new ArrayList<>();
       }
 
-      try (FileInputStream f = new FileInputStream(String.valueOf(filePathMatches))) {
+      try (FileInputStream f = new FileInputStream(String.valueOf(filePathGames))) {
         ObjectInputStream o = new ObjectInputStream(f);
-        List<Match> loadedMatches = (List<Match>) o.readObject();
-        return loadedMatches != null ? loadedMatches : new ArrayList<>();
+        List<Game> loadedGames = (List<Game>) o.readObject();
+        return loadedGames != null ? loadedGames : new ArrayList<>();
       }
     } catch (IOException | ClassNotFoundException e) {
       throw new PersistenceException("Cannot read.");

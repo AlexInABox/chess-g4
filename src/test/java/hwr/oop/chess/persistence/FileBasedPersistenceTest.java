@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import hwr.oop.chess.match.Match;
+import hwr.oop.chess.game.Game;
 import hwr.oop.chess.player.Player;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,14 +21,14 @@ import org.junit.jupiter.api.Test;
 class FileBasedPersistenceTest {
   private static final String TEST_FILE_PATH = "target/persistenceTest.txt";
 
-  private FileBasePersistence instUT;
+  private FileBasedPersistence instUT;
   File file;
 
   @BeforeEach
   void setUp() {
     file = new File(TEST_FILE_PATH);
     Path path = file.toPath();
-    instUT = new FileBasePersistence(path,path);
+    instUT = new FileBasedPersistence(path,path);
   }
 
   @AfterEach
@@ -42,83 +42,83 @@ class FileBasedPersistenceTest {
   }
 
   @Test
-  void testPersistenceReadWriteMatch() {
+  void testPersistenceReadWriteGame() {
     // given
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
-    final Match match = new Match(playerWhite, playerBlack, "1");
-    List<Match> expectedMatches = new ArrayList<>();
-    expectedMatches.add(match);
+    final Game game = new Game(playerWhite, playerBlack, "1");
+    List<Game> expectedGames = new ArrayList<>();
+    expectedGames.add(game);
 
     // when
-    instUT.saveMatches(expectedMatches);
-    final List<Match> actualMatches = instUT.loadMatches();
+    instUT.saveGames(expectedGames);
+    final List<Game> actualGames = instUT.loadGames();
 
     // then
-    assertNotNull(actualMatches);
-    assertThat(expectedMatches).isEqualTo(actualMatches);
+    assertNotNull(actualGames);
+    assertThat(expectedGames).isEqualTo(actualGames);
   }
 
   @Test
-  void testPersistenceReadWriteMatchWithFenNotation() {
+  void testPersistenceReadWriteGameWithFenNotation() {
     // given
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
     final String fenNotation = "8/8/8/8/8/8/8/8 w";
-    final Match match = new Match(playerWhite, playerBlack, fenNotation);
-    List<Match> expectedMatches = new ArrayList<>();
-    expectedMatches.add(match);
+    final Game game = new Game(playerWhite, playerBlack, fenNotation);
+    List<Game> expectedGames = new ArrayList<>();
+    expectedGames.add(game);
 
     // when
-    instUT.saveMatches(expectedMatches);
-    final List<Match> actualMatches = instUT.loadMatches();
+    instUT.saveGames(expectedGames);
+    final List<Game> actualGames = instUT.loadGames();
 
     // then
-    assertNotNull(actualMatches);
-    assertThat(expectedMatches).isEqualTo(actualMatches);
+    assertNotNull(actualGames);
+    assertThat(expectedGames).isEqualTo(actualGames);
   }
 
   @Test
-  void testPersistenceCannotWriteMatch_NotExistingDirectory() {
+  void testPersistenceCannotWriteGame_NotExistingDirectory() {
     final Player playerWhite = new Player("player1");
     final Player playerBlack = new Player("player2");
-    final Match match = new Match(playerWhite, playerBlack, "1");
-    List<Match> expectedMatches = new ArrayList<>();
-    expectedMatches.add(match);
+    final Game game = new Game(playerWhite, playerBlack, "1");
+    List<Game> expectedGames = new ArrayList<>();
+    expectedGames.add(game);
     final String filePath = "not-existing-directory/persistenceTest.txt";
     File fileNew = new File(filePath);
     Path pathNew = fileNew.toPath();
-    instUT = new FileBasePersistence(pathNew, pathNew);
+    instUT = new FileBasedPersistence(pathNew, pathNew);
 
     PersistenceException exception =
-        assertThrows(PersistenceException.class, () -> instUT.saveMatches(expectedMatches));
+        assertThrows(PersistenceException.class, () -> instUT.saveGames(expectedGames));
     String expectedMessage = "Cannot write.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
 
   @Test
-  void testPersistenceReadEmptyFileMatch() throws IOException {
+  void testPersistenceReadEmptyFileGame() throws IOException {
     // given
     final Path path = Path.of(TEST_FILE_PATH);
     Files.createFile(path);
 
     // when
-    List<Match> loadedMatches = instUT.loadMatches();
+    List<Game> loadedGames = instUT.loadGames();
 
     // then
-    assertNotNull(loadedMatches);
-    assertTrue(loadedMatches.isEmpty());
+    assertNotNull(loadedGames);
+    assertTrue(loadedGames.isEmpty());
   }
 
   @Test
-  void testLoadEmptyFileReturnsEmptyListMatch() throws IOException {
+  void testLoadEmptyFileReturnsEmptyListGame() throws IOException {
     final Path path = Path.of(TEST_FILE_PATH);
     Files.createFile(path);
 
-    List<Match> loadedMatches = instUT.loadMatches();
+    List<Game> loadedGames = instUT.loadGames();
 
-    // Assert that the loaded matches list is empty
-    assertEquals(0, loadedMatches.size(), "Loaded matches list should be empty for an empty file");
+    // Assert that the loaded games list is empty
+    assertEquals(0, loadedGames.size(), "Loaded games list should be empty for an empty file");
   }
 
   @Test
@@ -159,7 +159,7 @@ class FileBasedPersistenceTest {
     final String filePath = "not-existing-directory/persistenceTest.txt";
     File fileNew = new File(filePath);
     Path pathNew = fileNew.toPath();
-    instUT = new FileBasePersistence(pathNew, pathNew);
+    instUT = new FileBasedPersistence(pathNew, pathNew);
     PersistenceException exception =
         assertThrows(PersistenceException.class, () -> instUT.savePlayers(expectedPlayers));
     String expectedMessage = "Cannot write.";
@@ -185,17 +185,17 @@ class FileBasedPersistenceTest {
   }
 
   @Test
-  void testLoadMatches_EmptyFileReturnsEmptyList() throws IOException {
+  void testLoadGames_EmptyFileReturnsEmptyList() throws IOException {
     // given
     final Path path = Path.of(TEST_FILE_PATH);
     Files.createFile(path);
 
     // when
-    List<Match> loadedMatches = instUT.loadMatches();
+    List<Game> loadedGames = instUT.loadGames();
 
     // then
-    assertNotNull(loadedMatches, "Loaded matches list should not be null");
-    assertTrue(loadedMatches.isEmpty(), "Loaded matches list should be empty for an empty file");
+    assertNotNull(loadedGames, "Loaded games list should not be null");
+    assertTrue(loadedGames.isEmpty(), "Loaded games list should be empty for an empty file");
   }
 
   @Test
@@ -213,7 +213,7 @@ class FileBasedPersistenceTest {
   }
 
   @Test
-  void testLoadMatches_WithInvalidFileFormat_ShouldThrowPersistenceException() throws IOException {
+  void testLoadGames_WithInvalidFileFormat_ShouldThrowPersistenceException() throws IOException {
     // given
 
     // create an invalid file format
@@ -223,7 +223,7 @@ class FileBasedPersistenceTest {
 
     // then
     PersistenceException exception =
-        assertThrows(PersistenceException.class, () -> instUT.loadMatches());
+        assertThrows(PersistenceException.class, () -> instUT.loadGames());
     String expectedMessage = "Cannot read.";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }

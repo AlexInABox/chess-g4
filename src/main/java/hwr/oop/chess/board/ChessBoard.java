@@ -75,6 +75,10 @@ public class ChessBoard implements Serializable {
     board.get(position.row()).set(position.column(), piece);
   }
 
+  public List<List<Piece>> getBoard() {
+    return board;
+  }
+
   public King getKingOfColor(Color color) {
     for (List<Piece> row : board) {
       for (Piece piece : row) {
