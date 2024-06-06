@@ -1,15 +1,17 @@
 package hwr.oop.chess.cli;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
+import hwr.oop.chess.GameAlreadyExistsException;
+import hwr.oop.chess.Position;
+import hwr.oop.chess.board.ChessBoard;
 import hwr.oop.chess.game.Game;
 import hwr.oop.chess.GameLogic;
 import hwr.oop.chess.GameNotFoundException;
-import hwr.oop.chess.Position;
 import hwr.oop.chess.pieces.IllegalMoveException;
+import hwr.oop.chess.pieces.Piece;
 import hwr.oop.chess.player.Player;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -40,32 +42,6 @@ class ChessCliTest {
     outContent = new ByteArrayOutputStream();
     OutputStream out = new PrintStream(outContent);
     chessCli = new ChessCli(out, gameLogicMock);
-  }
-
-  @Test
-  void createGameCommand() {
-    // Arrange
-    String playerWhiteName = "Alice";
-    String playerBlackName = "Bob";
-    String gameId = "123";
-    List<String> arguments = Arrays.asList("create", gameId, playerWhiteName, playerBlackName);
-    Player playerWhite = new Player(playerWhiteName);
-    Player playerBlack = new Player(playerBlackName);
-    Game game = new Game(playerWhite, playerBlack, gameId);
-    when(gameLogicMock.loadPlayer(playerWhiteName)).thenReturn(playerWhite);
-    when(gameLogicMock.loadPlayer(playerBlackName)).thenReturn(playerBlack);
-    when(gameLogicMock.loadGame(anyString())).thenReturn(game);
-    // Act
-    chessCli.handle(arguments);
-    String output = outContent.toString().trim();
-
-    // Assert
-    assertThat(output)
-        .contains("Welcome to chess in Java!")
-        .contains("Chess game created with ID: 123")
-        .contains("Hello Alice and Bob.")
-        .contains("Let's start the game.")
-        .contains("Have fun!");
   }
 
   @Test
@@ -106,10 +82,8 @@ class ChessCliTest {
 
   private static Stream<Arguments> unknownCommandsProvider() {
     return Stream.of(
-        Arguments.of(
-            "start", "Unknown command: start\nFor help and further information: chess help"),
-        Arguments.of(
-            "play", "Unknown command: play\nFor help and further information: chess help"));
+        Arguments.of("start", "Unknown command: start\nFor help and further information: chess help"),
+        Arguments.of("play", "Unknown command: play\nFor help and further information: chess help"));
   }
 
   @ParameterizedTest
@@ -135,13 +109,10 @@ class ChessCliTest {
   // Provide invalid arguments for each command
   private static Stream<Arguments> invalidArgumentsProvider() {
     return Stream.of(
-        Arguments.of(
-            "print", "Unknown command: print\nFor help and further information: chess help"),
-        Arguments.of(
-            "create",
-            "Oops... Invalid command.\nUsage: chess create <ID> <Player1Name> <Player2Name>"),
-        Arguments.of("save", "Unknown command: save\nFor help and further information: chess help"),
-        Arguments.of("on", "Unknown command: on\nFor help and further information: chess help"),
+        Arguments.of("create", "Oops... Invalid command.\nUsage: chess create <ID> <Player1Name> <Player2Name>"),
+        Arguments.of("load", "Oops... Invalid command.\nUsage: chess load <ID>"),
+        Arguments.of("move", "Oops... Invalid command.\nUsage: chess move <FROM> <TO> on <ID>"),
+        Arguments.of("show-moves", "Oops... Invalid command.\nUsage: chess show-moves <FROM> on <ID>"),
         Arguments.of("resign", "Oops... Invalid command.\nUsage: chess resign <ID>"),
         Arguments.of("accept", "Oops... Invalid command.\nUsage: chess accept <ID>"));
   }
@@ -179,15 +150,130 @@ class ChessCliTest {
     assertThat(output)
         .contains("Supported commands:")
         .contains("- create <ID> <PlayerWhite> <PlayerBlack>: Start a new chess game")
+        .contains("- load <ID>: Load a chess game")
         .contains("- move <FROM> <TO> on <ID>: Move a chess piece to a valid position")
+        .contains("- show-moves <FROM> on <ID>: Get the possible moves for a chess piece")
         .contains("- resign <ID>: Resign the current game")
         .contains("- accept <ID>: Accept a remi")
         .contains("- help: Display this help message");
   }
 
+  @Test
+  void createGameCommand() {
+    // Arrange
+    String playerWhiteName = "Alice";
+    String playerBlackName = "Bob";
+    String gameId = "123";
+    List<String> arguments = Arrays.asList("create", gameId, playerWhiteName, playerBlackName);
+    Player playerWhite = new Player(playerWhiteName);
+    Player playerBlack = new Player(playerBlackName);
+    Game game = new Game(playerWhite, playerBlack, gameId);
+    when(gameLogicMock.loadPlayer(playerWhiteName)).thenReturn(playerWhite);
+    when(gameLogicMock.loadPlayer(playerBlackName)).thenReturn(playerBlack);
+    when(gameLogicMock.loadGame(anyString())).thenReturn(game);
+
+    // Act
+    chessCli.handle(arguments);
+    String output = outContent.toString().trim();
+
+    // Assert
+    assertThat(output)
+        .contains("    a b c d e f g h")
+        .contains("    ---------------")
+        .contains("8 | r n b q k b n r | 8")
+        .contains("7 | p p p p p p p p | 7")
+        .contains("6 | . . . . . . . . | 6")
+        .contains("5 | . . . . . . . . | 5")
+        .contains("4 | . . . . . . . . | 4")
+        .contains("3 | . . . . . . . . | 3")
+        .contains("2 | P P P P P P P P | 2")
+        .contains("1 | R N B Q K B N R | 1")
+        .contains("    _______________")
+        .contains("    a b c d e f g h");
+
+    assertThat(output)
+        .contains("Welcome to chess in Java!")
+        .contains("Chess game created with ID: 123")
+        .contains("Hello Alice and Bob.")
+        .contains("Let's start the game.")
+        .contains("Have fun!");
+  }
 
   @Test
-  void testMovePiece() throws GameNotFoundException {
+  void testThrowsGameAlreadyExistsException() throws GameAlreadyExistsException {
+    // Arrange
+    String gameId = "123";
+    String playerWhiteName = "Alice";
+    String playerBlackName = "Bob";
+    List<String> arguments = Arrays.asList("create", gameId, playerWhiteName, playerBlackName);
+    Player playerWhite = new Player(playerWhiteName);
+    Player playerBlack = new Player(playerBlackName);
+
+    // Mock the behavior to throw GameAlreadyExistsException
+    when(gameLogicMock.loadPlayer(playerWhiteName)).thenReturn(playerWhite);
+    when(gameLogicMock.loadPlayer(playerBlackName)).thenReturn(playerBlack);
+    doThrow(new GameAlreadyExistsException("Game with ID " + gameId + " already exists"))
+        .when(gameLogicMock).createGame(playerWhite, playerBlack, gameId);
+
+    // Act
+    chessCli.handle(arguments);
+    String output = outContent.toString().trim();
+
+    // Define the expected output
+    String expectedOutput = "The game already exists. Please use another game ID!\nGame with ID 'Game with ID 123 already exists' already exists.";
+
+    // Normalize line endings in expected output
+    expectedOutput =
+        expectedOutput
+            .replace("\n", System.lineSeparator())
+            .replace("\r\n", System.lineSeparator());
+
+    // Assert
+    assertThat(output).isEqualTo(expectedOutput);
+
+    // Verify interactions with mocks
+    verify(gameLogicMock, times(1)).loadPlayer(playerWhiteName);
+    verify(gameLogicMock, times(1)).loadPlayer(playerBlackName);
+    verify(gameLogicMock, times(1)).createGame(playerWhite, playerBlack, gameId);
+  }
+
+
+  @Test
+  void testLoadCommand() {
+    // Arrange
+    String gameId = "123";
+    List<String> arguments = Arrays.asList("load", gameId);
+    Player playerWhite = new Player("Alice");
+    Player playerBlack = new Player("Bob");
+    Game game = new Game(playerWhite, playerBlack, gameId);
+    when(gameLogicMock.loadGame(gameId)).thenReturn(game);
+
+    // Act
+    chessCli.handle(arguments);
+    String output = outContent.toString().trim();
+
+    // Assert
+    assertThat(output)
+        .contains("    a b c d e f g h")
+        .contains("    ---------------")
+        .contains("8 | r n b q k b n r | 8")
+        .contains("7 | p p p p p p p p | 7")
+        .contains("6 | . . . . . . . . | 6")
+        .contains("5 | . . . . . . . . | 5")
+        .contains("4 | . . . . . . . . | 4")
+        .contains("3 | . . . . . . . . | 3")
+        .contains("2 | P P P P P P P P | 2")
+        .contains("1 | R N B Q K B N R | 1")
+        .contains("    _______________")
+        .contains("    a b c d e f g h");
+
+    assertThat(output)
+        .contains("Loading game with ID: 123")
+        .contains("Game with ID 123 loaded successfully.");
+  }
+
+  @Test
+  void testMovePieceCommand() throws GameNotFoundException {
     // Arrange
     String playerWhiteName = "Alice";
     String playerBlackName = "Bob";
@@ -198,60 +284,29 @@ class ChessCliTest {
     Game gameUpdated = new Game(playerWhite, playerBlack,"rnbqkbnr/pppppppp/8/8/8/1P6/P1PPPPPP/RNBQKBNR b 1", gameId);
     when(gameLogicMock.loadGame(gameId)).thenReturn(gameUpdated);
 
-
     // Act
     chessCli.handle(arguments);
     String output = outContent.toString().trim();
 
     // Assert
     assertThat(output).contains("Moving piece in game 123 from B2 to B3")
-            .contains("________________")
-            .contains("r n b q k b n r")
-            .contains("p p p p p p p p")
-            .contains(". . . . . . . .")
-            .contains(". . . . . . . .")
-            .contains(". . . . . . . .")
-            .contains(". P . . . . . .")
-            .contains("P . P P P P P P")
-            .contains("R N B Q K B N R")
-            .contains("________________");
+        .contains("    a b c d e f g h")
+        .contains("    ---------------")
+        .contains("8 | r n b q k b n r | 8")
+        .contains("7 | p p p p p p p p | 7")
+        .contains("6 | . . . . . . . . | 6")
+        .contains("5 | . . . . . . . . | 5")
+        .contains("4 | . . . . . . . . | 4")
+        .contains("3 | . P . . . . . . | 3")
+        .contains("2 | P . P P P P P P | 2")
+        .contains("1 | R N B Q K B N R | 1")
+        .contains("    _______________")
+        .contains("    a b c d e f g h");
 
     // Verify interactions with mocks
     verify(gameLogicMock, times(1)).loadGame(gameId);
     verify(gameLogicMock, times(1)).moveTo("B2", "B3", gameUpdated);
     verify(gameLogicMock, times(1)).saveGame(gameUpdated);
-  }
-
-
-  @Test
-  void testMovePieceThrowsGameNotFoundException2() throws GameNotFoundException {
-    // Arrange
-    List<String> arguments = Arrays.asList("move", "e2", "e4", "on", "nonexistentID");
-
-    // We need to mock the behavior of gameLogic to throw the exception
-    doThrow(new GameNotFoundException("Game not found")).when(gameLogicMock).loadGame("nonexistentID");
-
-    // Act & Assert
-    chessCli.handle(arguments);
-
-    // Verify that the appropriate message was printed
-    String output = outContent.toString();
-    assertTrue(output.contains("The game does not exist. Please use another game ID!"));
-  }
-  @Test
-  void testMovePieceThrowsGameNotFoundException() throws GameNotFoundException {
-    // Arrange
-    List<String> arguments = Arrays.asList("move", "e2", "e4", "on", "nonexistentID");
-
-    // We need to mock the behavior of gameLogic to throw the exception
-    doThrow(new GameNotFoundException("Game not found")).when(gameLogicMock).loadGame("nonexistentID");
-
-    // Act & Assert
-    chessCli.handle(arguments);
-
-    // Verify that the appropriate message was printed
-    String output = outContent.toString();
-    assertTrue(output.contains("The game does not exist. Please use another game ID!"));
   }
 
   @Test
@@ -280,46 +335,126 @@ class ChessCliTest {
   }
 
   @Test
-  void testShowMoves() throws GameNotFoundException {
+  void testShowMovesCommand() throws GameNotFoundException {
     // Arrange
     String gameId = "123";
     List<String> arguments = Arrays.asList("show-moves", "e2", "on", gameId);
+    Game gameMock = mock(Game.class);
+    ChessBoard boardMock = mock(ChessBoard.class);
+    Piece pieceMock = mock(Piece.class);
+    Position fromPosition = new Position(1, 4); // e2
+    Position toPosition1 = new Position(2, 4); // e3
+    Position toPosition2 = new Position(3, 4); // e4
+    List<Position> possibleMoves = Arrays.asList(toPosition1, toPosition2);
 
-    // Mocking game and possible moves
-    Player playerWhite = new Player("Alice");
-    Player playerBlack = new Player("Bob");
-    Game game = new Game(playerWhite, playerBlack, gameId);
-    when(gameLogicMock.loadGame(gameId)).thenReturn(game);
-
-    List<Position> possibleMoves = Arrays.asList(new Position(2, 4), new Position(3, 4));
-    when(gameLogicMock.getPossibleMoves("e2", game)).thenReturn(possibleMoves);
+    when(gameLogicMock.loadGame(gameId)).thenReturn(gameMock);
+    when(gameMock.getBoard()).thenReturn(boardMock);
+    when(boardMock.getPieceAtPosition(fromPosition)).thenReturn(pieceMock);
+    when(pieceMock.possibleMoves()).thenReturn(possibleMoves);
 
     // Act
     chessCli.handle(arguments);
+    String output = outContent.toString().trim();
 
     // Assert
-    String output = outContent.toString().trim();
     assertThat(output).contains("Possible moves for piece at position e2: e3, e4");
-
-    // Verify interactions with mocks
-    verify(gameLogicMock, times(1)).loadGame(gameId);
   }
 
   @Test
-  void testShowMovesThrowsGameNotFoundException() throws GameNotFoundException {
+  void testShowCaptureMovesCommand() throws GameNotFoundException {
     // Arrange
-    List<String> arguments = Arrays.asList("show-moves", "e2", "on", "nonexistentID");
+    String gameId = "123";
+    List<String> arguments = Arrays.asList("show-moves", "e2", "on", gameId);
+    Game gameMock = mock(Game.class);
+    ChessBoard boardMock = mock(ChessBoard.class);
+    Piece pieceMock = mock(Piece.class);
+    Position fromPosition = new Position(1, 4); // e2
+    Position toPosition1 = new Position(2, 3); // d3
+    Position toPosition2 = new Position(2, 5); // f3
+    List<Position> possibleMoves = Arrays.asList(toPosition1, toPosition2);
 
-    // We need to mock the behavior of gameLogic to throw the exception
-    doThrow(new GameNotFoundException("Game not found")).when(gameLogicMock).loadGame("nonexistentID");
+    when(gameLogicMock.loadGame(gameId)).thenReturn(gameMock);
+    when(gameMock.getBoard()).thenReturn(boardMock);
+    when(boardMock.getPieceAtPosition(fromPosition)).thenReturn(pieceMock);
+    when(pieceMock.possibleMoves()).thenReturn(possibleMoves);
 
     // Act
     chessCli.handle(arguments);
+    String output = outContent.toString().trim();
 
-    // Verify that the appropriate message was printed
-    String output = outContent.toString();
-    assertTrue(output.contains("The game does not exist. Please use another game ID!"));
+    // Assert
+    assertThat(output).contains("Capture moves for piece at position e2: ");
+    assertThat(output).doesNotContain("Capture moves for piece at position e2: d3, f3");
   }
 
+  @Test
+  void testResignCommand() {
+    // Arrange
+    String gameId = "123";
+    List<String> arguments = Arrays.asList("resign", gameId);
+    Game gameMock = mock(Game.class);
+    when(gameLogicMock.loadGame(gameId)).thenReturn(gameMock);
 
+    // Act
+    chessCli.handle(arguments);
+    String output = outContent.toString().trim();
+
+    // Assert
+    assertThat(output).contains("Game with ID 123 resigned successfully.");
+
+    // Verify that gameLogic.resign(currentGame) is called
+    verify(gameLogicMock, times(1)).resign(gameMock);
+  }
+
+  @Test
+  void testAcceptCommand() {
+    // Arrange
+    String gameId = "123";
+    List<String> arguments = Arrays.asList("accept", gameId);
+    Game gameMock = mock(Game.class);
+    when(gameLogicMock.loadGame(gameId)).thenReturn(gameMock);
+
+    // Act
+    chessCli.handle(arguments);
+    String output = outContent.toString().trim();
+
+    // Assert
+    assertThat(output).contains("Game with ID 123 accepted remi successfully.");
+
+    // Verify that gameLogic.resign(currentGame) is called
+    verify(gameLogicMock, times(1)).acceptRemi(gameMock);
+  }
+
+  @ParameterizedTest
+  @MethodSource("gameNotFoundCommandProvider")
+  void testThrowsGameNotFoundException(List<String> arguments, String expectedOutput) throws GameNotFoundException {
+    // Arrange
+    when(gameLogicMock.loadGame(anyString())).thenThrow(new GameNotFoundException("Game not found"));
+
+    // Act
+    chessCli.handle(arguments);
+    String output = outContent.toString().trim();
+
+    // Normalize line endings in expected output
+    expectedOutput =
+        expectedOutput
+            .replace("\n", System.lineSeparator())
+            .replace("\r\n", System.lineSeparator());
+
+    // Assert
+    assertThat(output).isEqualTo(expectedOutput);
+
+    // Verify interactions with mocks
+    verify(gameLogicMock, times(1)).loadGame(anyString());
+  }
+
+  private static Stream<Arguments> gameNotFoundCommandProvider() {
+    return Stream.of(
+        Arguments.of(Arrays.asList("load", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found."),
+        Arguments.of(Arrays.asList("move", "e2", "e4", "on", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found."),
+        Arguments.of(Arrays.asList("show-moves", "e2", "on", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found."),
+        Arguments.of(Arrays.asList("resign", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found."),
+        Arguments.of(Arrays.asList("accept", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found.")
+    );
+  }
 }
