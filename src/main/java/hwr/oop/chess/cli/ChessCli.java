@@ -256,7 +256,7 @@ public class ChessCli {
   private void acceptRemi (String gameID) {
     try {
       loadCurrentGameIfNecessary(gameID);
-      gameLogic.acceptRemi(currentGame);
+      gameLogic.endGameWithRemi(currentGame);
       out.println(GAME_WITH_ID + gameID + " accepted remi successfully.");
     } catch (GameNotFoundException e) {
       out.println(GAME_NOT_EXIST);

@@ -69,7 +69,7 @@ public interface Domain {
    *
    * @param game The game in which the draw offer is accepted.
    */
-  void acceptRemi(Game game);
+  void endGameWithRemi(Game game);
 
   /**
    * Resigns from the game, declaring the opponent as the winner.

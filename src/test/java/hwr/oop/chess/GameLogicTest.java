@@ -466,7 +466,7 @@ class GameLogicTest {
     Game game = gameLogic.loadGame(gameId);
 
     // Act
-    gameLogic.acceptRemi(game);
+    gameLogic.endGameWithRemi(game);
 
     // Assert
     assertEquals(GameOutcome.REMI, game.getWinner());
@@ -530,7 +530,7 @@ class GameLogicTest {
 
       // TODO: Expand with check and checkmate
       game.declareWinner(GameOutcome.BLACK);
-      System.out.println(gameLogic.endGame(game));
+      gameLogic.endGame(game);
       assertTrue(game.isGameEnded());
       assertEquals(GameOutcome.BLACK, game.getWinner());
       assertEquals(4, game.getMoveCount());
@@ -583,7 +583,7 @@ class GameLogicTest {
     Game game = gameLogic.loadGame(gameId);
 
     // Act
-    gameLogic.acceptRemi(game);
+    gameLogic.endGameWithRemi(game);
     String result = gameLogic.endGame(game);
 
     // Assert
