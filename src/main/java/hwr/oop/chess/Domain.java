@@ -79,6 +79,13 @@ public interface Domain {
   void resign(Game game);
 
   /**
+   * Get fen notation of the current game status.
+   *
+   * @param game The game from which to get the fen notation.
+   */
+  String getFENNotation(Game game);
+
+  /**
    * Ends the game, declaring the winner and updating players' ELO ratings.
    *
    * @param game The game to end.

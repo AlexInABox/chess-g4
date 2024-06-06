@@ -137,7 +137,6 @@ public class GameLogic implements Domain {
     return currentPiece.possibleMoves();
   }
 
-
   @Override
   public void endGameWithRemi(Game game) {
     game.declareWinner(GameOutcome.REMI);
@@ -153,6 +152,11 @@ public class GameLogic implements Domain {
       game.declareWinner(GameOutcome.WHITE);
     }
     endGame(game);
+  }
+
+  @Override
+  public String getFENNotation(Game game) {
+    return game.convertBoardToFEN();
   }
 
   private void calculateAndSetEloForBothPlayers(Game game) {
@@ -206,7 +210,8 @@ public class GameLogic implements Domain {
                   + playerBlack.getElo()
                   + ")";
       case NOT_FINISHED_YET -> {
-        //this case is already checked (throws GameHasNotEndedException) within calculateAndSetEloForBothPlayers()
+        // this case is already checked (throws GameHasNotEndedException) within
+        // calculateAndSetEloForBothPlayers()
       }
     }
     deleteGame(game.getId());
