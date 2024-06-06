@@ -466,7 +466,7 @@ class GameLogicTest {
     Game game = gameLogic.loadGame(gameId);
 
     // Act
-    gameLogic.acceptRemi(game);
+    gameLogic.endGameWithRemi(game);
 
     // Assert
     assertEquals(GameOutcome.REMI, game.getWinner());
@@ -530,7 +530,7 @@ class GameLogicTest {
 
       // TODO: Expand with check and checkmate
       game.declareWinner(GameOutcome.BLACK);
-      System.out.println(gameLogic.endGame(game));
+      gameLogic.endGame(game);
       assertTrue(game.isGameEnded());
       assertEquals(GameOutcome.BLACK, game.getWinner());
       assertEquals(4, game.getMoveCount());
@@ -583,7 +583,7 @@ class GameLogicTest {
     Game game = gameLogic.loadGame(gameId);
 
     // Act
-    gameLogic.acceptRemi(game);
+    gameLogic.endGameWithRemi(game);
     String result = gameLogic.endGame(game);
 
     // Assert
@@ -791,5 +791,32 @@ class GameLogicTest {
     assertTrue(possibleMoves.isEmpty());
     //Test, return value can not be changed to Collections.emptyList
     possibleMoves.add(new Position(2,3));
+  }
+
+  @Test
+  void testGetFenNotation(){
+    String gameId = "testGame";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+
+    String fen = gameLogic.getFENNotation(game);
+
+    assertThat(fen).isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w 0");
+  }
+
+  @Test
+  void testGetFenNotationAfterOneMove(){
+    String gameId = "testGame";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+    gameLogic.moveTo("f2", "f3", game);
+
+    String fen = gameLogic.getFENNotation(game);
+
+    assertThat(fen).isEqualTo("rnbqkbnr/pppppppp/8/8/8/5P2/PPPPP1PP/RNBQKBNR b 1");
   }
 }

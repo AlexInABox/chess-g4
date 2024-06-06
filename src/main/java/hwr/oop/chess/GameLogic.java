@@ -67,8 +67,7 @@ public class GameLogic implements Domain {
     return persistence.loadPlayers().stream()
         .filter(player -> player.getName().equals(playerName))
         .findFirst()
-        .orElseGet(
-            () -> new Player(playerName));
+        .orElseGet(() -> new Player(playerName));
   }
 
   @Override
@@ -139,8 +138,7 @@ public class GameLogic implements Domain {
   }
 
   @Override
-  public void acceptRemi(Game game) {
-
+  public void endGameWithRemi(Game game) {
     game.declareWinner(GameOutcome.REMI);
     endGame(game);
   }
@@ -153,47 +151,69 @@ public class GameLogic implements Domain {
     } else {
       game.declareWinner(GameOutcome.WHITE);
     }
+    endGame(game);
   }
 
   @Override
-  public String endGame(Game game) {
+  public String getFENNotation(Game game) {
+    return game.convertBoardToFEN();
+  }
+
+  private void calculateAndSetEloForBothPlayers(Game game) {
     Player playerWhite = loadPlayer(game.getPlayerWhite().getName());
     Player playerBlack = loadPlayer(game.getPlayerBlack().getName());
     double chanceToWinPlayerWhite = calculateChanceToWinPlayerWhite(playerWhite, playerBlack);
     double chanceToWinPlayerBlack = 1 - chanceToWinPlayerWhite;
-    String victoryMessage = "";
     switch (game.getWinner()) {
       case GameOutcome.REMI -> {
         playerWhite.setElo(calculateNewEloRemi(playerWhite, chanceToWinPlayerWhite));
         playerBlack.setElo(calculateNewEloRemi(playerBlack, chanceToWinPlayerBlack));
-        victoryMessage = "The game ended in Remi.";
       }
 
       case GameOutcome.WHITE -> {
         playerWhite.setElo(calculateNewEloWinner(playerWhite, chanceToWinPlayerWhite));
         playerBlack.setElo(calculateNewEloLooser(playerBlack, chanceToWinPlayerBlack));
-        victoryMessage =
-            "WHITE won this game. Congrats "
-                + playerWhite.getName()
-                + " (new ELO: "
-                + playerWhite.getElo()
-                + ")";
       }
       case GameOutcome.BLACK -> {
         playerWhite.setElo(calculateNewEloLooser(playerWhite, chanceToWinPlayerWhite));
         playerBlack.setElo(calculateNewEloWinner(playerBlack, chanceToWinPlayerBlack));
-        victoryMessage =
-            "BLACK won this game. Congrats "
-                + playerBlack.getName()
-                + " (new ELO: "
-                + playerBlack.getElo()
-                + ")";
       }
       case GameOutcome.NOT_FINISHED_YET ->
           throw new GameHasNotEndedException("The game has not ended yet");
     }
     savePlayer(playerWhite);
     savePlayer(playerBlack);
+  }
+
+  @Override
+  public String endGame(Game game) {
+    calculateAndSetEloForBothPlayers(game);
+    Player playerWhite = loadPlayer(game.getPlayerWhite().getName());
+    Player playerBlack = loadPlayer(game.getPlayerBlack().getName());
+
+    String victoryMessage = "";
+    switch (game.getWinner()) {
+      case GameOutcome.REMI -> victoryMessage = "The game ended in Remi.";
+
+      case GameOutcome.WHITE ->
+          victoryMessage =
+              "WHITE won this game. Congrats "
+                  + playerWhite.getName()
+                  + " (new ELO: "
+                  + playerWhite.getElo()
+                  + ")";
+      case GameOutcome.BLACK ->
+          victoryMessage =
+              "BLACK won this game. Congrats "
+                  + playerBlack.getName()
+                  + " (new ELO: "
+                  + playerBlack.getElo()
+                  + ")";
+      case NOT_FINISHED_YET -> {
+        // this case is already checked (throws GameHasNotEndedException) within
+        // calculateAndSetEloForBothPlayers()
+      }
+    }
     deleteGame(game.getId());
     return victoryMessage;
   }
