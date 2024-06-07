@@ -2,7 +2,9 @@ package hwr.oop.chess.cli;
 
 import hwr.oop.chess.GameAlreadyExistsException;
 import hwr.oop.chess.GameNotFoundException;
+import hwr.oop.chess.IllegalMoveBecauseKingIsInCheckException;
 import hwr.oop.chess.Position;
+import hwr.oop.chess.RemiWasNotOfferedException;
 import hwr.oop.chess.pieces.IllegalMoveException;
 import hwr.oop.chess.pieces.Piece;
 import hwr.oop.chess.game.Game;
@@ -47,7 +49,8 @@ public class ChessCli {
       case "move" -> handleMove(arguments);
       case "show-moves" -> handleShowMoves(arguments);
       case "resign" -> handleResign(arguments);
-      case "accept" -> handleAccept(arguments);
+      case "offer-remi" -> handleOfferRemi(arguments);
+      case "accept-remi" -> handleAccept(arguments);
       default -> handleUnknownCommand(command);
     }
   }
@@ -128,10 +131,21 @@ public class ChessCli {
     resign(gameID);
   }
 
+  private void handleOfferRemi(List<String> arguments) {
+    if (arguments.size() != 2) {
+      out.println(INVALID_COMMAND);
+      out.println("Usage: chess offer-remi <ID>");
+      return;
+    }
+
+    String gameID = arguments.get(1);
+    offerRemi(gameID);
+  }
+
   private void handleAccept(List<String> arguments) {
     if (arguments.size() != 2) {
       out.println(INVALID_COMMAND);
-      out.println("Usage: chess accept <ID>");
+      out.println("Usage: chess accept-remi <ID>");
       return;
     }
 
@@ -151,7 +165,8 @@ public class ChessCli {
     out.println("  - move <FROM> <TO> on <ID>: Move a chess piece to a valid position");
     out.println("  - show-moves <FROM> on <ID>: Get the possible moves for a chess piece");
     out.println("  - resign <ID>: Resign the current game");
-    out.println("  - accept <ID>: Accept a remi");
+    out.println("  - offer-remi <ID>: Offer a remi");
+    out.println("  - accept-remi <ID>: Accept a remi");
     out.println("  - help: Display this help message");
   }
 
@@ -188,14 +203,18 @@ public class ChessCli {
   private void movePiece (String from, String to, String gameID) {
     try {
       loadCurrentGameIfNecessary(gameID);
-      gameLogic.moveTo(from, to, currentGame);
+      boolean isCheckMate = gameLogic.moveTo(from, to, currentGame);
       out.println("Moving piece in game " + gameID + " from " + from + " to " + to);
       gameLogic.saveGame(currentGame);
       printChessboard(gameID);
+      if (isCheckMate) {
+        String victoryMessage = gameLogic.endGame(currentGame);
+        out.println(victoryMessage);
+      }
     } catch (GameNotFoundException e) {
       out.println(GAME_NOT_EXIST);
       out.println(e.getMessage());
-    } catch (IllegalMoveException e) {
+    } catch (IllegalMoveException | IllegalMoveBecauseKingIsInCheckException e) {
       out.println(e.getMessage());
     }
   }
@@ -236,13 +255,27 @@ public class ChessCli {
     }
   }
 
+  private void offerRemi (String gameID) {
+    try {
+      loadCurrentGameIfNecessary(gameID);
+      gameLogic.offerRemi(currentGame);
+      out.println("Offer remi on " + gameID);
+    } catch (GameNotFoundException e) {
+      out.println(GAME_NOT_EXIST);
+      out.println(e.getMessage());
+    }
+  }
+
   private void acceptRemi (String gameID) {
     try {
       loadCurrentGameIfNecessary(gameID);
-      gameLogic.endGameWithRemi(currentGame);
-      out.println(GAME_WITH_ID + gameID + " accepted remi successfully.");
+      gameLogic.acceptRemi(currentGame);
+      String victoryMessage = gameLogic.endGame(currentGame);
+      out.println(victoryMessage);
     } catch (GameNotFoundException e) {
       out.println(GAME_NOT_EXIST);
+      out.println(e.getMessage());
+    } catch (RemiWasNotOfferedException e) {
       out.println(e.getMessage());
     }
   }

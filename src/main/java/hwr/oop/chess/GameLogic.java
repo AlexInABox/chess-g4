@@ -133,7 +133,9 @@ public class GameLogic implements Domain {
     }
 
     currentPiece.moveTo(newPosition);
+    game.offerRemi(false);
     game.toggleNextToMove();
+    saveGame(game);
     if(game.getBoard().isCheckMate()){
       if(game.getNextToMove() == Color.WHITE){
         game.declareWinner(GameOutcome.BLACK);
@@ -157,9 +159,18 @@ public class GameLogic implements Domain {
   }
 
   @Override
-  public void endGameWithRemi(Game game) {
-    game.declareWinner(GameOutcome.REMI);
-    endGame(game);
+  public void offerRemi(Game game) {
+    game.offerRemi(true);
+    saveGame(game);
+  }
+
+  @Override
+  public void acceptRemi(Game game) {
+    if (game.isRemiOffered()) {
+      game.declareWinner(GameOutcome.REMI);
+    } else {
+      throw new RemiWasNotOfferedException();
+    }
   }
 
   @Override
