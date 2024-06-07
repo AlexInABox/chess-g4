@@ -85,8 +85,13 @@ public class GameLogic implements Domain {
   }
 
   @Override
-  public void moveTo(String oldPositionString, String newPositionString, Game game)
-      throws IllegalMoveException, ConvertInputToPositionException {
+  public void promotePiece(Game game, String positionString, String type){
+    //Position position = convertInputToPosition(positionString);
+    //TODO: game.promotePiece() will be created by Alex
+  }
+
+  @Override
+  public boolean moveTo(String oldPositionString, String newPositionString, Game game) {
 
     Position oldPosition = convertInputToPosition(oldPositionString);
     Position newPosition = convertInputToPosition(newPositionString);
@@ -114,6 +119,10 @@ public class GameLogic implements Domain {
 
     List<Position> possibleMoves = currentPiece.possibleMoves();
     if (!possibleMoves.contains(newPosition)) {
+
+      if (game.getBoard().getKingOfColor(game.getNextToMove()).isInCheck()){
+        throw new IllegalMoveBecauseKingIsInCheckException();
+      }
       String firstTwoPossibleMoves =
           possibleMoves.stream().limit(2).map(Position::toString).collect(Collectors.joining(", "));
       throw new IllegalMoveException(
@@ -125,6 +134,16 @@ public class GameLogic implements Domain {
 
     currentPiece.moveTo(newPosition);
     game.toggleNextToMove();
+    if(game.getBoard().isCheckMate()){
+      if(game.getNextToMove() == Color.WHITE){
+        game.declareWinner(GameOutcome.BLACK);
+
+      }else{
+        game.declareWinner(GameOutcome.WHITE);
+      }
+      return true;
+    }
+    return false;
   }
 
   @Override
@@ -210,8 +229,7 @@ public class GameLogic implements Domain {
                   + playerBlack.getElo()
                   + ")";
       case NOT_FINISHED_YET -> {
-        // this case is already checked (throws GameHasNotEndedException) within
-        // calculateAndSetEloForBothPlayers()
+        // this case is already checked (throws GameHasNotEndedException) within calculateAndSetEloForBothPlayers()
       }
     }
     deleteGame(game.getId());
