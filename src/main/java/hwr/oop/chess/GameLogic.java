@@ -86,7 +86,6 @@ public class GameLogic implements Domain {
 
   @Override
   public void promotePiece(Game game, String positionString, String type){
-    //Position position = convertInputToPosition(positionString);
     //TODO: game.promotePiece() will be created by Alex
   }
 
