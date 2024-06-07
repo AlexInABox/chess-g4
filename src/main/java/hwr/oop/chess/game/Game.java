@@ -16,7 +16,6 @@ public class Game implements Serializable {
   private Player playerBlack;
 
   private final ChessBoard board;
-  private String fenNotation;
 
   private Color nextToMove = Color.WHITE;
   private short moveCount = 0;
@@ -48,7 +47,6 @@ public class Game implements Serializable {
       throws FENException {
     this.playerWhite = playerWhite;
     this.playerBlack = playerBlack;
-    this.fenNotation = fenNotation;
     board = convertFENToBoard(fenNotation);
     this.id = id;
     winner = GameOutcome.NOT_FINISHED_YET;
@@ -64,10 +62,6 @@ public class Game implements Serializable {
 
   public String getId() {
     return id;
-  }
-
-  public String getFEN() {
-    return fenNotation;
   }
 
   public Color getNextToMove() {
@@ -223,14 +217,13 @@ public class Game implements Serializable {
         && Objects.equals(playerWhite, game.playerWhite)
         && Objects.equals(playerBlack, game.playerBlack)
         && Objects.equals(board, game.board)
-        && Objects.equals(fenNotation, game.fenNotation)
         && nextToMove == game.nextToMove;
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        id, playerWhite, playerBlack, board, fenNotation, nextToMove, moveCount, gameEnded);
+        id, playerWhite, playerBlack, board, nextToMove, moveCount, gameEnded);
   }
 
   @Override
@@ -245,9 +238,6 @@ public class Game implements Serializable {
         + playerBlack
         + ", board="
         + board
-        + ", fenNotation='"
-        + fenNotation
-        + '\''
         + ", nextToMove="
         + nextToMove
         + ", moveCount="

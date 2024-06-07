@@ -49,7 +49,6 @@ class GameTest {
         softly -> {
           softly.assertThat(game.getPlayerWhite()).isEqualTo(whitePlayer);
           softly.assertThat(game.getPlayerBlack()).isEqualTo(blackPlayer);
-          softly.assertThat(game.getFEN()).isEqualTo(fenNotation);
           softly.assertThat(game.getNextToMove()).isEqualTo(Color.BLACK);
         });
   }
@@ -128,9 +127,6 @@ class GameTest {
             + playerBlack
             + ", board="
             + board
-            + ", fenNotation='"
-            + null
-            + '\''
             + ", nextToMove=WHITE"
             + ", moveCount=0"
             + ", gameEnded=false"
