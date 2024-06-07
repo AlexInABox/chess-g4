@@ -67,12 +67,14 @@ public interface Domain {
    */
   boolean moveTo(String oldPositionString, String newPositionString, Game game);
 
+  void offerRemi(Game game);
+
   /**
    * Accepts a draw offer, ending the game in a draw.
    *
    * @param game The game in which the draw offer is accepted.
    */
-  void endGameWithRemi(Game game);
+  void acceptRemi(Game game);
 
   /**
    * Resigns from the game, declaring the opponent as the winner.

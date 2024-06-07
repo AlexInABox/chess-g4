@@ -466,7 +466,9 @@ class GameLogicTest {
     Game game = gameLogic.loadGame(gameId);
 
     // Act
-    gameLogic.endGameWithRemi(game);
+    gameLogic.offerRemi(game);
+    gameLogic.acceptRemi(game);
+    gameLogic.endGame(game);
 
     // Assert
     assertEquals(GameOutcome.REMI, game.getWinner());
@@ -648,7 +650,8 @@ class GameLogicTest {
     Game game = gameLogic.loadGame(gameId);
 
     // Act
-    gameLogic.endGameWithRemi(game);
+    gameLogic.offerRemi(game);
+    gameLogic.acceptRemi(game);
     String result = gameLogic.endGame(game);
 
     // Assert

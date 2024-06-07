@@ -21,6 +21,7 @@ public class Game implements Serializable {
   private Color nextToMove = Color.WHITE;
   private short moveCount = 0;
   private boolean gameEnded = false;
+  private boolean isRemiOffered = false;
   private GameOutcome winner;
 
   public GameOutcome getWinner() {
@@ -71,6 +72,14 @@ public class Game implements Serializable {
 
   public Color getNextToMove() {
     return nextToMove;
+  }
+
+  public boolean isRemiOffered() {
+    return isRemiOffered;
+  }
+
+  public void offerRemi(boolean remiOffered) {
+    isRemiOffered = remiOffered;
   }
 
   public void toggleNextToMove() {
