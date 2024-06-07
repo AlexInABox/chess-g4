@@ -16,7 +16,7 @@ public interface Domain {
    * @return The loaded game.
    * @throws GameNotFoundException If no game is found with the specified ID.
    */
-  Game loadGame(String gameId) throws GameNotFoundException;
+  Game loadGame(String gameId);
 
   /**
    * Saves a new game or updates an existing one.
@@ -33,8 +33,7 @@ public interface Domain {
    * @param id The unique ID of the game.
    * @throws GameAlreadyExistsException If a game with the same ID already exists.
    */
-  void createGame(Player playerWhite, Player playerBlack, String id)
-      throws GameAlreadyExistsException;
+  void createGame(Player playerWhite, Player playerBlack, String id);
 
   /**
    * Loads a player based on their name or creates a new player, if there is no player with this
@@ -44,7 +43,7 @@ public interface Domain {
    * @return The loaded player.
    * @throws PlayerNotFoundException If no player is found with the specified name.
    */
-  Player loadPlayer(String name) throws PlayerNotFoundException;
+  Player loadPlayer(String name);
 
   /**
    * Saves a new player or updates an existing one.
@@ -53,23 +52,27 @@ public interface Domain {
    */
   void savePlayer(Player player);
 
+  void promotePiece(Game game, String position, String type);
+
   /**
    * Moves a piece from an old position to a new position.
    *
-   * @param oldPositionString The old position of the piece.
-   * @param newPositionString The new position of the piece.
-   * @param game The game in which the move is performed.
+   * @param oldPositionString The old position of the piece. (e.g. a1)
+   * @param newPositionString The new position of the piece. (e.g. c2)
+   * @param game              The game in which the move is performed.
+   * @return true, if this move led to check mate.
+   * @throws ConvertInputToPositionException If the oldPositionString or newPositionString does not have the right format.
    * @throws IllegalMoveException If the move is illegal.
+   * @throws IllegalMoveBecauseKingIsInCheckException If king is in check and this move does not save them.
    */
-  void moveTo(String oldPositionString, String newPositionString, Game game)
-      throws IllegalMoveException, ConvertInputToPositionException;
+  boolean moveTo(String oldPositionString, String newPositionString, Game game);
 
   /**
    * Accepts a draw offer, ending the game in a draw.
    *
    * @param game The game in which the draw offer is accepted.
    */
-  void acceptRemi(Game game);
+  void endGameWithRemi(Game game);
 
   /**
    * Resigns from the game, declaring the opponent as the winner.
@@ -79,11 +82,17 @@ public interface Domain {
   void resign(Game game);
 
   /**
+   * Get fen notation of the current game status.
+   *
+   * @param game The game from which to get the fen notation.
+   */
+  String getFENNotation(Game game);
+
+  /**
    * Ends the game, declaring the winner and updating players' ELO ratings.
    *
    * @param game The game to end.
    * @return A message indicating the outcome of the game, including the winner and their new ELO rating.
-   * @throws GameHasNotEndedException If the game has not yet finished.
    */
   String endGame(Game game);
   /**

@@ -260,4 +260,11 @@ class ChessBoardTest {
 
     assertThat(board.isCheckMate()).isFalse();
   }
+
+  @Test
+  void getKingOfColorReturnsNull(){
+    board.clearChessboard();
+    King king = board.getKingOfColor(Color.WHITE);
+    assertThat(king).isEqualTo(null);
+  }
 }

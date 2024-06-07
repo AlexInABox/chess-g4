@@ -232,7 +232,7 @@ class GameLogicTest {
   }
 
   @Test
-  void testMoveTo_ValidMove1() throws ConvertInputToPositionException, IllegalMoveException {
+  void testMoveTo_ValidMove1() {
     // Arrange
     String gameId = "game1";
     Player playerWhite = gameLogic.loadPlayer("Alice");
@@ -423,7 +423,7 @@ class GameLogicTest {
   }
 
   @Test
-  void testMoveTo_InvalidMove_SameStartAndEndPosition() throws ConvertInputToPositionException {
+  void testMoveTo_InvalidMove_SameStartAndEndPosition(){
     // Arrange
     String gameId = "game1";
     Player playerWhite = gameLogic.loadPlayer("Alice");
@@ -466,7 +466,7 @@ class GameLogicTest {
     Game game = gameLogic.loadGame(gameId);
 
     // Act
-    gameLogic.acceptRemi(game);
+    gameLogic.endGameWithRemi(game);
 
     // Assert
     assertEquals(GameOutcome.REMI, game.getWinner());
@@ -520,17 +520,19 @@ class GameLogicTest {
     Player playerBlack = gameLogic.loadPlayer("Bob");
     gameLogic.createGame(playerWhite, playerBlack, gameId);
     Game game = gameLogic.loadGame(gameId);
-
     try {
       gameLogic.moveTo("f2", "f3", game);
       gameLogic.moveTo("e7", "e5", game);
 
       gameLogic.moveTo("g2", "g4", game);
-      gameLogic.moveTo("d8", "h4", game);
 
+      boolean isCheckMate = gameLogic.moveTo("d8", "h4", game);
+
+      if(isCheckMate){
+        gameLogic.endGame(game);
+      }
       // TODO: Expand with check and checkmate
-      game.declareWinner(GameOutcome.BLACK);
-      System.out.println(gameLogic.endGame(game));
+
       assertTrue(game.isGameEnded());
       assertEquals(GameOutcome.BLACK, game.getWinner());
       assertEquals(4, game.getMoveCount());
@@ -541,6 +543,69 @@ class GameLogicTest {
     } catch (ConvertInputToPositionException e) {
       throw new RuntimeException(e);
     }
+  }
+  @Test
+  void testShortGameWhiteWins() {
+    // Arrange
+    String gameId = "shortGame";
+
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+    try {
+      gameLogic.moveTo("b2", "b3", game);
+      gameLogic.moveTo("f7", "f6", game);
+      gameLogic.moveTo("e2", "e4", game);
+
+      gameLogic.moveTo("g7", "g5", game);
+
+      boolean isCheckMate = gameLogic.moveTo("d1", "h5", game);
+
+      if(isCheckMate){
+        gameLogic.endGame(game);
+      }
+      assertTrue(game.isGameEnded());
+      assertEquals(GameOutcome.WHITE, game.getWinner());
+      assertEquals(5, game.getMoveCount());
+      assertEquals((short) 1210, gameLogic.loadPlayer("Alice").getElo());
+      assertEquals((short) 1190, gameLogic.loadPlayer("Bob").getElo());
+    } catch (IllegalMoveException e) {
+      fail(e.getMessage());
+    } catch (ConvertInputToPositionException e) {
+      throw new RuntimeException(e);
+    }
+  }
+  @Test
+  void testMoveToNotCheckMate(){
+    String gameId = "testGame";
+
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+    boolean isCheckMate = gameLogic.moveTo("f2", "f3", game);
+    assertThat(isCheckMate).isFalse();
+  }
+  @Test
+  void testIllegalMoveBecauseKingInCheck() {
+    // Arrange
+    String gameId = "shortGame";
+
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+      gameLogic.moveTo("d2", "d4", game);
+      gameLogic.moveTo("e7", "e5", game);
+      gameLogic.moveTo("e1", "d2", game);
+
+      gameLogic.moveTo("f8", "b4", game);
+
+    IllegalMoveBecauseKingIsInCheckException exception =
+            assertThrows(IllegalMoveBecauseKingIsInCheckException.class, () -> gameLogic.moveTo("h2", "h3", game));
+
+    assertEquals("You can not move your piece to this position because your king is in check.", exception.getMessage());
   }
 
   @Test
@@ -583,7 +648,7 @@ class GameLogicTest {
     Game game = gameLogic.loadGame(gameId);
 
     // Act
-    gameLogic.acceptRemi(game);
+    gameLogic.endGameWithRemi(game);
     String result = gameLogic.endGame(game);
 
     // Assert
@@ -791,5 +856,32 @@ class GameLogicTest {
     assertTrue(possibleMoves.isEmpty());
     //Test, return value can not be changed to Collections.emptyList
     possibleMoves.add(new Position(2,3));
+  }
+
+  @Test
+  void testGetFenNotation(){
+    String gameId = "testGame";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+
+    String fen = gameLogic.getFENNotation(game);
+
+    assertThat(fen).isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w 0");
+  }
+
+  @Test
+  void testGetFenNotationAfterOneMove(){
+    String gameId = "testGame";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+    gameLogic.moveTo("f2", "f3", game);
+
+    String fen = gameLogic.getFENNotation(game);
+
+    assertThat(fen).isEqualTo("rnbqkbnr/pppppppp/8/8/8/5P2/PPPPP1PP/RNBQKBNR b 1");
   }
 }
