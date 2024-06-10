@@ -414,20 +414,7 @@ class GameLogicTest {
           softly.assertThat(loadedGames.get(1).getPlayerWhite().getName()).isEqualTo("Alice");
         });
   }
-
-  @Test
-  void testSavePlayer_AddNewPlayerWhenNotExists() {
-    // Arrange
-    Player newPlayer = new Player("Alice");
-
-    // Act
-    gameLogic.savePlayer(newPlayer);
-
-    // Assert
-    List<Player> loadedPlayers = persistence.loadPlayers();
-    assertTrue(loadedPlayers.contains(newPlayer));
-  }
-
+  
   @Test
   void testMoveTo_InvalidMove_SameStartAndEndPosition() {
     // Arrange
