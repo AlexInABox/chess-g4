@@ -6,6 +6,7 @@ import hwr.oop.chess.board.ChessBoard;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -86,14 +87,22 @@ public class Knight implements Piece, Serializable {
   public List<Position> visiblePositions() {
     List<Position> visiblePositions = new ArrayList<>();
 
-    int[][] moveOffsets = {{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2}};
-
+    List<List<Integer>> moveOffsets = Arrays.asList(
+            Arrays.asList(2, 1),
+            Arrays.asList(2, -1),
+            Arrays.asList(-2, 1),
+            Arrays.asList(-2, -1),
+            Arrays.asList(1, 2),
+            Arrays.asList(1, -2),
+            Arrays.asList(-1, 2),
+            Arrays.asList(-1, -2)
+    );
     int currentRow = position.row();
     int currentCol = position.column();
 
-    for (int[] offset : moveOffsets) {
-      int newRow = currentRow + offset[0];
-      int newCol = currentCol + offset[1];
+    for (List<Integer> offset : moveOffsets) {
+      int newRow = currentRow + offset.get(0);
+      int newCol = currentCol + offset.get(1);
 
       if (chessBoard.isValidPosition(newRow, newCol)) {
         visiblePositions.add(new Position(newRow, newCol));

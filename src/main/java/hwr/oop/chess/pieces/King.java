@@ -5,6 +5,7 @@ import hwr.oop.chess.Position;
 import hwr.oop.chess.board.ChessBoard;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -163,7 +164,7 @@ public class King implements Piece, Serializable {
 
   public List<Position> visiblePositions() {
     List<Position> visiblePositions = new ArrayList<>();
-    int[] directions = {-1, 0, 1};
+    List<Integer> directions = Arrays.asList(-1, 0, 1);
 
     for (int rowChange : directions) {
       for (int colChange : directions) {

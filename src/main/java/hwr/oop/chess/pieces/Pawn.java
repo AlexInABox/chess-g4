@@ -5,6 +5,7 @@ import hwr.oop.chess.Position;
 import hwr.oop.chess.board.ChessBoard;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -82,10 +83,12 @@ public class Pawn implements Piece, Serializable {
       }
     }
 
-    int[][] captureOffsets = {{direction, 1}, {direction, -1}};
-    for (int[] offset : captureOffsets) {
-      int newRow = position.row() + offset[0];
-      int newCol = position.column() + offset[1];
+    List<List<Integer>> captureOffsets = Arrays.asList(
+            Arrays.asList(direction, 1),
+            Arrays.asList(direction, -1)
+    );    for (List<Integer> offset : captureOffsets) {
+      int newRow = position.row() + offset.get(0);
+      int newCol = position.column() + offset.get(1);
       Position capturePosition = new Position(newRow, newCol);
       if (chessBoard.isValidPosition(newRow, newCol)) {
         Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(capturePosition);

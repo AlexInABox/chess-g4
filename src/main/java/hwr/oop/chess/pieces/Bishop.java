@@ -6,6 +6,7 @@ import hwr.oop.chess.board.ChessBoard;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -87,15 +88,20 @@ public class Bishop implements Piece, Serializable {
   public List<Position> visiblePositions() {
     List<Position> visiblePositions = new ArrayList<>();
 
-    int[][] directions = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+    List<List<Integer>> directions = Arrays.asList(
+            Arrays.asList(1, 1),
+            Arrays.asList(1, -1),
+            Arrays.asList(-1, 1),
+            Arrays.asList(-1, -1)
+    );
 
-    for (int[] direction : directions) {
+    for (List<Integer> direction : directions) {
       int newRow = position.row();
       int newCol = position.column();
 
       while (true) {
-        newRow += direction[0];
-        newCol += direction[1];
+        newRow += direction.get(0);
+        newCol += direction.get(1);
 
         if (!chessBoard.isValidPosition(newRow, newCol)) {
           break;
