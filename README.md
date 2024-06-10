@@ -54,28 +54,35 @@ Implementing features like the ELO Rating were very interesting, because we had 
 
 We decided against implementing tournaments, simply because other features seemed more important and interesting to us. If we have had the remaining time we would've included it, sadly we didn't.
 
-## Commands overview (not final YET)
+## Commands overview
 
 If `chess` does not work in your terminal, try `./chess` or `.\chess` instead.
 
-| Command         | Description      | Example       |
-|-----------------|------------------|---------------|
-| `<ID>`          | Game Id (int)    | 123, 7        |
-| `<FROM>` `<TO>` | Cell coordinates | a4, c7        |
-| `<TYPE>`        | Type of figure   | queen, knight |
+| Command         | Description           | Example       |
+|-----------------|-----------------------|---------------|
+| `<ID>`          | Game Id (String)      | 123, testGame |
+| `<FROM>`        | Cell coordinates      | a4, c7        |
+| `<TO>`          | Cell coordinates      | a4, c7        |
+| `<PlayerWhite>` | White Player (String) | Allice        |
+| `<PlayerBlack>` | Black Player (String) | Bob           |
 
-| Command              | Description                                         |
-|----------------------|-----------------------------------------------------|
-| `chess` `chess help` | Show the list of supported commands                 |
-| `chess create <ID>`  | Create a new, fresh game (stored in game_\<ID>.csv) |
 
-### In-Game Commands `chess on <ID> [...]`
+| Command                                         | Description                         |
+|-------------------------------------------------|-------------------------------------|
+| `chess` `chess help`                            | Show the list of supported commands |
+| `chess create <ID> <PlayerWhite> <PlayerBlack>` | Start a new chess game              |
 
-| Command                               | Description                                    |
-|---------------------------------------|------------------------------------------------|
-| `chess on <ID> move <FROM> <TO>`      | Move the figure on FROM to the cell TO         |
-| `chess on <ID> promote <FROM> <TYPE>` | Promote the pawn on cell FROM                  |
-| `chess on <ID> show-moves <FROM>`     | Show where the figure on cell FROM can move to |
+### In-Game Commands 
+
+| Command                           | Description                              |
+|-----------------------------------|------------------------------------------|
+| `chess fen <ID>`                  | Display the FEN notation of a chess game |
+| `chess load <ID>`                 | Load a chess game                        |
+| `chess move <FROM> <TO> on <ID>`  | Move a chess piece to a valid position   |
+| `chess show-moves <FROM> on <ID>` | Get the possible moves for a chess piece |
+| `chess resign <ID>`               | Resign the current game                  |
+| `chess offer-remi <ID>`           | Offer a remi                             |
+| `chess accept-remi <ID>`          | Accept a remi                            |
 
 
 ## Feature List
