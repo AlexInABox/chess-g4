@@ -104,6 +104,7 @@ public class GameLogic implements Domain {
       default -> throw new IllegalPromotionException("Promotion is not allowed: The specified type is invalid. Valid promotion types are 'Queen', 'Rook', 'Bishop', or 'Knight'.");
     }
     game.getBoard().promoteTo(position, newPiece);
+    saveGame(game);
   }
 
   @Override

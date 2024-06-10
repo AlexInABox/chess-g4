@@ -3,6 +3,7 @@ package hwr.oop.chess.cli;
 import hwr.oop.chess.GameAlreadyExistsException;
 import hwr.oop.chess.GameNotFoundException;
 import hwr.oop.chess.IllegalMoveBecauseKingIsInCheckException;
+import hwr.oop.chess.IllegalPromotionException;
 import hwr.oop.chess.Position;
 import hwr.oop.chess.RemiWasNotOfferedException;
 import hwr.oop.chess.pieces.IllegalMoveException;
@@ -49,6 +50,7 @@ public class ChessCli {
       case "load" -> handleLoad(arguments);
       case "move" -> handleMove(arguments);
       case "show-moves" -> handleShowMoves(arguments);
+      case "promote" -> handlePromotePawn(arguments);
       case "resign" -> handleResign(arguments);
       case "offer-remi" -> handleOfferRemi(arguments);
       case "accept-remi" -> handleAccept(arguments);
@@ -132,6 +134,19 @@ public class ChessCli {
     showMoves(from, gameID);
   }
 
+  private void handlePromotePawn(List<String> arguments) {
+    if (arguments.size() != 6) {
+      out.println(INVALID_COMMAND);
+      out.println("Usage: chess promote <FROM> to <TYPE> on <ID>");
+      return;
+    }
+
+    String from = arguments.get(1);
+    String desiredType = arguments.get(3);
+    String gameID = arguments.get(5);
+    promotePawn(from, desiredType, gameID);
+  }
+
   private void handleResign(List<String> arguments) {
     if (arguments.size() != 2) {
       out.println(INVALID_COMMAND);
@@ -177,6 +192,7 @@ public class ChessCli {
     out.println("  - load <ID>: Load a chess game");
     out.println("  - move <FROM> <TO> on <ID>: Move a chess piece to a valid position");
     out.println("  - show-moves <FROM> on <ID>: Get the possible moves for a chess piece");
+    out.println("  - promote <FROM> to <TYPE> on <ID>: Promote a pawn to a chess piece");
     out.println("  - resign <ID>: Resign the current game");
     out.println("  - offer-remi <ID>: Offer a remi");
     out.println("  - accept-remi <ID>: Accept a remi");
@@ -244,9 +260,9 @@ public class ChessCli {
     }
   }
 
-  private void showMoves(String from, String matchID) {
+  private void showMoves(String from, String gameID) {
     try {
-      loadCurrentGameIfNecessary(matchID);
+      loadCurrentGameIfNecessary(gameID);
       Position position = parsePosition(from);
       List<Position> possibleMoves = getPossibleMoves(position, currentGame);
       List<Position> captureMoves = new ArrayList<>();
@@ -260,11 +276,25 @@ public class ChessCli {
 
       out.println("Possible moves for piece at position " + from + ": " + possibleMovesToString(possibleMoves));
       out.println("Capture moves for piece at position " + from + ": " + possibleMovesToString(captureMoves));
-      printChessboardHighlighted(matchID, possibleMoves, captureMoves);
+      printChessboardHighlighted(gameID, possibleMoves, captureMoves);
     } catch (GameNotFoundException e) {
       out.println(GAME_NOT_EXIST);
       out.println(e.getMessage());
     }
+  }
+
+  private void promotePawn(String from, String desiredType, String gameID) {
+     try {
+       loadCurrentGameIfNecessary(gameID);
+       gameLogic.promotePiece(currentGame, from, desiredType);
+       out.println("Promoting pawn in game " + gameID + " from Position " + from + " to a " + desiredType);
+       printChessboard(gameID);
+     } catch (GameNotFoundException e) {
+       out.println(GAME_NOT_EXIST);
+       out.println(e.getMessage());
+     } catch (IllegalPromotionException e) {
+       out.println(e.getMessage());
+     }
   }
 
   private void resign (String gameID) {
