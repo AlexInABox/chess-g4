@@ -3,6 +3,7 @@ package hwr.oop.chess.cli;
 import hwr.oop.chess.GameAlreadyExistsException;
 import hwr.oop.chess.GameNotFoundException;
 import hwr.oop.chess.IllegalMoveBecauseKingIsInCheckException;
+import hwr.oop.chess.IllegalPromotionException;
 import hwr.oop.chess.Position;
 import hwr.oop.chess.RemiWasNotOfferedException;
 import hwr.oop.chess.pieces.IllegalMoveException;
@@ -290,6 +291,8 @@ public class ChessCli {
        printChessboard(gameID);
      } catch (GameNotFoundException e) {
        out.println(GAME_NOT_EXIST);
+       out.println(e.getMessage());
+     } catch (IllegalPromotionException e) {
        out.println(e.getMessage());
      }
   }
