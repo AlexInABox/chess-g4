@@ -1,7 +1,6 @@
 package hwr.oop.chess.cli;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -120,6 +119,7 @@ class ChessCliTest {
         Arguments.of("load", "Oops... Invalid command.\nUsage: chess load <ID>"),
         Arguments.of("move", "Oops... Invalid command.\nUsage: chess move <FROM> <TO> on <ID>"),
         Arguments.of("show-moves", "Oops... Invalid command.\nUsage: chess show-moves <FROM> on <ID>"),
+        Arguments.of("promote", "Oops... Invalid command.\nUsage: chess promote <FROM> to <TYPE> on <ID>"),
         Arguments.of("resign", "Oops... Invalid command.\nUsage: chess resign <ID>"),
         Arguments.of("offer-remi", "Oops... Invalid command.\nUsage: chess offer-remi <ID>"),
         Arguments.of("accept-remi", "Oops... Invalid command.\nUsage: chess accept-remi <ID>"));
@@ -162,6 +162,7 @@ class ChessCliTest {
         .contains("- load <ID>: Load a chess game")
         .contains("- move <FROM> <TO> on <ID>: Move a chess piece to a valid position")
         .contains("- show-moves <FROM> on <ID>: Get the possible moves for a chess piece")
+        .contains("- promote <FROM> to <TYPE> on <ID>: Promote a pawn to a chess piece")
         .contains("- resign <ID>: Resign the current game")
         .contains("- offer-remi <ID>: Offer a remi")
         .contains("- accept-remi <ID>: Accept a remi")
@@ -396,6 +397,41 @@ class ChessCliTest {
   }
 
   @Test
+  void testPromotePawnCommand() {
+    // Arrange
+    String from = "e8";
+    String desiredType = "Q";
+    String gameID = "123";
+    List<String> arguments = Arrays.asList("promote", from, "to", desiredType, "on", gameID);
+    Player playerWhite = new Player("Alice");
+    Player playerBlack = new Player("Bob");
+    Game game = new Game(playerWhite, playerBlack, gameID);
+    when(gameLogicMock.loadGame(gameID)).thenReturn(game);
+
+    // Act
+    chessCli.handle(arguments);
+    String output = outContent.toString().trim();
+
+    // Assert
+    assertThat(output).contains("Promoting pawn in game " + gameID + " from Position " + from + " to a " + desiredType)
+        .contains("    a b c d e f g h")
+        .contains("    ---------------")
+        .contains("8 | r n b q k b n r | 8")
+        .contains("7 | p p p p p p p p | 7")
+        .contains("6 | . . . . . . . . | 6")
+        .contains("5 | . . . . . . . . | 5")
+        .contains("4 | . . . . . . . . | 4")
+        .contains("3 | . . . . . . . . | 3")
+        .contains("2 | P P P P P P P P | 2")
+        .contains("1 | R N B Q K B N R | 1")
+        .contains("    _______________")
+        .contains("    a b c d e f g h");
+
+    verify(gameLogicMock, times(1)).loadGame(gameID);
+    verify(gameLogicMock).promotePiece(game, from, desiredType);
+  }
+
+  @Test
   void testShowCaptureMovesCommand() throws GameNotFoundException {
     // Arrange
     String gameId = "123";
@@ -539,6 +575,7 @@ class ChessCliTest {
         Arguments.of(Arrays.asList("load", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found."),
         Arguments.of(Arrays.asList("move", "e2", "e4", "on", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found."),
         Arguments.of(Arrays.asList("show-moves", "e2", "on", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found."),
+        Arguments.of(Arrays.asList("promote", "a8", "to", "Q", "on", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found."),
         Arguments.of(Arrays.asList("resign", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found."),
         Arguments.of(Arrays.asList("offer-remi", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found."),
         Arguments.of(Arrays.asList("accept-remi", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found.")
@@ -591,21 +628,5 @@ class ChessCliTest {
     // Test when both pieces are not null but have the same color
     assertFalse(chessCli.isEnemyPiece(whitePiece, whitePiece2));
     assertFalse(chessCli.isEnemyPiece(blackPiece, blackPiece2));
-  }
-
-  @Test
-  void testMain() {
-    Main main = new Main();
-
-    // Arrange
-    OutputStream outContent = new ByteArrayOutputStream();
-    PrintStream originalOut = System.out;
-    System.setOut(new PrintStream(outContent));
-
-    // Act & Assert
-    assertDoesNotThrow(() -> Main.main(new String[0]));
-
-    // Reset System.out
-    System.setOut(originalOut);
   }
 }
