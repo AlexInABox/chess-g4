@@ -78,7 +78,8 @@ If `chess` does not work in your terminal, try `./chess` or `.\chess` instead.
 
 ## Feature List
 
-![Screenshot of the expected features of this project.](img.png)
+![Screenshot of the expected features of this project.](features_light.png#gh-light-mode-only)
+![Screenshot of the expected features of this project.](features_dark.png#gh-dark-mode-only)
 
 ### Library
 
@@ -98,36 +99,34 @@ If `chess` does not work in your terminal, try `./chess` or `.\chess` instead.
 | 7      | :heavy_check_mark: | Player        | :heavy_check_mark: |
 | 8      | :heavy_check_mark: | Game          | :heavy_check_mark: |
 | 9      | :x:                | Tournament    | :x:                |
-| 10     | :x:                | Rating (ELO)  | :x:                |
+| 10     | :heavy_check_mark: | Rating (ELO)  | :heavy_check_mark: |
 | 11     | :heavy_check_mark: | FEN Notation  | :heavy_check_mark: |
 
 ### User Interface
 
-| Number | Implemented | Feature     | Tests |
-|--------|-------------|-------------|-------|
-| 1      | :x:         | New Game    | :x:   |
-| 2      | :x:         | Move Piece  | :x:   |
-| 3      | :x:         | Resign      | :x:   |
-| 4      | :x:         | Offer Remi  | :x:   |
-| 5      | :x:         | Accept Remi | :x:   |
+| Number | Implemented        | Feature     | Tests              |
+|--------|--------------------|-------------|--------------------|
+| 1      | :heavy_check_mark: | New Game    | :heavy_check_mark: |
+| 2      | :heavy_check_mark: | Move Piece  | :heavy_check_mark: |
+| 3      | :heavy_check_mark: | Resign      | :heavy_check_mark: |
+| 4      | :heavy_check_mark: | Offer Remi  | :heavy_check_mark: |
+| 5      | :heavy_check_mark: | Accept Remi | :heavy_check_mark: |
 
 ### Persistence
 
-| Number | Implemented | Feature         | Tests |
-|--------|-------------|-----------------|-------|
-| 1      | :x:         | Load Game       | :x:   |
-| 2      | :x:         | Save Game       | :x:   |
-| 3      | :x:         | Load Tournament | :x:   |
-| 4      | :x:         | Save Tournament | :x:   |
+| Number | Implemented        | Feature         | Tests              |
+|--------|--------------------|-----------------|--------------------|
+| 1      | :heavy_check_mark: | Load Game       | :heavy_check_mark: |
+| 2      | :heavy_check_mark: | Save Game       | :heavy_check_mark: |
 
 ## Additional Dependencies
 
-| Number | Dependency Name | Dependency Description | Why is it necessary? |
-|--------|-----------------|------------------------|----------------------|
-| 1      | :x:             | :x:                    | :x:                  |
-| 2      | :x:             | :x:                    | :x:                  |
+| Number | Dependency Name | Dependency Description                                                    | Why is it necessary?                                                |
+|--------|-----------------|---------------------------------------------------------------------------|---------------------------------------------------------------------|
+| 1      | org.mockito     | The Mockito library enables mock creation, verification and stubbing.[^2] | To precisely control the conditions under which the unit is tested. |
 
 
 [maven]: https://maven.apache.org/
 [just]: https://github.com/casey/just
 [^1]: https://kids.britannica.com/students/article/chess/273625
+[^2]: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html
