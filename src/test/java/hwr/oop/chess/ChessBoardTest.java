@@ -93,7 +93,7 @@ class ChessBoardTest {
 
   @Test
   void testIsPositionValid() {
-    ChessBoard board = new ChessBoard();
+    ChessBoard testBoard = new ChessBoard();
 
     Position position_inBounds = new Position(2, 2);
     Position position_tooLowRow = new Position(-1, 2);
@@ -103,30 +103,30 @@ class ChessBoardTest {
     Position position_tooLowAll = new Position(-1, -1);
     Position position_tooHighAll = new Position(8, 8);
 
-    assertThat(board.isValidPosition(position_inBounds.row(), position_inBounds.column())).isTrue();
-    assertThat(board.isValidPosition(position_tooLowRow.row(), position_tooLowRow.column()))
+    assertThat(testBoard.isValidPosition(position_inBounds.row(), position_inBounds.column())).isTrue();
+    assertThat(testBoard.isValidPosition(position_tooLowRow.row(), position_tooLowRow.column()))
         .isFalse();
-    assertThat(board.isValidPosition(position_tooHighRow.row(), position_tooHighRow.column()))
+    assertThat(testBoard.isValidPosition(position_tooHighRow.row(), position_tooHighRow.column()))
         .isFalse();
-    assertThat(board.isValidPosition(position_tooLowColumn.row(), position_tooLowColumn.column()))
+    assertThat(testBoard.isValidPosition(position_tooLowColumn.row(), position_tooLowColumn.column()))
         .isFalse();
-    assertThat(board.isValidPosition(position_tooHighColumn.row(), position_tooHighColumn.column()))
+    assertThat(testBoard.isValidPosition(position_tooHighColumn.row(), position_tooHighColumn.column()))
         .isFalse();
-    assertThat(board.isValidPosition(position_tooLowAll.row(), position_tooLowAll.column()))
+    assertThat(testBoard.isValidPosition(position_tooLowAll.row(), position_tooLowAll.column()))
         .isFalse();
-    assertThat(board.isValidPosition(position_tooHighAll.row(), position_tooHighAll.column()))
+    assertThat(testBoard.isValidPosition(position_tooHighAll.row(), position_tooHighAll.column()))
         .isFalse();
 
     // Edge cases: testing upper bounds
-    assertThat(board.isValidPosition(7, 7)).isTrue(); // Upper-right corner
-    assertThat(board.isValidPosition(7, 0)).isTrue(); // Lower-right corner
-    assertThat(board.isValidPosition(0, 7)).isTrue(); // Upper-left corner
-    assertThat(board.isValidPosition(0, 0)).isTrue(); // Lower-left corner
+    assertThat(testBoard.isValidPosition(7, 7)).isTrue(); // Upper-right corner
+    assertThat(testBoard.isValidPosition(7, 0)).isTrue(); // Lower-right corner
+    assertThat(testBoard.isValidPosition(0, 7)).isTrue(); // Upper-left corner
+    assertThat(testBoard.isValidPosition(0, 0)).isTrue(); // Lower-left corner
 
     // Testing positions one step outside bounds
-    assertThat(board.isValidPosition(8, 7)).isFalse(); // Row out of bounds
-    assertThat(board.isValidPosition(7, 8)).isFalse(); // Column out of bounds
-    assertThat(board.isValidPosition(8, 8)).isFalse(); // Both row and column out of bounds
+    assertThat(testBoard.isValidPosition(8, 7)).isFalse(); // Row out of bounds
+    assertThat(testBoard.isValidPosition(7, 8)).isFalse(); // Column out of bounds
+    assertThat(testBoard.isValidPosition(8, 8)).isFalse(); // Both row and column out of bounds
   }
 
   @Test
@@ -326,10 +326,11 @@ class ChessBoardTest {
     board.setPieceAtPosition(blackKingPosition, blackKing);
     board.setPieceAtPosition(blackPawnPosition, blackPawn);
 
+    Position toBePromotedPosition = new Position(6, 0);
     IllegalPromotionException exception =
         assertThrows(
             IllegalPromotionException.class,
-            () -> board.promoteTo(new Position(6, 0), promotedPiece));
+            () -> board.promoteTo(toBePromotedPosition, promotedPiece));
     String expectedMessage = "You can't promote on that row!";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }
@@ -351,10 +352,11 @@ class ChessBoardTest {
     board.setPieceAtPosition(blackKingPosition, blackKing);
     board.setPieceAtPosition(blackPawnPosition, blackPawn);
 
+    Position toBePromotedPosition = new Position(6, 0);
     IllegalPromotionException exception =
         assertThrows(
             IllegalPromotionException.class,
-            () -> board.promoteTo(new Position(6, 0), promotedPiece));
+            () -> board.promoteTo(toBePromotedPosition, promotedPiece));
     String expectedMessage = "No piece at position!";
     assertThat(exception.getMessage()).contains(expectedMessage);
   }

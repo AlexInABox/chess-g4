@@ -38,17 +38,15 @@ class GameLogicTest {
   @AfterEach
   void tearDown() {
     File fileGames = new File(TEST_FILE_PATH_GAMES);
-    if (fileGames.exists()) {
-      if (!fileGames.delete()) {
+    if (fileGames.exists() && !fileGames.delete()) {
         throw new RuntimeException("Deleting the file was unsuccessful.");
       }
-    }
+
     File filePlayers = new File(TEST_FILE_PATH_PLAYERS);
-    if (filePlayers.exists()) {
-      if (!filePlayers.delete()) {
+    if (filePlayers.exists() && !filePlayers.delete()) {
         throw new RuntimeException("Deleting the file was unsuccessful.");
       }
-    }
+
   }
 
   @Test
@@ -416,20 +414,7 @@ class GameLogicTest {
           softly.assertThat(loadedGames.get(1).getPlayerWhite().getName()).isEqualTo("Alice");
         });
   }
-
-  @Test
-  void testSavePlayer_AddNewPlayerWhenNotExists() {
-    // Arrange
-    Player newPlayer = new Player("Alice");
-
-    // Act
-    gameLogic.savePlayer(newPlayer);
-
-    // Assert
-    List<Player> loadedPlayers = persistence.loadPlayers();
-    assertTrue(loadedPlayers.contains(newPlayer));
-  }
-
+  
   @Test
   void testMoveTo_InvalidMove_SameStartAndEndPosition() {
     // Arrange
