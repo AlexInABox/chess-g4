@@ -14,6 +14,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -860,6 +861,137 @@ class GameLogicTest {
     // Act & Assert
 
     assertThat(loadedGames.getFirst().getId()).isEqualTo("gameNotToDelete");
+  }
+
+  @Test
+  void testPromoteBlackPawnToQueen() throws IllegalMoveException {
+    String gameId = "game1";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+    game.getBoard().clearChessboard();
+    Position blackPawnPosition = new Position(0, 0);
+    Piece blackPawn = new Pawn(Color.BLACK, blackPawnPosition, game.getBoard());
+    Piece promotedPiece = new Queen(Color.BLACK, blackPawnPosition, game.getBoard());
+    game.getBoard().setPieceAtPosition(blackPawnPosition, blackPawn);
+
+    gameLogic.promotePiece(game, "a1", "q");
+
+    Assertions.assertThat(game.getBoard().getPieceAtPosition(blackPawnPosition)).isEqualTo(promotedPiece);
+    Game loadedGame = gameLogic.loadGame(gameId);
+    assertThat(loadedGame).isEqualTo(game);
+  }
+  @Test
+  void testPromoteBlackPawnToBishop() throws IllegalMoveException {
+    String gameId = "game1";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+    game.getBoard().clearChessboard();
+    Position blackPawnPosition = new Position(0, 0);
+    Piece blackPawn = new Pawn(Color.BLACK, blackPawnPosition, game.getBoard());
+    Piece promotedPiece = new Bishop(Color.BLACK, blackPawnPosition, game.getBoard());
+    game.getBoard().setPieceAtPosition(blackPawnPosition, blackPawn);
+
+    gameLogic.promotePiece(game, "a1", "b");
+
+    Assertions.assertThat(game.getBoard().getPieceAtPosition(blackPawnPosition)).isEqualTo(promotedPiece);
+  }
+
+  @Test
+  void testPromoteBlackPawnToRook() throws IllegalMoveException {
+    String gameId = "game1";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+    game.getBoard().clearChessboard();
+    Position blackPawnPosition = new Position(0, 0);
+    Piece blackPawn = new Pawn(Color.BLACK, blackPawnPosition, game.getBoard());
+    Piece promotedPiece = new Rook(Color.BLACK, blackPawnPosition, game.getBoard());
+    game.getBoard().setPieceAtPosition(blackPawnPosition, blackPawn);
+
+    gameLogic.promotePiece(game, "a1", "r");
+
+    Assertions.assertThat(game.getBoard().getPieceAtPosition(blackPawnPosition)).isEqualTo(promotedPiece);
+  }
+  @Test
+  void testPromoteBlackPawnToKnight() throws IllegalMoveException {
+    String gameId = "game1";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+    game.getBoard().clearChessboard();
+    Position blackPawnPosition = new Position(0, 0);
+    Piece blackPawn = new Pawn(Color.BLACK, blackPawnPosition, game.getBoard());
+    Piece promotedPiece = new Knight(Color.BLACK, blackPawnPosition, game.getBoard());
+    game.getBoard().setPieceAtPosition(blackPawnPosition, blackPawn);
+
+    gameLogic.promotePiece(game, "a1", "n");
+
+    Assertions.assertThat(game.getBoard().getPieceAtPosition(blackPawnPosition)).isEqualTo(promotedPiece);
+  }
+
+  @Test
+  void testPromoteBlackPawnToKingInvalid() throws IllegalMoveException {
+    String gameId = "game1";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+    game.getBoard().clearChessboard();
+    Position blackPawnPosition = new Position(0, 0);
+    Piece blackPawn = new Pawn(Color.BLACK, blackPawnPosition, game.getBoard());
+    game.getBoard().setPieceAtPosition(blackPawnPosition, blackPawn);
+    IllegalPromotionException exception =
+            assertThrows(
+                    IllegalPromotionException.class,
+                    () -> gameLogic.promotePiece(game, "a1", "k"));
+    String expectedMessage = "Promotion is not allowed: The specified type is invalid. Valid promotion types are 'Queen', 'Rook', 'Bishop', or 'Knight'.";
+    Assertions.assertThat(exception.getMessage()).contains(expectedMessage);
+  }
+
+
+
+  @Test
+  void testPromoteFailNoPiece() {
+    String gameId = "game1";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+    game.getBoard().clearChessboard();
+
+    IllegalPromotionException exception =
+            assertThrows(
+                    IllegalPromotionException.class,
+                    () -> gameLogic.promotePiece(game, "a4", "q"));
+    String expectedMessage = "Promotion is not allowed. No piece at given position.";
+    Assertions.assertThat(exception.getMessage()).contains(expectedMessage);
+  }
+  @Test
+  void testPromoteFailNoPawnAtPosition() {
+    String gameId = "game1";
+    Player playerWhite = gameLogic.loadPlayer("Alice");
+    Player playerBlack = gameLogic.loadPlayer("Bob");
+    gameLogic.createGame(playerWhite, playerBlack, gameId);
+    Game game = gameLogic.loadGame(gameId);
+    game.getBoard().clearChessboard();
+
+    Position whiteKingPosition = new Position(0, 0);
+    Piece whiteKing = new King(Color.WHITE, whiteKingPosition, game.getBoard());
+    game.getBoard().setPieceAtPosition(whiteKingPosition, whiteKing);
+
+
+    IllegalPromotionException exception =
+            assertThrows(
+                    IllegalPromotionException.class,
+                    () -> gameLogic.promotePiece(game, "a1", "q"));
+    String expectedMessage = "Promotion is not allowed. You can only promote pawns";
+    Assertions.assertThat(exception.getMessage()).contains(expectedMessage);
   }
 
   @Test
