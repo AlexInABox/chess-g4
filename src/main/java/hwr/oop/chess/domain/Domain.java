@@ -1,5 +1,6 @@
-package hwr.oop.chess;
+package hwr.oop.chess.domain;
 
+import hwr.oop.chess.*;
 import hwr.oop.chess.game.Game;
 import hwr.oop.chess.pieces.IllegalMoveException;
 import hwr.oop.chess.player.Player;

@@ -1,10 +1,13 @@
-package hwr.oop.chess;
+package hwr.oop.chess.domain;
 
-import static hwr.oop.chess.GameLogic.convertInputToPosition;
+import static hwr.oop.chess.domain.GameLogic.convertInputToPosition;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.*;
 
+import hwr.oop.chess.Color;
+import hwr.oop.chess.GameOutcome;
+import hwr.oop.chess.Position;
 import hwr.oop.chess.board.ChessBoard;
 import hwr.oop.chess.game.Game;
 import hwr.oop.chess.persistence.FileBasedPersistence;

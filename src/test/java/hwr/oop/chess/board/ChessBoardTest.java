@@ -1,9 +1,11 @@
-package hwr.oop.chess;
+package hwr.oop.chess.board;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import hwr.oop.chess.board.ChessBoard;
+import hwr.oop.chess.Color;
+import hwr.oop.chess.Position;
+import hwr.oop.chess.domain.IllegalPromotionException;
 import hwr.oop.chess.pieces.*;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;

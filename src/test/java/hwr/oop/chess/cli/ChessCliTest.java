@@ -5,12 +5,12 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 import hwr.oop.chess.Color;
-import hwr.oop.chess.GameAlreadyExistsException;
-import hwr.oop.chess.GameLogic;
-import hwr.oop.chess.GameNotFoundException;
-import hwr.oop.chess.IllegalPromotionException;
+import hwr.oop.chess.domain.GameAlreadyExistsException;
+import hwr.oop.chess.domain.GameLogic;
+import hwr.oop.chess.domain.GameNotFoundException;
+import hwr.oop.chess.domain.IllegalPromotionException;
 import hwr.oop.chess.Position;
-import hwr.oop.chess.RemiWasNotOfferedException;
+import hwr.oop.chess.domain.RemiWasNotOfferedException;
 import hwr.oop.chess.game.Game;
 import hwr.oop.chess.pieces.IllegalMoveException;
 import hwr.oop.chess.pieces.King;

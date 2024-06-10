@@ -1,7 +1,7 @@
 package hwr.oop.chess.board;
 
 import hwr.oop.chess.Color;
-import hwr.oop.chess.IllegalPromotionException;
+import hwr.oop.chess.domain.IllegalPromotionException;
 import hwr.oop.chess.Position;
 import hwr.oop.chess.pieces.*;
 import java.io.Serializable;

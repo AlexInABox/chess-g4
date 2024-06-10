@@ -1,4 +1,4 @@
-package hwr.oop.chess;
+package hwr.oop.chess.domain;
 
 public class GameHasNotEndedException extends RuntimeException {
   public GameHasNotEndedException(String message) {
