@@ -2,8 +2,7 @@ package hwr.oop.chess;
 
 import hwr.oop.chess.game.Game;
 import hwr.oop.chess.persistence.Persistence;
-import hwr.oop.chess.pieces.IllegalMoveException;
-import hwr.oop.chess.pieces.Piece;
+import hwr.oop.chess.pieces.*;
 import hwr.oop.chess.player.Player;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,8 +85,25 @@ public class GameLogic implements Domain {
 
   @Override
   public void promotePiece(Game game, String positionString, String type){
-    //Position position = convertInputToPosition(positionString);
-    //TODO: game.promotePiece() will be created by Alex
+    Position position = convertInputToPosition(positionString);
+    Piece currentPiece = game.getBoard().getPieceAtPosition(position);
+    if(currentPiece == null){
+      throw new IllegalPromotionException("Promotion is not allowed. No piece at given position.");
+    }
+    if(currentPiece.getType() != PieceType.PAWN){
+      throw new IllegalPromotionException("Promotion is not allowed. You can only promote pawns");
+    }
+
+    type = type.toUpperCase();
+    Piece newPiece;
+    switch (type) {
+      case "N" -> newPiece = new Knight(currentPiece.getColor(), position, game.getBoard());
+      case "B" -> newPiece = new Bishop(currentPiece.getColor(), position, game.getBoard());
+      case "R" -> newPiece = new Rook(currentPiece.getColor(), position, game.getBoard());
+      case "Q" -> newPiece = new Queen(currentPiece.getColor(), position, game.getBoard());
+      default -> throw new IllegalPromotionException("Promotion is not allowed: The specified type is invalid. Valid promotion types are 'Queen', 'Rook', 'Bishop', or 'Knight'.");
+    }
+    game.getBoard().promoteTo(position, newPiece);
   }
 
   @Override

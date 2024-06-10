@@ -48,37 +48,47 @@ so-called pieces—a king, a queen, two bishops, two knights, and two rooks —a
 attack upon the enemy king. The king is not actually captured; it is enough to produce a position in which the king cannot escape. 
 This situation is called a checkmate and ends the game. [^1]
 
-MOST IMPORTANT FEATURES
+### Our favourite features
 
-MOST INTERESTING PROBLEMS WEVE STUMBLED UPON
+Implementing features like the ELO Rating were very interesting, because we had to sit down and actually do maths to understand the logic. We are very proud of our ELO implementation.
 
-## Commands overview (not final YET)
+We decided against implementing tournaments, simply because other features seemed more important and interesting to us. If we have had the remaining time we would've included it, sadly we didn't.
+
+## Commands overview
 
 If `chess` does not work in your terminal, try `./chess` or `.\chess` instead.
 
-| Command         | Description      | Example       |
-|-----------------|------------------|---------------|
-| `<ID>`          | Game Id (int)    | 123, 7        |
-| `<FROM>` `<TO>` | Cell coordinates | a4, c7        |
-| `<TYPE>`        | Type of figure   | queen, knight |
+| Command         | Description           | Example       |
+|-----------------|-----------------------|---------------|
+| `<ID>`          | Game Id (String)      | 123, testGame |
+| `<FROM>`        | Cell coordinates      | a4, c7        |
+| `<TO>`          | Cell coordinates      | a4, c7        |
+| `<PlayerWhite>` | White Player (String) | Allice        |
+| `<PlayerBlack>` | Black Player (String) | Bob           |
 
-| Command              | Description                                         |
-|----------------------|-----------------------------------------------------|
-| `chess` `chess help` | Show the list of supported commands                 |
-| `chess create <ID>`  | Create a new, fresh game (stored in game_\<ID>.csv) |
 
-### In-Game Commands `chess on <ID> [...]`
+| Command                                         | Description                         |
+|-------------------------------------------------|-------------------------------------|
+| `chess` `chess help`                            | Show the list of supported commands |
+| `chess create <ID> <PlayerWhite> <PlayerBlack>` | Start a new chess game              |
 
-| Command                               | Description                                    |
-|---------------------------------------|------------------------------------------------|
-| `chess on <ID> move <FROM> <TO>`      | Move the figure on FROM to the cell TO         |
-| `chess on <ID> promote <FROM> <TYPE>` | Promote the pawn on cell FROM                  |
-| `chess on <ID> show-moves <FROM>`     | Show where the figure on cell FROM can move to |
+### In-Game Commands 
+
+| Command                           | Description                              |
+|-----------------------------------|------------------------------------------|
+| `chess fen <ID>`                  | Display the FEN notation of a chess game |
+| `chess load <ID>`                 | Load a chess game                        |
+| `chess move <FROM> <TO> on <ID>`  | Move a chess piece to a valid position   |
+| `chess show-moves <FROM> on <ID>` | Get the possible moves for a chess piece |
+| `chess resign <ID>`               | Resign the current game                  |
+| `chess offer-remi <ID>`           | Offer a remi                             |
+| `chess accept-remi <ID>`          | Accept a remi                            |
 
 
 ## Feature List
 
-![Screenshot of the expected features of this project.](img.png)
+![Screenshot of the expected features of this project.](features_light.png#gh-light-mode-only)
+![Screenshot of the expected features of this project.](features_dark.png#gh-dark-mode-only)
 
 ### Library
 
@@ -92,42 +102,40 @@ If `chess` does not work in your terminal, try `./chess` or `.\chess` instead.
 | 2.5    | :heavy_check_mark: | ♕ Queen       | :heavy_check_mark: |
 | 2.6    | :heavy_check_mark: | ♔ King        | :heavy_check_mark: |
 | 3      | :heavy_check_mark: | Movement      | :heavy_check_mark: |
-| 4      | :x:                | Check         | :x:                |
-| 5      | :x:                | Checkmate     | :x:                |
+| 4      | :heavy_check_mark: | Check         | :heavy_check_mark: |
+| 5      | :heavy_check_mark: | Checkmate     | :heavy_check_mark: |
 | 6      | :x:                | Development   | :x:                |
 | 7      | :heavy_check_mark: | Player        | :heavy_check_mark: |
 | 8      | :heavy_check_mark: | Game          | :heavy_check_mark: |
 | 9      | :x:                | Tournament    | :x:                |
-| 10     | :x:                | Rating (ELO)  | :x:                |
+| 10     | :heavy_check_mark: | Rating (ELO)  | :heavy_check_mark: |
 | 11     | :heavy_check_mark: | FEN Notation  | :heavy_check_mark: |
 
 ### User Interface
 
-| Number | Implemented | Feature     | Tests |
-|--------|-------------|-------------|-------|
-| 1      | :x:         | New Game    | :x:   |
-| 2      | :x:         | Move Piece  | :x:   |
-| 3      | :x:         | Resign      | :x:   |
-| 4      | :x:         | Offer Remi  | :x:   |
-| 5      | :x:         | Accept Remi | :x:   |
+| Number | Implemented        | Feature     | Tests              |
+|--------|--------------------|-------------|--------------------|
+| 1      | :heavy_check_mark: | New Game    | :heavy_check_mark: |
+| 2      | :heavy_check_mark: | Move Piece  | :heavy_check_mark: |
+| 3      | :heavy_check_mark: | Resign      | :heavy_check_mark: |
+| 4      | :heavy_check_mark: | Offer Remi  | :heavy_check_mark: |
+| 5      | :heavy_check_mark: | Accept Remi | :heavy_check_mark: |
 
 ### Persistence
 
-| Number | Implemented | Feature         | Tests |
-|--------|-------------|-----------------|-------|
-| 1      | :x:         | Load Game       | :x:   |
-| 2      | :x:         | Save Game       | :x:   |
-| 3      | :x:         | Load Tournament | :x:   |
-| 4      | :x:         | Save Tournament | :x:   |
+| Number | Implemented        | Feature         | Tests              |
+|--------|--------------------|-----------------|--------------------|
+| 1      | :heavy_check_mark: | Load Game       | :heavy_check_mark: |
+| 2      | :heavy_check_mark: | Save Game       | :heavy_check_mark: |
 
 ## Additional Dependencies
 
-| Number | Dependency Name | Dependency Description | Why is it necessary? |
-|--------|-----------------|------------------------|----------------------|
-| 1      | :x:             | :x:                    | :x:                  |
-| 2      | :x:             | :x:                    | :x:                  |
+| Number | Dependency Name | Dependency Description                                                    | Why is it necessary?                                                |
+|--------|-----------------|---------------------------------------------------------------------------|---------------------------------------------------------------------|
+| 1      | org.mockito     | The Mockito library enables mock creation, verification and stubbing.[^2] | To precisely control the conditions under which the unit is tested. |
 
 
 [maven]: https://maven.apache.org/
 [just]: https://github.com/casey/just
 [^1]: https://kids.britannica.com/students/article/chess/273625
+[^2]: https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html

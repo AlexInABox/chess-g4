@@ -1,6 +1,7 @@
 package hwr.oop.chess;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import hwr.oop.chess.board.ChessBoard;
 import hwr.oop.chess.pieces.*;
@@ -184,7 +185,6 @@ class ChessBoardTest {
     Position blackRook1Position = new Position(0, 2);
     Position blackRook2Position = new Position(1, 2);
 
-
     Piece whiteKing = new King(Color.WHITE, whiteKingPosition, board);
     Piece blackKing = new King(Color.BLACK, blackKingPosition, board);
     Piece blackRook1 = new Rook(Color.BLACK, blackRook1Position, board);
@@ -207,7 +207,6 @@ class ChessBoardTest {
     Position whiteRook1Position = new Position(0, 2);
     Position whiteRook2Position = new Position(1, 2);
 
-
     Piece whiteKing = new King(Color.WHITE, whiteKingPosition, board);
     Piece blackKing = new King(Color.BLACK, blackKingPosition, board);
     Piece whiteRook1 = new Rook(Color.WHITE, whiteRook1Position, board);
@@ -229,7 +228,6 @@ class ChessBoardTest {
     Position blackKingPosition = new Position(7, 7);
     Position blackRook1Position = new Position(0, 2);
 
-
     Piece whiteKing = new King(Color.WHITE, whiteKingPosition, board);
     Piece blackKing = new King(Color.BLACK, blackKingPosition, board);
     Piece blackRook1 = new Rook(Color.BLACK, blackRook1Position, board);
@@ -249,7 +247,6 @@ class ChessBoardTest {
     Position blackKingPosition = new Position(7, 7);
     Position blackRook2Position = new Position(1, 2);
 
-
     Piece whiteKing = new King(Color.WHITE, whiteKingPosition, board);
     Piece blackKing = new King(Color.BLACK, blackKingPosition, board);
     Piece blackRook2 = new Rook(Color.BLACK, blackRook2Position, board);
@@ -262,9 +259,129 @@ class ChessBoardTest {
   }
 
   @Test
-  void getKingOfColorReturnsNull(){
+  void getKingOfColorReturnsNull() {
     board.clearChessboard();
     King king = board.getKingOfColor(Color.WHITE);
     assertThat(king).isEqualTo(null);
+  }
+
+  @Test
+  void testPromoteWhitePawnToQueen() throws IllegalMoveException {
+    board.clearChessboard();
+
+    Position whiteKingPosition = new Position(0, 0);
+    Position blackKingPosition = new Position(7, 7);
+    Position whitePawnPosition = new Position(7, 0);
+
+    Piece whiteKing = new King(Color.WHITE, whiteKingPosition, board);
+    Piece blackKing = new King(Color.BLACK, blackKingPosition, board);
+    Piece whitePawn = new Pawn(Color.WHITE, whitePawnPosition, board);
+    Piece promotedPiece = new Queen(Color.WHITE, whitePawnPosition, board);
+
+    board.setPieceAtPosition(whiteKingPosition, whiteKing);
+    board.setPieceAtPosition(blackKingPosition, blackKing);
+    board.setPieceAtPosition(whitePawnPosition, whitePawn);
+
+    board.promoteTo(whitePawnPosition, promotedPiece);
+
+    assertThat(board.getPieceAtPosition(whitePawnPosition)).isEqualTo(promotedPiece);
+  }
+
+  @Test
+  void testPromoteBlackPawnToQueen() throws IllegalMoveException {
+    board.clearChessboard();
+
+    Position whiteKingPosition = new Position(0, 0);
+    Position blackKingPosition = new Position(7, 7);
+    Position blackPawnPosition = new Position(0, 0);
+
+    Piece whiteKing = new King(Color.WHITE, whiteKingPosition, board);
+    Piece blackKing = new King(Color.BLACK, blackKingPosition, board);
+    Piece blackPawn = new Pawn(Color.BLACK, blackPawnPosition, board);
+    Piece promotedPiece = new Queen(Color.BLACK, blackPawnPosition, board);
+
+    board.setPieceAtPosition(whiteKingPosition, whiteKing);
+    board.setPieceAtPosition(blackKingPosition, blackKing);
+    board.setPieceAtPosition(blackPawnPosition, blackPawn);
+
+    board.promoteTo(blackPawnPosition, promotedPiece);
+
+    assertThat(board.getPieceAtPosition(blackPawnPosition)).isEqualTo(promotedPiece);
+  }
+
+  @Test
+  void testPromoteFailWrongRow() {
+    board.clearChessboard();
+
+    Position whiteKingPosition = new Position(0, 0);
+    Position blackKingPosition = new Position(7, 7);
+    Position blackPawnPosition = new Position(6, 0);
+
+    Piece whiteKing = new King(Color.WHITE, whiteKingPosition, board);
+    Piece blackKing = new King(Color.BLACK, blackKingPosition, board);
+    Piece blackPawn = new Pawn(Color.BLACK, blackPawnPosition, board);
+    Piece promotedPiece = new Queen(Color.BLACK, blackPawnPosition, board);
+
+    board.setPieceAtPosition(whiteKingPosition, whiteKing);
+    board.setPieceAtPosition(blackKingPosition, blackKing);
+    board.setPieceAtPosition(blackPawnPosition, blackPawn);
+
+    IllegalPromotionException exception =
+        assertThrows(
+            IllegalPromotionException.class,
+            () -> board.promoteTo(new Position(6, 0), promotedPiece));
+    String expectedMessage = "You can't promote on that row!";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+  }
+
+  @Test
+  void testPromoteFailNoPiece() {
+    board.clearChessboard();
+
+    Position whiteKingPosition = new Position(0, 0);
+    Position blackKingPosition = new Position(7, 7);
+    Position blackPawnPosition = new Position(0, 0);
+
+    Piece whiteKing = new King(Color.WHITE, whiteKingPosition, board);
+    Piece blackKing = new King(Color.BLACK, blackKingPosition, board);
+    Piece blackPawn = new Pawn(Color.BLACK, blackPawnPosition, board);
+    Piece promotedPiece = new Queen(Color.BLACK, blackPawnPosition, board);
+
+    board.setPieceAtPosition(whiteKingPosition, whiteKing);
+    board.setPieceAtPosition(blackKingPosition, blackKing);
+    board.setPieceAtPosition(blackPawnPosition, blackPawn);
+
+    IllegalPromotionException exception =
+        assertThrows(
+            IllegalPromotionException.class,
+            () -> board.promoteTo(new Position(6, 0), promotedPiece));
+    String expectedMessage = "No piece at position!";
+    assertThat(exception.getMessage()).contains(expectedMessage);
+  }
+
+  @Test
+  void testPromoteFailNotPawn() {
+    board.clearChessboard();
+
+    Position whiteKingPosition = new Position(0, 0);
+    Position blackKingPosition = new Position(7, 7);
+    Position whiteKnightPosition = new Position(7, 0);
+
+    Piece whiteKing = new King(Color.WHITE, whiteKingPosition, board);
+    Piece blackKing = new King(Color.BLACK, blackKingPosition, board);
+    Piece whiteKnight = new Knight(Color.WHITE, whiteKnightPosition, board);
+
+    Piece promotedPiece = new Queen(Color.BLACK, whiteKingPosition, board);
+
+    board.setPieceAtPosition(whiteKingPosition, whiteKing);
+    board.setPieceAtPosition(blackKingPosition, blackKing);
+    board.setPieceAtPosition(whiteKnightPosition, whiteKnight);
+
+    IllegalPromotionException exception =
+        assertThrows(
+            IllegalPromotionException.class,
+            () -> board.promoteTo(whiteKnightPosition, promotedPiece));
+    String expectedMessage = "You can only promote pawns!";
+    assertThat(exception.getMessage()).contains(expectedMessage);
   }
 }

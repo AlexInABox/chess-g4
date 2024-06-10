@@ -1,6 +1,7 @@
 package hwr.oop.chess.board;
 
 import hwr.oop.chess.Color;
+import hwr.oop.chess.IllegalPromotionException;
 import hwr.oop.chess.Position;
 import hwr.oop.chess.pieces.*;
 import java.io.Serializable;
@@ -110,6 +111,18 @@ public class ChessBoard implements Serializable {
     }
 
     return true;
+  }
+
+  public void promoteTo(Position target, Piece replacedPiece) throws IllegalPromotionException {
+    Piece pieceAtTarget = getPieceAtPosition(target);
+    if (pieceAtTarget == null) throw new IllegalPromotionException("No piece at position!");
+    if (target.row() != 7 && target.row() != 0)
+      throw new IllegalPromotionException("You can't promote on that row!");
+
+    if (pieceAtTarget.getType() != PieceType.PAWN)
+      throw new IllegalPromotionException("You can only promote pawns!");
+
+    setPieceAtPosition(target, replacedPiece);
   }
 
   @Override

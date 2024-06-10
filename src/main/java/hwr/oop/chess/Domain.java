@@ -52,6 +52,15 @@ public interface Domain {
    */
   void savePlayer(Player player);
 
+  /**
+   * Promotes a pawn to a new piece type at the specified position in the game.
+   *
+   * @param game The game in which the promotion takes place.
+   * @param position The position of the pawn to be promoted (e.g., "a8").
+   * @param type The type of piece to which the pawn is promoted (e.g., "Queen", "Rook", "Bishop", "Knight").
+   * @throws ConvertInputToPositionException If the position does not correspond to a valid position on the board.
+   * @throws IllegalPromotionException If the promotion is not allowed (e.g., attempting to promote to an invalid piece type).
+   */
   void promotePiece(Game game, String position, String type);
 
   /**
@@ -67,12 +76,18 @@ public interface Domain {
    */
   boolean moveTo(String oldPositionString, String newPositionString, Game game);
 
+  /**
+   * Offers remi to the opponent in the current game.
+   *
+   * @param game The game in which the draw offer is made.
+   */
   void offerRemi(Game game);
 
   /**
    * Accepts a draw offer, ending the game in a draw.
    *
    * @param game The game in which the draw offer is accepted.
+   * @throws RemiWasNotOfferedException If remi is accepted without being offered first.
    */
   void acceptRemi(Game game);
 
