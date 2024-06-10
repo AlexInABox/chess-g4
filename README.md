@@ -104,7 +104,7 @@ If `chess` does not work in your terminal, try `./chess` or `.\chess` instead.
 | 3      | :heavy_check_mark: | Movement      | :heavy_check_mark: |
 | 4      | :heavy_check_mark: | Check         | :heavy_check_mark: |
 | 5      | :heavy_check_mark: | Checkmate     | :heavy_check_mark: |
-| 6      | :x:                | Development   | :x:                |
+| 6      | :heavy_check_mark: | Development   | :heavy_check_mark: |
 | 7      | :heavy_check_mark: | Player        | :heavy_check_mark: |
 | 8      | :heavy_check_mark: | Game          | :heavy_check_mark: |
 | 9      | :x:                | Tournament    | :x:                |
