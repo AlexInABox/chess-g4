@@ -113,14 +113,14 @@ public class ChessBoard implements Serializable {
     return true;
   }
 
-  public void promoteTo(Position target, Piece replacedPiece) throws IllegalMoveException {
+  public void promoteTo(Position target, Piece replacedPiece) throws IllegalPromotionException {
     Piece pieceAtTarget = getPieceAtPosition(target);
     if (pieceAtTarget == null) throw new IllegalPromotionException("No piece at position!");
     if (target.row() != 7 && target.row() != 0)
       throw new IllegalPromotionException("You can't promote on that row!");
 
     if (pieceAtTarget.getType() != PieceType.PAWN)
-      throw new IllegalMoveException("You can only promote pawns!");
+      throw new IllegalPromotionException("You can only promote pawns!");
 
     setPieceAtPosition(target, replacedPiece);
   }
