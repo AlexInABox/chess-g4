@@ -38,17 +38,15 @@ class GameLogicTest {
   @AfterEach
   void tearDown() {
     File fileGames = new File(TEST_FILE_PATH_GAMES);
-    if (fileGames.exists()) {
-      if (!fileGames.delete()) {
+    if (fileGames.exists() && !fileGames.delete()) {
         throw new RuntimeException("Deleting the file was unsuccessful.");
       }
-    }
+
     File filePlayers = new File(TEST_FILE_PATH_PLAYERS);
-    if (filePlayers.exists()) {
-      if (!filePlayers.delete()) {
+    if (filePlayers.exists() && !filePlayers.delete()) {
         throw new RuntimeException("Deleting the file was unsuccessful.");
       }
-    }
+
   }
 
   @Test

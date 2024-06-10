@@ -33,12 +33,11 @@ class FileBasedPersistenceTest {
 
   @AfterEach
   void tearDown() {
-    File file = new File(TEST_FILE_PATH);
-    if (file.exists()) {
-      if (!file.delete()) {
+    File newFile = new File(TEST_FILE_PATH);
+    if (newFile.exists() && !newFile.delete()) {
         throw new RuntimeException("Deleting the file was unsuccessful.");
       }
-    }
+
   }
 
   @Test
@@ -230,10 +229,10 @@ class FileBasedPersistenceTest {
 
   @Test
   void testLoadPlayers_WithInvalidFileFormat_ShouldThrowPersistenceException() throws IOException {
-    // given
-    final File file = new File(TEST_FILE_PATH);
+    // givens
+    final File filePlayer = new File(TEST_FILE_PATH);
     // create an invalid file format
-    try (FileOutputStream fos = new FileOutputStream(file)) {
+    try (FileOutputStream fos = new FileOutputStream(filePlayer)) {
       fos.write("invalid data".getBytes());
     }
 

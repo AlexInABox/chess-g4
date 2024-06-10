@@ -28,15 +28,15 @@ class MainTest {
   @Test
   void testMain() {
     // Arrange
-    OutputStream outContent = new ByteArrayOutputStream();
-    PrintStream originalOut = System.out;
-    System.setOut(new PrintStream(outContent));
+    OutputStream outContentTest = new ByteArrayOutputStream();
+    PrintStream originalOutTest = System.out;
+    System.setOut(new PrintStream(outContentTest));
 
     // Act & Assert
     assertDoesNotThrow(() -> Main.main(new String[0]));
 
     // Reset System.out
-    System.setOut(originalOut);
+    System.setOut(originalOutTest);
   }
 
   @Test
