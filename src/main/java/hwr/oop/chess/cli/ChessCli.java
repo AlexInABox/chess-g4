@@ -263,17 +263,9 @@ public class ChessCli {
   private void showMoves(String from, String gameID) {
     try {
       loadCurrentGameIfNecessary(gameID);
-      Position position = parsePosition(from);
-      List<Position> possibleMoves = getPossibleMoves(position, currentGame);
-      List<Position> captureMoves = new ArrayList<>();
-      Piece piece = currentGame.getBoard().getPieceAtPosition(position);
-      for (Position pos : possibleMoves) {
-        Piece targetPiece = currentGame.getBoard().getPieceAtPosition(pos);
-        if (isEnemyPiece(piece, targetPiece)) {
-          captureMoves.add(pos);}}
-
+      List<Position> possibleMoves = gameLogic.getPossibleMoves(from, currentGame);
+      List<Position> captureMoves = gameLogic.getCaptureMoves(from, possibleMoves, currentGame);
       possibleMoves.removeAll(captureMoves);
-
       out.println("Possible moves for piece at position " + from + ": " + possibleMovesToString(possibleMoves));
       out.println("Capture moves for piece at position " + from + ": " + possibleMovesToString(captureMoves));
       printChessboardHighlighted(gameID, possibleMoves, captureMoves);
@@ -371,25 +363,6 @@ public class ChessCli {
         out.print((piece != null ? piece.getSymbol() : ".") + " ");
       }
     }
-  }
-
-  public boolean isEnemyPiece(Piece piece, Piece targetPiece) {
-    return piece != null && targetPiece != null && !piece.getColor().equals(targetPiece.getColor());
-  }
-
-  public Position parsePosition(String positionStr) {
-    int column = positionStr.charAt(0) - 'a';
-    int row = Character.getNumericValue(positionStr.charAt(1)) - 1;
-    return new Position(row, column);
-  }
-
-  public List<Position> getPossibleMoves(Position position, Game game) {
-    List<Position> possibleMoves = new ArrayList<>();
-    Piece piece = game.getBoard().getPieceAtPosition(position);
-    if (piece != null) {
-      possibleMoves = piece.possibleMoves();
-    }
-    return possibleMoves;
   }
 
   private String possibleMovesToString(List<Position> positions) {

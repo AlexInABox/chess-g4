@@ -120,4 +120,16 @@ public interface Domain {
    * @return A list of possible positions to which the piece can move. Returns an empty list if there is no piece at the specified position.
    */
   List<Position> getPossibleMoves (String currentPositionString, Game game);
+
+  /**
+   * Gets a list of possible capture moves for the piece at the given position in the specified game.
+   * A capture move is defined as a move where the piece at the given position can capture an enemy piece.
+   *
+   * @param currentPositionString The current position of the piece as a string (e.g., "e2").
+   * @param possibleMoves The list of possible moves for the piece at the current position.
+   * @param game The game in which to check possible capture moves.
+   * @return A list of positions where the piece can capture an enemy piece. Returns an empty list if there are no capture moves available.
+   * @throws ConvertInputToPositionException If the currentPositionString does not correspond to a valid position on the board.
+   */
+  List<Position> getCaptureMoves (String currentPositionString,List<Position> possibleMoves, Game game);
 }

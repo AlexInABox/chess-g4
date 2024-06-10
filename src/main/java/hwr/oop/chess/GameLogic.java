@@ -176,6 +176,22 @@ public class GameLogic implements Domain {
   }
 
   @Override
+  public List<Position> getCaptureMoves(
+      String currentPositionString, List<Position> possibleMoves, Game game) {
+    Position currentPosition = convertInputToPosition(currentPositionString);
+    List<Position> captureMoves = new ArrayList<>();
+    Piece piece = game.getBoard().getPieceAtPosition(currentPosition);
+    for (Position pos : possibleMoves) {
+      Piece targetPiece = game.getBoard().getPieceAtPosition(pos);
+      if (isEnemyPiece(piece, targetPiece)) {
+        captureMoves.add(pos);
+      }
+    }
+    return captureMoves;
+  }
+
+
+  @Override
   public void offerRemi(Game game) {
     game.offerRemi(true);
     saveGame(game);
@@ -262,6 +278,10 @@ public class GameLogic implements Domain {
     }
     deleteGame(game.getId());
     return victoryMessage;
+  }
+
+  public boolean isEnemyPiece(Piece piece, Piece targetPiece) {
+    return piece != null && targetPiece != null && !piece.getColor().equals(targetPiece.getColor());
   }
 
   private double calculateChanceToWinPlayerWhite(Player playerWhite, Player playerBlack) {
