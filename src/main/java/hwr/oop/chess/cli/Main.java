@@ -18,7 +18,6 @@ public class Main {
 
   @SuppressWarnings("java:S106")
   public static void main(String[] args) {
-
     GameLogic gameLogic = new GameLogic(persistence);
     ChessCli cli = new ChessCli(System.out, gameLogic);
     cli.handle(List.of(args));

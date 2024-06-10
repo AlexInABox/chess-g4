@@ -44,6 +44,7 @@ public class ChessCli {
     String command = arguments.getFirst();
     switch (command) {
       case "help" -> handleHelp(arguments);
+      case "fen" -> handleFEN(arguments);
       case "create" -> handleCreate(arguments);
       case "load" -> handleLoad(arguments);
       case "move" -> handleMove(arguments);
@@ -69,6 +70,17 @@ public class ChessCli {
     }
 
     printHelp();
+  }
+
+  private void handleFEN(List<String> arguments) {
+    if (arguments.size() != 2) {
+      out.println(INVALID_COMMAND);
+      out.println("Usage: chess fen <ID>");
+      return;
+    }
+
+    String gameID = arguments.get(1);
+    printFENNotation(gameID);
   }
 
   private void handleCreate(List<String> arguments) {
@@ -161,6 +173,7 @@ public class ChessCli {
   private void printHelp() {
     out.println("Supported commands:");
     out.println("  - create <ID> <PlayerWhite> <PlayerBlack>: Start a new chess game");
+    out.println("  - fen <ID>: Display the FEN notation of a chess game");
     out.println("  - load <ID>: Load a chess game");
     out.println("  - move <FROM> <TO> on <ID>: Move a chess piece to a valid position");
     out.println("  - show-moves <FROM> on <ID>: Get the possible moves for a chess piece");
@@ -168,6 +181,18 @@ public class ChessCli {
     out.println("  - offer-remi <ID>: Offer a remi");
     out.println("  - accept-remi <ID>: Accept a remi");
     out.println("  - help: Display this help message");
+  }
+
+  private void printFENNotation(String gameID) {
+    try {
+      loadCurrentGameIfNecessary(gameID);
+      String fenNotation = gameLogic.getFENNotation(currentGame);
+      out.println("This is the FEN notation of " + gameID + ":");
+      out.println(fenNotation);
+    } catch (GameNotFoundException e) {
+      out.println(GAME_NOT_EXIST);
+      out.println(e.getMessage());
+    }
   }
 
   private void startGame (String playerWhiteName, String playerBlackName, String gameID) {
@@ -229,9 +254,7 @@ public class ChessCli {
       for (Position pos : possibleMoves) {
         Piece targetPiece = currentGame.getBoard().getPieceAtPosition(pos);
         if (isEnemyPiece(piece, targetPiece)) {
-          captureMoves.add(pos);
-        }
-      }
+          captureMoves.add(pos);}}
 
       possibleMoves.removeAll(captureMoves);
 
@@ -286,7 +309,7 @@ public class ChessCli {
     }
   }
 
-  private void printChessboard(String gameID) {
+  public void printChessboard(String gameID) {
     printChessboardHighlighted(gameID, new ArrayList<>(), new ArrayList<>());
   }
 
@@ -326,7 +349,7 @@ public class ChessCli {
     return piece != null && targetPiece != null && !piece.getColor().equals(targetPiece.getColor());
   }
 
-  private Position parsePosition(String positionStr) {
+  public Position parsePosition(String positionStr) {
     int column = positionStr.charAt(0) - 'a';
     int row = Character.getNumericValue(positionStr.charAt(1)) - 1;
     return new Position(row, column);

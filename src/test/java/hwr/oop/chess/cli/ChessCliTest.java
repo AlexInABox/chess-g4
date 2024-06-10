@@ -1,15 +1,21 @@
 package hwr.oop.chess.cli;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
+import hwr.oop.chess.Color;
 import hwr.oop.chess.GameAlreadyExistsException;
 import hwr.oop.chess.Position;
+import hwr.oop.chess.RemiWasNotOfferedException;
 import hwr.oop.chess.board.ChessBoard;
 import hwr.oop.chess.game.Game;
 import hwr.oop.chess.GameLogic;
 import hwr.oop.chess.GameNotFoundException;
+import hwr.oop.chess.pieces.Bishop;
 import hwr.oop.chess.pieces.IllegalMoveException;
 import hwr.oop.chess.pieces.Piece;
 import hwr.oop.chess.player.Player;
@@ -109,6 +115,7 @@ class ChessCliTest {
   // Provide invalid arguments for each command
   private static Stream<Arguments> invalidArgumentsProvider() {
     return Stream.of(
+        Arguments.of("fen", "Oops... Invalid command.\nUsage: chess fen <ID>"),
         Arguments.of("create", "Oops... Invalid command.\nUsage: chess create <ID> <Player1Name> <Player2Name>"),
         Arguments.of("load", "Oops... Invalid command.\nUsage: chess load <ID>"),
         Arguments.of("move", "Oops... Invalid command.\nUsage: chess move <FROM> <TO> on <ID>"),
@@ -150,6 +157,7 @@ class ChessCliTest {
     // Assert
     assertThat(output)
         .contains("Supported commands:")
+        .contains("- fen <ID>: Display the FEN notation of a chess game")
         .contains("- create <ID> <PlayerWhite> <PlayerBlack>: Start a new chess game")
         .contains("- load <ID>: Load a chess game")
         .contains("- move <FROM> <TO> on <ID>: Move a chess piece to a valid position")
@@ -239,6 +247,27 @@ class ChessCliTest {
     verify(gameLogicMock, times(1)).createGame(playerWhite, playerBlack, gameId);
   }
 
+  @Test
+  void testFenCommand() {
+    // Arrange
+    String gameId = "123";
+    List<String> arguments = Arrays.asList("fen", gameId);
+    Game gameMock = mock(Game.class);
+    String fenNotation = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    when(gameLogicMock.loadGame(gameId)).thenReturn(gameMock);
+    when(gameLogicMock.getFENNotation(gameMock)).thenReturn(fenNotation);
+
+    // Act
+    chessCli.handle(arguments);
+    String output = outContent.toString().trim();
+
+    // Assert
+    verify(gameLogicMock, times(1)).loadGame(gameId);
+    verify(gameLogicMock, times(1)).getFENNotation(gameMock);
+    assertThat(output)
+        .contains("This is the FEN notation of " + gameId + ":")
+        .contains(fenNotation);
+  }
 
   @Test
   void testLoadCommand() {
@@ -285,6 +314,8 @@ class ChessCliTest {
     Player playerBlack = new Player(playerBlackName);
     Game gameUpdated = new Game(playerWhite, playerBlack,"rnbqkbnr/pppppppp/8/8/8/1P6/P1PPPPPP/RNBQKBNR b 1", gameId);
     when(gameLogicMock.loadGame(gameId)).thenReturn(gameUpdated);
+    when(gameLogicMock.moveTo("B2", "B3", gameUpdated)).thenReturn(true);
+    when(gameLogicMock.endGame(gameUpdated)).thenReturn("BLACK won this game. Congrats Bob (new ELO: 1500)");
 
     // Act
     chessCli.handle(arguments);
@@ -303,12 +334,14 @@ class ChessCliTest {
         .contains("2 | P . P P P P P P | 2")
         .contains("1 | R N B Q K B N R | 1")
         .contains("    _______________")
-        .contains("    a b c d e f g h");
+        .contains("    a b c d e f g h")
+        .contains("BLACK won this game. Congrats Bob (new ELO: 1500)");
 
     // Verify interactions with mocks
     verify(gameLogicMock, times(1)).loadGame(gameId);
     verify(gameLogicMock, times(1)).moveTo("B2", "B3", gameUpdated);
     verify(gameLogicMock, times(1)).saveGame(gameUpdated);
+    verify(gameLogicMock, times(1)).endGame(gameUpdated);
   }
 
   @Test
@@ -408,11 +441,11 @@ class ChessCliTest {
     verify(gameLogicMock, times(1)).resign(gameMock);
   }
 
-  /*@Test
-  void testAcceptCommand() {
+  @Test
+  void testOfferRemiCommand() throws GameNotFoundException {
     // Arrange
     String gameId = "123";
-    List<String> arguments = Arrays.asList("accept-remi", gameId);
+    List<String> arguments = Arrays.asList("offer-remi", gameId);
     Game gameMock = mock(Game.class);
     when(gameLogicMock.loadGame(gameId)).thenReturn(gameMock);
 
@@ -421,10 +454,61 @@ class ChessCliTest {
     String output = outContent.toString().trim();
 
     // Assert
+    assertThat(output).contains("Offer remi on " + gameId);
+
+    // Verify interactions with mocks
+    verify(gameLogicMock, times(1)).loadGame(gameId);
+    verify(gameLogicMock, times(1)).offerRemi(gameMock);
+  }
+
+  @Test
+  void testAcceptRemiCommand() throws GameNotFoundException {
+    // Arrange
+    String gameId = "123";
+    List<String> arguments = Arrays.asList("accept-remi", gameId);
+    Game gameMock = mock(Game.class);
+    when(gameLogicMock.loadGame(gameId)).thenReturn(gameMock);
+    when(gameLogicMock.endGame(gameMock)).thenReturn("Game ended with a remi.");
+
+    // Act
+    chessCli.handle(arguments);
+    String output = outContent.toString().trim();
+
+    // Assert
+    assertThat(output).isEqualTo("Game ended with a remi.");
 
     // Verify that gameLogic.resign(currentGame) is called
+    verify(gameLogicMock, times(1)).loadGame(gameId);
     verify(gameLogicMock, times(1)).acceptRemi(gameMock);
-  }*/
+    verify(gameLogicMock, times(1)).endGame(gameMock);
+  }
+
+  @Test
+  void testThrowsRemiWasNotOfferedException() throws RemiWasNotOfferedException {
+    // Arrange
+    String gameId = "123";
+    List<String> arguments = Arrays.asList("accept-remi", gameId);
+    doThrow(new RemiWasNotOfferedException()).when(gameLogicMock).acceptRemi(any());
+
+    // Act
+    chessCli.handle(arguments);
+    String output = outContent.toString().trim();
+
+    // Define the expected output
+    String expectedOutput = "You have to offer remi first before you can accept it.";
+
+    // Normalize line endings in expected output
+    expectedOutput =
+        expectedOutput
+            .replace("\n", System.lineSeparator())
+            .replace("\r\n", System.lineSeparator());
+
+    // Assert
+    assertThat(output).isEqualTo(expectedOutput);
+
+    // Verify interactions with mocks
+    verify(gameLogicMock, times(1)).acceptRemi(any());
+  }
 
   @ParameterizedTest
   @MethodSource("gameNotFoundCommandProvider")
@@ -451,6 +535,7 @@ class ChessCliTest {
 
   private static Stream<Arguments> gameNotFoundCommandProvider() {
     return Stream.of(
+        Arguments.of(Arrays.asList("fen", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found."),
         Arguments.of(Arrays.asList("load", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found."),
         Arguments.of(Arrays.asList("move", "e2", "e4", "on", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found."),
         Arguments.of(Arrays.asList("show-moves", "e2", "on", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found."),
@@ -458,5 +543,69 @@ class ChessCliTest {
         Arguments.of(Arrays.asList("offer-remi", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found."),
         Arguments.of(Arrays.asList("accept-remi", "123"), "The game does not exist. Please create this game first!\nGame with ID 'Game not found' not found.")
     );
+  }
+
+  @Test
+  void testPrintChessboardHandlesNullPointerException() throws NullPointerException {
+    // Mock the behavior to throw NullPointerException
+    doThrow(new NullPointerException("Game is not initialized")).when(gameLogicMock).loadGame(any());
+
+    // Act
+    chessCli.printChessboard("123");
+    String output = outContent.toString().trim();
+
+    // Define the expected output
+    String expectedOutput = "You have to create a game first!\nGame is not initialized";
+
+    // Normalize line endings in expected output
+    expectedOutput =
+        expectedOutput
+            .replace("\n", System.lineSeparator())
+            .replace("\r\n", System.lineSeparator());
+
+    // Assert
+    assertThat(output).isEqualTo(expectedOutput);
+  }
+
+  @Test
+  void testIsEnemyPiece() {
+    // Create two pieces with different colors
+    Piece whitePiece = new Bishop(Color.WHITE, new Position(5, 3), new ChessBoard());
+    Piece blackPiece = new Bishop(Color.BLACK, new Position(3, 5), new ChessBoard());
+
+    // Create two pieces with the same color
+    Piece whitePiece2 = new Bishop(Color.WHITE, new Position(2, 2), new ChessBoard());
+    Piece blackPiece2 = new Bishop(Color.BLACK, new Position(4, 4), new ChessBoard());
+
+    // Test when both pieces are not null and have different colors
+    assertTrue(chessCli.isEnemyPiece(whitePiece, blackPiece));
+    assertTrue(chessCli.isEnemyPiece(blackPiece, whitePiece));
+
+    // Test when one of the pieces is null
+    assertFalse(chessCli.isEnemyPiece(null, whitePiece));
+    assertFalse(chessCli.isEnemyPiece(blackPiece, null));
+
+    // Test when both pieces are null
+    assertFalse(chessCli.isEnemyPiece(null, null));
+
+    // Test when both pieces are not null but have the same color
+    assertFalse(chessCli.isEnemyPiece(whitePiece, whitePiece2));
+    assertFalse(chessCli.isEnemyPiece(blackPiece, blackPiece2));
+  }
+
+  @Test
+  void testMain() {
+    Main main = new Main();
+
+    // Arrange
+    OutputStream outContent = new ByteArrayOutputStream();
+    PrintStream originalOut = System.out;
+    System.setOut(new PrintStream(outContent));
+
+    // Act & Assert
+    assertDoesNotThrow(() -> Main.main(new String[0]));
+
+    // Reset System.out
+    System.setOut(originalOut);
   }
 }
