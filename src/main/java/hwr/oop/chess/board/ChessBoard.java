@@ -112,6 +112,10 @@ public class ChessBoard implements Serializable {
     return true;
   }
 
+  public void promoteTo(Position position, Piece replacePiece){
+    //empty
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
