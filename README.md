@@ -92,8 +92,8 @@ If `chess` does not work in your terminal, try `./chess` or `.\chess` instead.
 | 2.5    | :heavy_check_mark: | ♕ Queen       | :heavy_check_mark: |
 | 2.6    | :heavy_check_mark: | ♔ King        | :heavy_check_mark: |
 | 3      | :heavy_check_mark: | Movement      | :heavy_check_mark: |
-| 4      | :x:                | Check         | :x:                |
-| 5      | :x:                | Checkmate     | :x:                |
+| 4      | :heavy_check_mark: | Check         | :heavy_check_mark: |
+| 5      | :heavy_check_mark: | Checkmate     | :heavy_check_mark: |
 | 6      | :x:                | Development   | :x:                |
 | 7      | :heavy_check_mark: | Player        | :heavy_check_mark: |
 | 8      | :heavy_check_mark: | Game          | :heavy_check_mark: |
