@@ -8,6 +8,7 @@ import hwr.oop.chess.pieces.*;
 import hwr.oop.chess.player.Player;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public class Game implements Serializable {
@@ -147,17 +148,17 @@ public class Game implements Serializable {
     };
   }
 
-  private String[] getPartsFromFEN(String fenNotation){
-    String[] parts = fenNotation.split(" ");
-    if (parts.length < 2) {
+  private List<String> getPartsFromFEN(String fenNotation){
+    List<String> parts = List.of(fenNotation.split(" "));
+    if (parts.size() < 2) {
       throw new FENException(
               "Invalid FEN format: expected at least 2 parts (board layout and active color)");
     }
     return parts;
   }
-  private String[] getRowsFromFEN(String[] parts){
-    String[] rows = parts[0].split("/");
-    if (rows.length != 8) {
+  private List<String> getRowsFromFEN(List<String> parts){
+    List<String> rows = List.of(parts.getFirst().split("/"));
+    if (rows.size() != 8) {
       throw new FENException("Invalid FEN format: 8 rows expected");
     }
     return rows;
@@ -173,12 +174,12 @@ public class Game implements Serializable {
   public ChessBoard convertFENToBoard(String fenNotation) throws FENException {
     ChessBoard newBoard = new ChessBoard();
     newBoard.clearChessboard();
-    String[] parts = getPartsFromFEN(fenNotation);
-    String[] rows = getRowsFromFEN(parts);
+    List<String> parts = getPartsFromFEN(fenNotation);
+    List<String> rows = getRowsFromFEN(parts);
 
     for (int i = 0; i < 8; i++) {
       int col = 0;
-      for (char c : rows[7 - i].toCharArray()) {
+      for (char c : rows.get(7 - i).toCharArray()) {
         if (Character.isDigit(c)) {
           col += Character.getNumericValue(c);
         } else {
@@ -194,11 +195,11 @@ public class Game implements Serializable {
     }
 
     // Get the active color part
-    String activeColor = parts[1];
+    String activeColor = parts.get(1);
     setActiveColorFromFEN(activeColor);
-    if (parts.length >= 3) {
+    if (parts.size() >= 3) {
       try {
-        moveCount = Short.parseShort(parts[2]);
+        moveCount = Short.parseShort(parts.get(2));
       } catch (NumberFormatException e) {
         throw new FENException("Invalid FEN format: total number of moves is not a valid number");
       }
