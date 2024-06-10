@@ -87,8 +87,7 @@ If `chess` does not work in your terminal, try `./chess` or `.\chess` instead.
 
 ## Feature List
 
-![Screenshot of the expected features of this project.](features_light.png#gh-light-mode-only)
-![Screenshot of the expected features of this project.](features_dark.png#gh-dark-mode-only)
+![Screenshot of the expected features of this project.](features.png)
 
 ### Library
 
