@@ -8,6 +8,7 @@ import static org.mockito.Mockito.*;
 
 import hwr.oop.chess.Color;
 import hwr.oop.chess.GameAlreadyExistsException;
+import hwr.oop.chess.IllegalPromotionException;
 import hwr.oop.chess.Position;
 import hwr.oop.chess.RemiWasNotOfferedException;
 import hwr.oop.chess.board.ChessBoard;
@@ -16,6 +17,8 @@ import hwr.oop.chess.GameLogic;
 import hwr.oop.chess.GameNotFoundException;
 import hwr.oop.chess.pieces.Bishop;
 import hwr.oop.chess.pieces.IllegalMoveException;
+import hwr.oop.chess.pieces.King;
+import hwr.oop.chess.pieces.Pawn;
 import hwr.oop.chess.pieces.Piece;
 import hwr.oop.chess.player.Player;
 import java.io.ByteArrayOutputStream;
@@ -375,25 +378,83 @@ class ChessCliTest {
     // Arrange
     String gameId = "123";
     List<String> arguments = Arrays.asList("show-moves", "e2", "on", gameId);
-    Game gameMock = mock(Game.class);
-    ChessBoard boardMock = mock(ChessBoard.class);
-    Piece pieceMock = mock(Piece.class);
-    Position fromPosition = new Position(1, 4); // e2
-    Position toPosition1 = new Position(2, 4); // e3
-    Position toPosition2 = new Position(3, 4); // e4
-    List<Position> possibleMoves = Arrays.asList(toPosition1, toPosition2);
-
-    when(gameLogicMock.loadGame(gameId)).thenReturn(gameMock);
-    when(gameMock.getBoard()).thenReturn(boardMock);
-    when(boardMock.getPieceAtPosition(fromPosition)).thenReturn(pieceMock);
-    when(pieceMock.possibleMoves()).thenReturn(possibleMoves);
+    Player playerWhite = new Player("Alice");
+    Player playerBlack = new Player("Bob");
+    Game game = new Game(playerWhite, playerBlack, gameId);
+    when(gameLogicMock.loadGame(gameId)).thenReturn(game);
 
     // Act
     chessCli.handle(arguments);
     String output = outContent.toString().trim();
 
+    // Green ANSI escape code
+    String ANSI_GREEN = "\u001B[32m*\u001B[0m";
+
     // Assert
     assertThat(output).contains("Possible moves for piece at position e2: e3, e4");
+    assertThat(output).contains("Capture moves for piece at position e2: ");
+    assertThat(output).contains("    a b c d e f g h")
+        .contains("    ---------------")
+        .contains("8 | r n b q k b n r | 8")
+        .contains("7 | p p p p p p p p | 7")
+        .contains("6 | . . . . . . . . | 6")
+        .contains("5 | . . . . . . . . | 5")
+        .contains("4 | . . . . " + ANSI_GREEN + " . . . | 4")
+        .contains("3 | . . . . " + ANSI_GREEN + " . . . | 3")
+        .contains("2 | P P P P P P P P | 2")
+        .contains("1 | R N B Q K B N R | 1")
+        .contains("    _______________")
+        .contains("    a b c d e f g h");
+  }
+
+  @Test
+  void testShowCaptureMovesCommand() throws GameNotFoundException {
+    // Arrange
+    String gameId = "123";
+    List<String> arguments = Arrays.asList("show-moves", "b2", "on", gameId);
+    Player playerWhite = new Player("Alice");
+    Player playerBlack = new Player("Bob");
+    Game game = new Game(playerWhite, playerBlack, gameId);
+    game.getBoard().clearChessboard();
+    Position whiteKingPosition = new Position(0, 0);
+    Position blackKingPosition = new Position(7, 7);
+    Position blackPawnPosition = new Position(2, 2);
+    Position whitePawnPosition = new Position(1, 1);
+    Piece whiteKing = new King(Color.WHITE, whiteKingPosition, game.getBoard());
+    Piece blackKing = new King(Color.BLACK, blackKingPosition, game.getBoard());
+    Piece blackPawn = new Pawn(Color.BLACK, blackPawnPosition, game.getBoard());
+    Piece whitePawn = new Pawn(Color.WHITE, whitePawnPosition, game.getBoard());
+
+    game.getBoard().setPieceAtPosition(whiteKingPosition, whiteKing);
+    game.getBoard().setPieceAtPosition(blackKingPosition, blackKing);
+    game.getBoard().setPieceAtPosition(blackPawnPosition, blackPawn);
+    game.getBoard().setPieceAtPosition(whitePawnPosition, whitePawn);
+
+    when(gameLogicMock.loadGame(gameId)).thenReturn(game);
+
+    // Act
+    chessCli.handle(arguments);
+    String output = outContent.toString().trim();
+
+    // Red ANSI escape code
+    String ANSI_GREEN = "\u001B[32m*\u001B[0m";
+    String ANSI_RED = "\u001B[31mp\u001B[0m";
+
+    // Assert
+    assertThat(output).contains("Possible moves for piece at position b2: b3, b4");
+    assertThat(output).contains("Capture moves for piece at position b2: c3");
+    assertThat(output).contains("    a b c d e f g h")
+        .contains("    ---------------")
+        .contains("8 | . . . . . . . k | 8")
+        .contains("7 | . . . . . . . . | 7")
+        .contains("6 | . . . . . . . . | 6")
+        .contains("5 | . . . . . . . . | 5")
+        .contains("4 | . " + ANSI_GREEN + " . . . . . . | 4")
+        .contains("3 | . " + ANSI_GREEN + " " + ANSI_RED + " . . . . . | 3")
+        .contains("2 | . P . . . . . . | 2")
+        .contains("1 | K . . . . . . . | 1")
+        .contains("    _______________")
+        .contains("    a b c d e f g h");
   }
 
   @Test
@@ -432,30 +493,28 @@ class ChessCliTest {
   }
 
   @Test
-  void testShowCaptureMovesCommand() throws GameNotFoundException {
+  void testThrowsIllegalPromotionException() throws IllegalPromotionException {
     // Arrange
-    String gameId = "123";
-    List<String> arguments = Arrays.asList("show-moves", "e2", "on", gameId);
-    Game gameMock = mock(Game.class);
-    ChessBoard boardMock = mock(ChessBoard.class);
-    Piece pieceMock = mock(Piece.class);
-    Position fromPosition = new Position(1, 4); // e2
-    Position toPosition1 = new Position(2, 3); // d3
-    Position toPosition2 = new Position(2, 5); // f3
-    List<Position> possibleMoves = Arrays.asList(toPosition1, toPosition2);
-
-    when(gameLogicMock.loadGame(gameId)).thenReturn(gameMock);
-    when(gameMock.getBoard()).thenReturn(boardMock);
-    when(boardMock.getPieceAtPosition(fromPosition)).thenReturn(pieceMock);
-    when(pieceMock.possibleMoves()).thenReturn(possibleMoves);
+    String from = "e8";
+    String desiredType = "Q";
+    String gameID = "123";
+    List<String> arguments = Arrays.asList("promote", from, "to", desiredType, "on", gameID);
+    Player playerWhite = new Player("Alice");
+    Player playerBlack = new Player("Bob");
+    Game game = new Game(playerWhite, playerBlack, gameID);
+    when(gameLogicMock.loadGame(gameID)).thenReturn(game);
+    doThrow(new IllegalPromotionException("Illegal promotion")).when(gameLogicMock).promotePiece(game, from, desiredType);
 
     // Act
     chessCli.handle(arguments);
-    String output = outContent.toString().trim();
 
     // Assert
-    assertThat(output).contains("Capture moves for piece at position e2: ");
-    assertThat(output).doesNotContain("Capture moves for piece at position e2: d3, f3");
+    String output = outContent.toString().trim();
+    assertThat(output).contains("Illegal promotion");
+
+    // Verify interactions with mocks
+    verify(gameLogicMock, times(1)).loadGame(gameID);
+    verify(gameLogicMock, times(1)).promotePiece(game, from, desiredType);
   }
 
   @Test

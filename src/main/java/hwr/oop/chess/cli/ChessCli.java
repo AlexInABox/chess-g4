@@ -346,15 +346,13 @@ public class ChessCli {
   public void printChessboardHighlighted(String gameID, List<Position> highlightPositions, List<Position> capturePositions) {
     try {
       loadCurrentGameIfNecessary(gameID);
-      out.println("    a b c d e f g h");
-      out.println("    ---------------");
+      out.println("    a b c d e f g h\n    ---------------");
       for (int row = 7; row >= 0; row--) {
         out.print((row + 1) + " | ");
         printChessboardRowWithHighlights(row, highlightPositions, capturePositions);
         out.println("| " + (row + 1));
       }
-      out.println("    _______________");
-      out.println("    a b c d e f g h");
+      out.println("    a b c d e f g h\n    _______________");
     } catch (NullPointerException e) {
       out.println("You have to create a game first!");
       out.println(e.getMessage());
