@@ -48,9 +48,11 @@ so-called pieces—a king, a queen, two bishops, two knights, and two rooks —a
 attack upon the enemy king. The king is not actually captured; it is enough to produce a position in which the king cannot escape. 
 This situation is called a checkmate and ends the game. [^1]
 
-MOST IMPORTANT FEATURES
+### Our favourite features
 
-MOST INTERESTING PROBLEMS WEVE STUMBLED UPON
+Implementing features like the ELO Rating were very interesting, because we had to sit down and actually do maths to understand the logic. We are very proud of our ELO implementation.
+
+We decided against implementing tournaments, simply because other features seemed more important and interesting to us. If we have had the remaining time we would've included it, sadly we didn't.
 
 ## Commands overview (not final YET)
 
