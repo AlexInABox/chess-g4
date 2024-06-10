@@ -1,21 +1,17 @@
 package hwr.oop.chess.cli;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 import hwr.oop.chess.Color;
-import hwr.oop.chess.GameAlreadyExistsException;
-import hwr.oop.chess.IllegalPromotionException;
+import hwr.oop.chess.domain.GameAlreadyExistsException;
+import hwr.oop.chess.domain.GameLogic;
+import hwr.oop.chess.domain.GameNotFoundException;
+import hwr.oop.chess.domain.IllegalPromotionException;
 import hwr.oop.chess.Position;
-import hwr.oop.chess.RemiWasNotOfferedException;
-import hwr.oop.chess.board.ChessBoard;
+import hwr.oop.chess.domain.RemiWasNotOfferedException;
 import hwr.oop.chess.game.Game;
-import hwr.oop.chess.GameLogic;
-import hwr.oop.chess.GameNotFoundException;
-import hwr.oop.chess.pieces.Bishop;
 import hwr.oop.chess.pieces.IllegalMoveException;
 import hwr.oop.chess.pieces.King;
 import hwr.oop.chess.pieces.Pawn;
@@ -222,8 +218,6 @@ class ChessCliTest {
     List<String> arguments = Arrays.asList("create", gameId, playerWhiteName, playerBlackName);
     Player playerWhite = new Player(playerWhiteName);
     Player playerBlack = new Player(playerBlackName);
-
-    // Mock the behavior to throw GameAlreadyExistsException
     when(gameLogicMock.loadPlayer(playerWhiteName)).thenReturn(playerWhite);
     when(gameLogicMock.loadPlayer(playerBlackName)).thenReturn(playerBlack);
     doThrow(new GameAlreadyExistsException("Game with ID " + gameId + " already exists"))
@@ -381,8 +375,11 @@ class ChessCliTest {
     Player playerWhite = new Player("Alice");
     Player playerBlack = new Player("Bob");
     Game game = new Game(playerWhite, playerBlack, gameId);
+    List<Position> possibleMoves = new ArrayList<>();
+    possibleMoves.add(new Position(2,4));
+    possibleMoves.add(new Position(3,4));
     when(gameLogicMock.loadGame(gameId)).thenReturn(game);
-
+    when(gameLogicMock.getPossibleMoves("e2", game)).thenReturn(possibleMoves);
     // Act
     chessCli.handle(arguments);
     String output = outContent.toString().trim();
@@ -420,6 +417,12 @@ class ChessCliTest {
     Position blackKingPosition = new Position(7, 7);
     Position blackPawnPosition = new Position(2, 2);
     Position whitePawnPosition = new Position(1, 1);
+    List<Position> possibleMoves = new ArrayList<>();
+    possibleMoves.add(new Position(2,1));
+    possibleMoves.add(new Position(3,1));
+    List<Position> captureMoves = new ArrayList<>();
+    captureMoves.add(new Position(2,2));
+
     Piece whiteKing = new King(Color.WHITE, whiteKingPosition, game.getBoard());
     Piece blackKing = new King(Color.BLACK, blackKingPosition, game.getBoard());
     Piece blackPawn = new Pawn(Color.BLACK, blackPawnPosition, game.getBoard());
@@ -431,7 +434,8 @@ class ChessCliTest {
     game.getBoard().setPieceAtPosition(whitePawnPosition, whitePawn);
 
     when(gameLogicMock.loadGame(gameId)).thenReturn(game);
-
+    when(gameLogicMock.getPossibleMoves("b2", game)).thenReturn(possibleMoves);
+    when(gameLogicMock.getCaptureMoves("b2", possibleMoves, game)).thenReturn(captureMoves);
     // Act
     chessCli.handle(arguments);
     String output = outContent.toString().trim();
@@ -663,29 +667,5 @@ class ChessCliTest {
     assertThat(output).isEqualTo(expectedOutput);
   }
 
-  @Test
-  void testIsEnemyPiece() {
-    // Create two pieces with different colors
-    Piece whitePiece = new Bishop(Color.WHITE, new Position(5, 3), new ChessBoard());
-    Piece blackPiece = new Bishop(Color.BLACK, new Position(3, 5), new ChessBoard());
-
-    // Create two pieces with the same color
-    Piece whitePiece2 = new Bishop(Color.WHITE, new Position(2, 2), new ChessBoard());
-    Piece blackPiece2 = new Bishop(Color.BLACK, new Position(4, 4), new ChessBoard());
-
-    // Test when both pieces are not null and have different colors
-    assertTrue(chessCli.isEnemyPiece(whitePiece, blackPiece));
-    assertTrue(chessCli.isEnemyPiece(blackPiece, whitePiece));
-
-    // Test when one of the pieces is null
-    assertFalse(chessCli.isEnemyPiece(null, whitePiece));
-    assertFalse(chessCli.isEnemyPiece(blackPiece, null));
-
-    // Test when both pieces are null
-    assertFalse(chessCli.isEnemyPiece(null, null));
-
-    // Test when both pieces are not null but have the same color
-    assertFalse(chessCli.isEnemyPiece(whitePiece, whitePiece2));
-    assertFalse(chessCli.isEnemyPiece(blackPiece, blackPiece2));
-  }
+  
 }

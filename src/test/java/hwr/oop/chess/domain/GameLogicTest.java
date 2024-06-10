@@ -1,10 +1,14 @@
-package hwr.oop.chess;
+package hwr.oop.chess.domain;
 
-import static hwr.oop.chess.GameLogic.convertInputToPosition;
+import static hwr.oop.chess.domain.GameLogic.convertInputToPosition;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.*;
 
+import hwr.oop.chess.Color;
+import hwr.oop.chess.GameOutcome;
+import hwr.oop.chess.Position;
+import hwr.oop.chess.board.ChessBoard;
 import hwr.oop.chess.game.Game;
 import hwr.oop.chess.persistence.FileBasedPersistence;
 import hwr.oop.chess.persistence.Persistence;
@@ -1085,5 +1089,70 @@ class GameLogicTest {
 
     //Assert
     assertThat(fen).isEqualTo("rnbqkbnr/pppppppp/8/8/8/5P2/PPPPP1PP/RNBQKBNR b 1");
+  }
+
+  @Test
+  void testIsEnemyPiece() {
+    // Create two pieces with different colors
+    Piece whitePiece = new Bishop(Color.WHITE, new Position(5, 3), new ChessBoard());
+    Piece blackPiece = new Bishop(Color.BLACK, new Position(3, 5), new ChessBoard());
+
+    // Create two pieces with the same color
+    Piece whitePiece2 = new Bishop(Color.WHITE, new Position(2, 2), new ChessBoard());
+    Piece blackPiece2 = new Bishop(Color.BLACK, new Position(4, 4), new ChessBoard());
+
+    // Test when both pieces are not null and have different colors
+    assertTrue(gameLogic.isEnemyPiece(whitePiece, blackPiece));
+    assertTrue(gameLogic.isEnemyPiece(blackPiece, whitePiece));
+
+    // Test when one of the pieces is null
+    assertFalse(gameLogic.isEnemyPiece(null, whitePiece));
+    assertFalse(gameLogic.isEnemyPiece(blackPiece, null));
+
+    // Test when both pieces are null
+    assertFalse(gameLogic.isEnemyPiece(null, null));
+
+    // Test when both pieces are not null but have the same color
+    assertFalse(gameLogic.isEnemyPiece(whitePiece, whitePiece2));
+    assertFalse(gameLogic.isEnemyPiece(blackPiece, blackPiece2));
+  }
+
+  @Test
+  void testShowCaptureMovesCommand() throws GameNotFoundException {
+    // Arrange
+    String gameId = "123";
+    Player playerWhite = new Player("Alice");
+    Player playerBlack = new Player("Bob");
+    Game game = new Game(playerWhite, playerBlack, gameId);
+    game.getBoard().clearChessboard();
+    Position whiteKingPosition = new Position(0, 0);
+    Position blackKingPosition = new Position(7, 7);
+    Position blackPawnPosition = new Position(2, 2);
+    Position whitePawnPosition = new Position(1, 1);
+    List<Position> expectedPossibleMoves = new ArrayList<>();
+    expectedPossibleMoves.add(new Position(2,1));
+    expectedPossibleMoves.add(new Position(3,1));
+    expectedPossibleMoves.add(new Position(2,2));
+    List<Position> expectedCaptureMoves = new ArrayList<>();
+    expectedCaptureMoves.add(new Position(2,2));
+
+    Piece whiteKing = new King(Color.WHITE, whiteKingPosition, game.getBoard());
+    Piece blackKing = new King(Color.BLACK, blackKingPosition, game.getBoard());
+    Piece blackPawn = new Pawn(Color.BLACK, blackPawnPosition, game.getBoard());
+    Piece whitePawn = new Pawn(Color.WHITE, whitePawnPosition, game.getBoard());
+
+    game.getBoard().setPieceAtPosition(whiteKingPosition, whiteKing);
+    game.getBoard().setPieceAtPosition(blackKingPosition, blackKing);
+    game.getBoard().setPieceAtPosition(blackPawnPosition, blackPawn);
+    game.getBoard().setPieceAtPosition(whitePawnPosition, whitePawn);
+
+    //Act
+    List<Position> actualPossibleMoves = gameLogic.getPossibleMoves("b2", game);
+    List<Position> actualCapturedMoves = gameLogic.getCaptureMoves("b2", expectedPossibleMoves, game);
+    //Assert
+    assertThat(actualPossibleMoves).isEqualTo(expectedPossibleMoves);
+    assertThat(actualCapturedMoves).isEqualTo(expectedCaptureMoves);
+    
+    
   }
 }
