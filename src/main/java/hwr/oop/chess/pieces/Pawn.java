@@ -65,45 +65,59 @@ public class Pawn implements Piece, Serializable {
     int direction = color == Color.WHITE ? 1 : -1;
     int startRow = color == Color.WHITE ? 1 : 6;
 
+    addForwardMoves(possibleMoves, direction, startRow);
+    addCaptureMoves(possibleMoves, direction);
+
+    return possibleMoves;
+  }
+
+  private void addForwardMoves(List<Position> possibleMoves, int direction, int startRow) {
     Position oneStepAhead = new Position(position.row() + direction, position.column());
-    if (chessBoard.isValidPosition(oneStepAhead.row(), oneStepAhead.column())
-        && chessBoard.getPieceAtPosition(oneStepAhead) == null
-        && !wouldKingBeInCheckAfterMoveTo(oneStepAhead)) {
+    if (isValidMove(oneStepAhead)) {
       possibleMoves.add(oneStepAhead);
 
-      Position twoStepsAhead;
-      if (color == Color.WHITE) {
-        twoStepsAhead = new Position(position.row() + 2, position.column());
-      } else twoStepsAhead = new Position(position.row() - 2, position.column());
-
-      if (position.row() == startRow
-          && chessBoard.getPieceAtPosition(twoStepsAhead) == null
-          && !wouldKingBeInCheckAfterMoveTo(twoStepsAhead)) {
-        possibleMoves.add(twoStepsAhead);
+      if (position.row() == startRow) {
+        int newRow = position.row() + direction;
+        newRow += direction;
+        Position twoStepsAhead = new Position(newRow, position.column());
+        if (isValidMove(twoStepsAhead)) {
+          possibleMoves.add(twoStepsAhead);
+        }
       }
     }
+  }
 
+  private void addCaptureMoves(List<Position> possibleMoves, int direction) {
     List<List<Integer>> captureOffsets =
         Arrays.asList(Arrays.asList(direction, 1), Arrays.asList(direction, -1));
+
     for (List<Integer> offset : captureOffsets) {
       int newRow = position.row() + offset.get(0);
       int newCol = position.column() + offset.get(1);
       Position capturePosition = new Position(newRow, newCol);
       if (chessBoard.isValidPosition(newRow, newCol)) {
         Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(capturePosition);
-        if ((pieceAtNewPosition != null)
-            && (pieceAtNewPosition.getColor() != color)
-            && (pieceAtNewPosition.getType() != PieceType.KING)
-            && !wouldKingBeInCheckAfterMoveTo(capturePosition)) {
+        if (canCapturePiece(pieceAtNewPosition, capturePosition)) {
           possibleMoves.add(capturePosition);
         }
       }
     }
-
-    return possibleMoves;
   }
 
-  private boolean wouldKingBeInCheckAfterMoveTo(Position target) {
+  private boolean isValidMove(Position position) {
+    return chessBoard.isValidPosition(position.row(), position.column())
+        && chessBoard.getPieceAtPosition(position) == null
+        && wouldKingBeNOTInCheckAfterMoveTo(position);
+  }
+
+  private boolean canCapturePiece(Piece piece, Position position) {
+    return piece != null
+        && piece.getColor() != color
+        && piece.getType() != PieceType.KING
+        && wouldKingBeNOTInCheckAfterMoveTo(position);
+  }
+
+  private boolean wouldKingBeNOTInCheckAfterMoveTo(Position target) {
     Piece pieceAtTarget = chessBoard.getPieceAtPosition(target);
 
     chessBoard.setPieceAtPosition(position, null);
@@ -114,7 +128,7 @@ public class Pawn implements Piece, Serializable {
     chessBoard.setPieceAtPosition(target, pieceAtTarget);
     chessBoard.setPieceAtPosition(position, this);
 
-    return isKingInCheckNow;
+    return !isKingInCheckNow;
   }
 
   @Override
