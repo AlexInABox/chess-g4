@@ -9,7 +9,6 @@ import hwr.oop.chess.Position;
 import hwr.oop.chess.board.ChessBoard;
 import java.util.Arrays;
 import java.util.List;
-
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -439,16 +438,15 @@ class KingTest {
     Piece topRook = new Rook(Color.BLACK, topRookPosition, board);
     board.setPieceAtPosition(topRook.getPosition(), topRook);
 
-
     IllegalMoveException exceptionLeft =
-            assertThrows(IllegalMoveException.class, () -> king.moveTo(kingTargetPositionLeft));
+        assertThrows(IllegalMoveException.class, () -> king.moveTo(kingTargetPositionLeft));
     String expectedMessageLeft = "Illegal move";
     assertThat(exceptionLeft.getMessage()).contains(expectedMessageLeft);
     assertThat(board.getPieceAtPosition(kingTargetPositionLeft)).isNull();
     assertThat(board.getPieceAtPosition(kingPosition)).isEqualTo(king);
 
     IllegalMoveException exceptionDown =
-            assertThrows(IllegalMoveException.class, () -> king.moveTo(kingTargetPositionDown));
+        assertThrows(IllegalMoveException.class, () -> king.moveTo(kingTargetPositionDown));
     String expectedMessageDown = "Illegal move";
     assertThat(exceptionDown.getMessage()).contains(expectedMessageDown);
     assertThat(board.getPieceAtPosition(kingTargetPositionDown)).isNull();

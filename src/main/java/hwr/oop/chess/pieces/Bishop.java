@@ -88,12 +88,9 @@ public class Bishop implements Piece, Serializable {
   public List<Position> visiblePositions() {
     List<Position> visiblePositions = new ArrayList<>();
 
-    List<List<Integer>> directions = Arrays.asList(
-            Arrays.asList(1, 1),
-            Arrays.asList(1, -1),
-            Arrays.asList(-1, 1),
-            Arrays.asList(-1, -1)
-    );
+    List<List<Integer>> directions =
+        Arrays.asList(
+            Arrays.asList(1, 1), Arrays.asList(1, -1), Arrays.asList(-1, 1), Arrays.asList(-1, -1));
 
     for (List<Integer> direction : directions) {
       int newRow = position.row();

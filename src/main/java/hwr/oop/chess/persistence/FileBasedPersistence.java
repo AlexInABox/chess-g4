@@ -12,11 +12,11 @@ public class FileBasedPersistence implements Persistence {
   private final Path filePathGames;
   private final Path filePathPlayers;
 
-
   public FileBasedPersistence(Path filePathGames, Path filePathPlayers) {
     this.filePathGames = filePathGames;
     this.filePathPlayers = filePathPlayers;
   }
+
   @Override
   public void saveGames(List<Game> games) {
     try (FileOutputStream f = new FileOutputStream(String.valueOf(filePathGames))) {
@@ -28,6 +28,7 @@ public class FileBasedPersistence implements Persistence {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public List<Game> loadGames() {
     try {
       if (!Files.exists(filePathGames) || Files.size(filePathGames) == 0) {
@@ -55,6 +56,7 @@ public class FileBasedPersistence implements Persistence {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public List<Player> loadPlayers() {
     try {
       if (!Files.exists(filePathPlayers) || Files.size(filePathPlayers) == 0) {

@@ -7,13 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import hwr.oop.chess.Color;
 import hwr.oop.chess.Position;
 import hwr.oop.chess.board.ChessBoard;
-
+import java.util.Arrays;
+import java.util.List;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-import java.util.List;
 
 class KnightTest {
 
@@ -278,7 +276,7 @@ class KnightTest {
     board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
 
     IllegalMoveException exception =
-            assertThrows(IllegalMoveException.class, () -> knight.moveTo(knightTarget));
+        assertThrows(IllegalMoveException.class, () -> knight.moveTo(knightTarget));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(knight.getPosition()).isEqualTo(knightPosition);
@@ -302,7 +300,7 @@ class KnightTest {
     board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
 
     IllegalMoveException exception =
-            assertThrows(IllegalMoveException.class, () -> knight.moveTo(knightTarget));
+        assertThrows(IllegalMoveException.class, () -> knight.moveTo(knightTarget));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(knight.getPosition()).isEqualTo(knightPosition);
@@ -323,7 +321,7 @@ class KnightTest {
     board.setPieceAtPosition(knight.getPosition(), knight);
 
     IllegalMoveException exception =
-            assertThrows(IllegalMoveException.class, () -> knight.moveTo(knightTarget));
+        assertThrows(IllegalMoveException.class, () -> knight.moveTo(knightTarget));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(knight.getPosition()).isEqualTo(knightPosition);
@@ -348,7 +346,7 @@ class KnightTest {
     board.setPieceAtPosition(knight.getPosition(), knight);
 
     IllegalMoveException exception =
-            assertThrows(IllegalMoveException.class, () -> knight.moveTo(knightTarget));
+        assertThrows(IllegalMoveException.class, () -> knight.moveTo(knightTarget));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(knight.getPosition()).isEqualTo(knightPosition);

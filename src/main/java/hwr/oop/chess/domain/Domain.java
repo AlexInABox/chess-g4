@@ -58,9 +58,12 @@ public interface Domain {
    *
    * @param game The game in which the promotion takes place.
    * @param position The position of the pawn to be promoted (e.g., "a8").
-   * @param type The type of piece to which the pawn is promoted (e.g., "Queen", "Rook", "Bishop", "Knight").
-   * @throws ConvertInputToPositionException If the position does not correspond to a valid position on the board.
-   * @throws IllegalPromotionException If the promotion is not allowed (e.g., attempting to promote to an invalid piece type).
+   * @param type The type of piece to which the pawn is promoted (e.g., "Queen", "Rook", "Bishop",
+   *     "Knight").
+   * @throws ConvertInputToPositionException If the position does not correspond to a valid position
+   *     on the board.
+   * @throws IllegalPromotionException If the promotion is not allowed (e.g., attempting to promote
+   *     to an invalid piece type).
    */
   void promotePiece(Game game, String position, String type);
 
@@ -69,11 +72,13 @@ public interface Domain {
    *
    * @param oldPositionString The old position of the piece. (e.g. a1)
    * @param newPositionString The new position of the piece. (e.g. c2)
-   * @param game              The game in which the move is performed.
+   * @param game The game in which the move is performed.
    * @return true, if this move led to check mate.
-   * @throws ConvertInputToPositionException If the oldPositionString or newPositionString does not have the right format.
+   * @throws ConvertInputToPositionException If the oldPositionString or newPositionString does not
+   *     have the right format.
    * @throws IllegalMoveException If the move is illegal.
-   * @throws IllegalMoveBecauseKingIsInCheckException If king is in check and this move does not save them.
+   * @throws IllegalMoveBecauseKingIsInCheckException If king is in check and this move does not
+   *     save them.
    */
   boolean moveTo(String oldPositionString, String newPositionString, Game game);
 
@@ -110,27 +115,34 @@ public interface Domain {
    * Ends the game, declaring the winner and updating players' ELO ratings.
    *
    * @param game The game to end.
-   * @return A message indicating the outcome of the game, including the winner and their new ELO rating.
+   * @return A message indicating the outcome of the game, including the winner and their new ELO
+   *     rating.
    */
   String endGame(Game game);
+
   /**
    * Gets a list of possible moves for the piece at the given position in the specified match.
    *
    * @param currentPositionString The current position of the piece as a string (e.g., "e2").
    * @param game The game in which to check possible moves.
-   * @return A list of possible positions to which the piece can move. Returns an empty list if there is no piece at the specified position.
+   * @return A list of possible positions to which the piece can move. Returns an empty list if
+   *     there is no piece at the specified position.
    */
-  List<Position> getPossibleMoves (String currentPositionString, Game game);
+  List<Position> getPossibleMoves(String currentPositionString, Game game);
 
   /**
-   * Gets a list of possible capture moves for the piece at the given position in the specified game.
-   * A capture move is defined as a move where the piece at the given position can capture an enemy piece.
+   * Gets a list of possible capture moves for the piece at the given position in the specified
+   * game. A capture move is defined as a move where the piece at the given position can capture an
+   * enemy piece.
    *
    * @param currentPositionString The current position of the piece as a string (e.g., "e2").
    * @param possibleMoves The list of possible moves for the piece at the current position.
    * @param game The game in which to check possible capture moves.
-   * @return A list of positions where the piece can capture an enemy piece. Returns an empty list if there are no capture moves available.
-   * @throws ConvertInputToPositionException If the currentPositionString does not correspond to a valid position on the board.
+   * @return A list of positions where the piece can capture an enemy piece. Returns an empty list
+   *     if there are no capture moves available.
+   * @throws ConvertInputToPositionException If the currentPositionString does not correspond to a
+   *     valid position on the board.
    */
-  List<Position> getCaptureMoves (String currentPositionString,List<Position> possibleMoves, Game game);
+  List<Position> getCaptureMoves(
+      String currentPositionString, List<Position> possibleMoves, Game game);
 }

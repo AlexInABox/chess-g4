@@ -40,6 +40,7 @@ class MainTest {
   }
 
   @Test
+  @SuppressWarnings("InstantiationOfUtilityClass")
   void main_CanBeCalledWithHelpCommand() {
     Main mainTest = new Main();
     System.out.println(mainTest);

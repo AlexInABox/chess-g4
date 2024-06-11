@@ -7,13 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import hwr.oop.chess.Color;
 import hwr.oop.chess.Position;
 import hwr.oop.chess.board.ChessBoard;
-
+import java.util.Arrays;
+import java.util.List;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-import java.util.List;
 
 class RookTest {
 
@@ -58,7 +56,7 @@ class RookTest {
     rook.moveTo(targetPosition);
     assertThat(rook.getPosition()).isEqualTo(targetPosition);
     assertThat(board.getPieceAtPosition(position)).isNull();
-    assertThat(board.getPieceAtPosition(new Position(2,3))).isNull();
+    assertThat(board.getPieceAtPosition(new Position(2, 3))).isNull();
   }
 
   @Test
@@ -218,7 +216,6 @@ class RookTest {
     Piece king = new King(Color.WHITE, kingPosition, board);
     board.setPieceAtPosition(king.getPosition(), king);
 
-
     Position rookPosition = new Position(4, 4);
 
     Piece rook = new Rook(Color.WHITE, rookPosition, board);
@@ -285,7 +282,7 @@ class RookTest {
     board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
 
     IllegalMoveException exception =
-            assertThrows(IllegalMoveException.class, () -> rook.moveTo(rookTarget));
+        assertThrows(IllegalMoveException.class, () -> rook.moveTo(rookTarget));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(rook.getPosition()).isEqualTo(rookPosition);
@@ -309,7 +306,7 @@ class RookTest {
     board.setPieceAtPosition(enemyRook.getPosition(), enemyRook);
 
     IllegalMoveException exception =
-            assertThrows(IllegalMoveException.class, () -> rook.moveTo(rookTarget));
+        assertThrows(IllegalMoveException.class, () -> rook.moveTo(rookTarget));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(rook.getPosition()).isEqualTo(rookPosition);
@@ -330,7 +327,7 @@ class RookTest {
     board.setPieceAtPosition(rook.getPosition(), rook);
 
     IllegalMoveException exception =
-            assertThrows(IllegalMoveException.class, () -> rook.moveTo(rookTarget));
+        assertThrows(IllegalMoveException.class, () -> rook.moveTo(rookTarget));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(rook.getPosition()).isEqualTo(rookPosition);
@@ -355,7 +352,7 @@ class RookTest {
     board.setPieceAtPosition(rook.getPosition(), rook);
 
     IllegalMoveException exception =
-            assertThrows(IllegalMoveException.class, () -> rook.moveTo(rookTarget));
+        assertThrows(IllegalMoveException.class, () -> rook.moveTo(rookTarget));
     String expectedMessage = "Illegal move";
     assertThat(exception.getMessage()).contains(expectedMessage);
     assertThat(rook.getPosition()).isEqualTo(rookPosition);

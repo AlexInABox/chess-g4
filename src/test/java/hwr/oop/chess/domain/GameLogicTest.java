@@ -44,14 +44,13 @@ class GameLogicTest {
   void tearDown() {
     File fileGames = new File(TEST_FILE_PATH_GAMES);
     if (fileGames.exists() && !fileGames.delete()) {
-        throw new RuntimeException("Deleting the file was unsuccessful.");
-      }
+      throw new RuntimeException("Deleting the file was unsuccessful.");
+    }
 
     File filePlayers = new File(TEST_FILE_PATH_PLAYERS);
     if (filePlayers.exists() && !filePlayers.delete()) {
-        throw new RuntimeException("Deleting the file was unsuccessful.");
-      }
-
+      throw new RuntimeException("Deleting the file was unsuccessful.");
+    }
   }
 
   @Test
@@ -419,7 +418,7 @@ class GameLogicTest {
           softly.assertThat(loadedGames.get(1).getPlayerWhite().getName()).isEqualTo("Alice");
         });
   }
-  
+
   @Test
   void testMoveTo_InvalidMove_SameStartAndEndPosition() {
     // Arrange
@@ -586,30 +585,30 @@ class GameLogicTest {
       gameLogic.endGame(game);
     }
 
-    //Assert
+    // Assert
     assertSoftly(
-            softly -> {
-              softly.assertThat(game.isGameEnded()).isTrue();
-              softly.assertThat(game.getWinner()).isEqualTo(GameOutcome.WHITE);
-              softly.assertThat(game.getMoveCount()).isEqualTo((short) 5);
-              softly.assertThat(gameLogic.loadPlayer("Alice").getElo()).isEqualTo((short) 1210);
-              softly.assertThat(gameLogic.loadPlayer("Bob").getElo()).isEqualTo((short) 1190);
-            });
+        softly -> {
+          softly.assertThat(game.isGameEnded()).isTrue();
+          softly.assertThat(game.getWinner()).isEqualTo(GameOutcome.WHITE);
+          softly.assertThat(game.getMoveCount()).isEqualTo((short) 5);
+          softly.assertThat(gameLogic.loadPlayer("Alice").getElo()).isEqualTo((short) 1210);
+          softly.assertThat(gameLogic.loadPlayer("Bob").getElo()).isEqualTo((short) 1190);
+        });
   }
 
   @Test
   void testMoveToNotCheckMate() {
-    //Arrange
+    // Arrange
     String gameId = "testGame";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
     gameLogic.createGame(playerWhite, playerBlack, gameId);
 
-    //Act
+    // Act
     Game game = gameLogic.loadGame(gameId);
     boolean isCheckMate = gameLogic.moveTo("f2", "f3", game);
 
-    //Assert
+    // Assert
     assertThat(isCheckMate).isFalse();
   }
 
@@ -621,14 +620,14 @@ class GameLogicTest {
     Player playerBlack = gameLogic.loadPlayer("Bob");
     gameLogic.createGame(playerWhite, playerBlack, gameId);
 
-    //Act
+    // Act
     Game game = gameLogic.loadGame(gameId);
     gameLogic.moveTo("d2", "d4", game);
     gameLogic.moveTo("e7", "e5", game);
     gameLogic.moveTo("e1", "d2", game);
     gameLogic.moveTo("f8", "b4", game);
 
-    //Assert
+    // Assert
     IllegalMoveBecauseKingIsInCheckException exception =
         assertThrows(
             IllegalMoveBecauseKingIsInCheckException.class,
@@ -867,10 +866,12 @@ class GameLogicTest {
 
     gameLogic.promotePiece(game, "a1", "q");
 
-    Assertions.assertThat(game.getBoard().getPieceAtPosition(blackPawnPosition)).isEqualTo(promotedPiece);
+    Assertions.assertThat(game.getBoard().getPieceAtPosition(blackPawnPosition))
+        .isEqualTo(promotedPiece);
     Game loadedGame = gameLogic.loadGame(gameId);
     assertThat(loadedGame).isEqualTo(game);
   }
+
   @Test
   void testPromoteBlackPawnToBishop() throws IllegalMoveException {
     String gameId = "game1";
@@ -886,7 +887,8 @@ class GameLogicTest {
 
     gameLogic.promotePiece(game, "a1", "b");
 
-    Assertions.assertThat(game.getBoard().getPieceAtPosition(blackPawnPosition)).isEqualTo(promotedPiece);
+    Assertions.assertThat(game.getBoard().getPieceAtPosition(blackPawnPosition))
+        .isEqualTo(promotedPiece);
   }
 
   @Test
@@ -904,8 +906,10 @@ class GameLogicTest {
 
     gameLogic.promotePiece(game, "a1", "r");
 
-    Assertions.assertThat(game.getBoard().getPieceAtPosition(blackPawnPosition)).isEqualTo(promotedPiece);
+    Assertions.assertThat(game.getBoard().getPieceAtPosition(blackPawnPosition))
+        .isEqualTo(promotedPiece);
   }
+
   @Test
   void testPromoteBlackPawnToKnight() throws IllegalMoveException {
     String gameId = "game1";
@@ -921,7 +925,8 @@ class GameLogicTest {
 
     gameLogic.promotePiece(game, "a1", "n");
 
-    Assertions.assertThat(game.getBoard().getPieceAtPosition(blackPawnPosition)).isEqualTo(promotedPiece);
+    Assertions.assertThat(game.getBoard().getPieceAtPosition(blackPawnPosition))
+        .isEqualTo(promotedPiece);
   }
 
   @Test
@@ -936,14 +941,12 @@ class GameLogicTest {
     Piece blackPawn = new Pawn(Color.BLACK, blackPawnPosition, game.getBoard());
     game.getBoard().setPieceAtPosition(blackPawnPosition, blackPawn);
     IllegalPromotionException exception =
-            assertThrows(
-                    IllegalPromotionException.class,
-                    () -> gameLogic.promotePiece(game, "a1", "k"));
-    String expectedMessage = "Promotion is not allowed: The specified type is invalid. Valid promotion types are 'Queen', 'Rook', 'Bishop', or 'Knight'.";
+        assertThrows(
+            IllegalPromotionException.class, () -> gameLogic.promotePiece(game, "a1", "k"));
+    String expectedMessage =
+        "Promotion is not allowed: The specified type is invalid. Valid promotion types are 'Queen', 'Rook', 'Bishop', or 'Knight'.";
     Assertions.assertThat(exception.getMessage()).contains(expectedMessage);
   }
-
-
 
   @Test
   void testPromoteFailNoPiece() {
@@ -955,12 +958,12 @@ class GameLogicTest {
     game.getBoard().clearChessboard();
 
     IllegalPromotionException exception =
-            assertThrows(
-                    IllegalPromotionException.class,
-                    () -> gameLogic.promotePiece(game, "a4", "q"));
+        assertThrows(
+            IllegalPromotionException.class, () -> gameLogic.promotePiece(game, "a4", "q"));
     String expectedMessage = "Promotion is not allowed. No piece at given position.";
     Assertions.assertThat(exception.getMessage()).contains(expectedMessage);
   }
+
   @Test
   void testPromoteFailNoPawnAtPosition() {
     String gameId = "game1";
@@ -974,11 +977,9 @@ class GameLogicTest {
     Piece whiteKing = new King(Color.WHITE, whiteKingPosition, game.getBoard());
     game.getBoard().setPieceAtPosition(whiteKingPosition, whiteKing);
 
-
     IllegalPromotionException exception =
-            assertThrows(
-                    IllegalPromotionException.class,
-                    () -> gameLogic.promotePiece(game, "a1", "q"));
+        assertThrows(
+            IllegalPromotionException.class, () -> gameLogic.promotePiece(game, "a1", "q"));
     String expectedMessage = "Promotion is not allowed. You can only promote pawns";
     Assertions.assertThat(exception.getMessage()).contains(expectedMessage);
   }
@@ -987,10 +988,9 @@ class GameLogicTest {
   void convertInputToPosition_Valid() {
     assertSoftly(
         softly -> {
-            softly.assertThat(convertInputToPosition("a8")).isEqualTo(new Position(7, 0));
-            softly.assertThat(convertInputToPosition("h1")).isEqualTo(new Position(0, 7));
-            softly.assertThat(convertInputToPosition("e5")).isEqualTo(new Position(4, 4));
-
+          softly.assertThat(convertInputToPosition("a8")).isEqualTo(new Position(7, 0));
+          softly.assertThat(convertInputToPosition("h1")).isEqualTo(new Position(0, 7));
+          softly.assertThat(convertInputToPosition("e5")).isEqualTo(new Position(4, 4));
         });
   }
 
@@ -1029,10 +1029,10 @@ class GameLogicTest {
 
     // Assert
     assertSoftly(
-            softly -> {
-              softly.assertThat(possibleMoves).isNotNull();
-              softly.assertThat(possibleMoves.isEmpty()).isFalse();
-            });
+        softly -> {
+          softly.assertThat(possibleMoves).isNotNull();
+          softly.assertThat(possibleMoves.isEmpty()).isFalse();
+        });
   }
 
   @Test
@@ -1049,10 +1049,10 @@ class GameLogicTest {
 
     // Assert
     assertSoftly(
-            softly -> {
-              softly.assertThat(possibleMoves).isNotNull();
-              softly.assertThat(possibleMoves.isEmpty()).isTrue();
-            });
+        softly -> {
+          softly.assertThat(possibleMoves).isNotNull();
+          softly.assertThat(possibleMoves.isEmpty()).isTrue();
+        });
 
     // Test, return value can not be changed to Collections.emptyList
     possibleMoves.add(new Position(2, 3));
@@ -1060,23 +1060,23 @@ class GameLogicTest {
 
   @Test
   void testGetFenNotation() {
-    //Arrange
+    // Arrange
     String gameId = "testGame";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
     gameLogic.createGame(playerWhite, playerBlack, gameId);
     Game game = gameLogic.loadGame(gameId);
 
-    //Act
+    // Act
     String fen = gameLogic.getFENNotation(game);
 
-    //Assert
+    // Assert
     assertThat(fen).isEqualTo("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w 0");
   }
 
   @Test
   void testGetFenNotationAfterOneMove() {
-    //Arrange
+    // Arrange
     String gameId = "testGame";
     Player playerWhite = gameLogic.loadPlayer("Alice");
     Player playerBlack = gameLogic.loadPlayer("Bob");
@@ -1084,10 +1084,10 @@ class GameLogicTest {
     Game game = gameLogic.loadGame(gameId);
     gameLogic.moveTo("f2", "f3", game);
 
-    //Act
+    // Act
     String fen = gameLogic.getFENNotation(game);
 
-    //Assert
+    // Assert
     assertThat(fen).isEqualTo("rnbqkbnr/pppppppp/8/8/8/5P2/PPPPP1PP/RNBQKBNR b 1");
   }
 
@@ -1130,11 +1130,11 @@ class GameLogicTest {
     Position blackPawnPosition = new Position(2, 2);
     Position whitePawnPosition = new Position(1, 1);
     List<Position> expectedPossibleMoves = new ArrayList<>();
-    expectedPossibleMoves.add(new Position(2,1));
-    expectedPossibleMoves.add(new Position(3,1));
-    expectedPossibleMoves.add(new Position(2,2));
+    expectedPossibleMoves.add(new Position(2, 1));
+    expectedPossibleMoves.add(new Position(3, 1));
+    expectedPossibleMoves.add(new Position(2, 2));
     List<Position> expectedCaptureMoves = new ArrayList<>();
-    expectedCaptureMoves.add(new Position(2,2));
+    expectedCaptureMoves.add(new Position(2, 2));
 
     Piece whiteKing = new King(Color.WHITE, whiteKingPosition, game.getBoard());
     Piece blackKing = new King(Color.BLACK, blackKingPosition, game.getBoard());
@@ -1146,13 +1146,12 @@ class GameLogicTest {
     game.getBoard().setPieceAtPosition(blackPawnPosition, blackPawn);
     game.getBoard().setPieceAtPosition(whitePawnPosition, whitePawn);
 
-    //Act
+    // Act
     List<Position> actualPossibleMoves = gameLogic.getPossibleMoves("b2", game);
-    List<Position> actualCapturedMoves = gameLogic.getCaptureMoves("b2", expectedPossibleMoves, game);
-    //Assert
+    List<Position> actualCapturedMoves =
+        gameLogic.getCaptureMoves("b2", expectedPossibleMoves, game);
+    // Assert
     assertThat(actualPossibleMoves).isEqualTo(expectedPossibleMoves);
     assertThat(actualCapturedMoves).isEqualTo(expectedCaptureMoves);
-    
-    
   }
 }
