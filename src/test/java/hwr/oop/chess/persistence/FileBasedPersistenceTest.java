@@ -28,16 +28,15 @@ class FileBasedPersistenceTest {
   void setUp() {
     file = new File(TEST_FILE_PATH);
     Path path = file.toPath();
-    instUT = new FileBasedPersistence(path,path);
+    instUT = new FileBasedPersistence(path, path);
   }
 
   @AfterEach
   void tearDown() {
     File newFile = new File(TEST_FILE_PATH);
     if (newFile.exists() && !newFile.delete()) {
-        throw new RuntimeException("Deleting the file was unsuccessful.");
-      }
-
+      throw new RuntimeException("Deleting the file was unsuccessful.");
+    }
   }
 
   @Test

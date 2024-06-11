@@ -87,7 +87,8 @@ public class Knight implements Piece, Serializable {
   public List<Position> visiblePositions() {
     List<Position> visiblePositions = new ArrayList<>();
 
-    List<List<Integer>> moveOffsets = Arrays.asList(
+    List<List<Integer>> moveOffsets =
+        Arrays.asList(
             Arrays.asList(2, 1),
             Arrays.asList(2, -1),
             Arrays.asList(-2, 1),
@@ -95,8 +96,7 @@ public class Knight implements Piece, Serializable {
             Arrays.asList(1, 2),
             Arrays.asList(1, -2),
             Arrays.asList(-1, 2),
-            Arrays.asList(-1, -2)
-    );
+            Arrays.asList(-1, -2));
     int currentRow = position.row();
     int currentCol = position.column();
 

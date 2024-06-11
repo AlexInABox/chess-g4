@@ -92,7 +92,7 @@ public class Game implements Serializable {
     this.playerBlack = playerBlack;
   }
 
-  private StringBuilder buildFENPositionsFromBoard(){
+  private StringBuilder buildFENPositionsFromBoard() {
     StringBuilder fen = new StringBuilder();
     for (int row = 7; row >= 0; row--) {
       int emptyCount = 0;
@@ -117,6 +117,7 @@ public class Game implements Serializable {
     }
     return fen;
   }
+
   public ChessBoard getBoard() {
     return board;
   }
@@ -148,15 +149,16 @@ public class Game implements Serializable {
     };
   }
 
-  private List<String> getPartsFromFEN(String fenNotation){
+  private List<String> getPartsFromFEN(String fenNotation) {
     List<String> parts = List.of(fenNotation.split(" "));
     if (parts.size() < 2) {
       throw new FENException(
-              "Invalid FEN format: expected at least 2 parts (board layout and active color)");
+          "Invalid FEN format: expected at least 2 parts (board layout and active color)");
     }
     return parts;
   }
-  private List<String> getRowsFromFEN(List<String> parts){
+
+  private List<String> getRowsFromFEN(List<String> parts) {
     List<String> rows = List.of(parts.getFirst().split("/"));
     if (rows.size() != 8) {
       throw new FENException("Invalid FEN format: 8 rows expected");
@@ -164,13 +166,14 @@ public class Game implements Serializable {
     return rows;
   }
 
-  private void setActiveColorFromFEN(String activeColor){
+  private void setActiveColorFromFEN(String activeColor) {
     if (activeColor.equals("w")) {
       nextToMove = Color.WHITE;
     } else {
       nextToMove = Color.BLACK;
     }
   }
+
   public ChessBoard convertFENToBoard(String fenNotation) throws FENException {
     ChessBoard newBoard = new ChessBoard();
     newBoard.clearChessboard();
@@ -223,8 +226,7 @@ public class Game implements Serializable {
 
   @Override
   public int hashCode() {
-    return Objects.hash(
-        id, playerWhite, playerBlack, board, nextToMove, moveCount, gameEnded);
+    return Objects.hash(id, playerWhite, playerBlack, board, nextToMove, moveCount, gameEnded);
   }
 
   @Override

@@ -21,8 +21,10 @@ public class ChessCli {
 
   private static final String INVALID_COMMAND = "Oops... Invalid command.";
   private static final String GAME_WITH_ID = "Game with ID ";
-  private static final String GAME_ALREADY_EXISTS = "The game already exists. Please use another game ID!";
-  private static final String GAME_NOT_EXIST = "The game does not exist. Please create this game first!";
+  private static final String GAME_ALREADY_EXISTS =
+      "The game already exists. Please use another game ID!";
+  private static final String GAME_NOT_EXIST =
+      "The game does not exist. Please create this game first!";
   public static final String ANSI_GREEN = "\u001B[32m";
   public static final String ANSI_RED = "\u001B[31m";
   private static final String ANSI_RESET = "\u001B[0m ";
@@ -211,7 +213,7 @@ public class ChessCli {
     }
   }
 
-  private void startGame (String playerWhiteName, String playerBlackName, String gameID) {
+  private void startGame(String playerWhiteName, String playerBlackName, String gameID) {
     try {
       Player playerWhite = gameLogic.loadPlayer(playerWhiteName);
       Player playerBlack = gameLogic.loadPlayer(playerBlackName);
@@ -228,7 +230,7 @@ public class ChessCli {
     }
   }
 
-  private void loadGame (String gameID) {
+  private void loadGame(String gameID) {
     try {
       loadCurrentGameIfNecessary(gameID);
       out.println("Loading game with ID: " + gameID);
@@ -241,7 +243,7 @@ public class ChessCli {
     }
   }
 
-  private void movePiece (String from, String to, String gameID) {
+  private void movePiece(String from, String to, String gameID) {
     try {
       loadCurrentGameIfNecessary(gameID);
       boolean isCheckMate = gameLogic.moveTo(from, to, currentGame);
@@ -266,8 +268,16 @@ public class ChessCli {
       List<Position> possibleMoves = gameLogic.getPossibleMoves(from, currentGame);
       List<Position> captureMoves = gameLogic.getCaptureMoves(from, possibleMoves, currentGame);
       possibleMoves.removeAll(captureMoves);
-      out.println("Possible moves for piece at position " + from + ": " + possibleMovesToString(possibleMoves));
-      out.println("Capture moves for piece at position " + from + ": " + possibleMovesToString(captureMoves));
+      out.println(
+          "Possible moves for piece at position "
+              + from
+              + ": "
+              + possibleMovesToString(possibleMoves));
+      out.println(
+          "Capture moves for piece at position "
+              + from
+              + ": "
+              + possibleMovesToString(captureMoves));
       printChessboardHighlighted(gameID, possibleMoves, captureMoves);
     } catch (GameNotFoundException e) {
       out.println(GAME_NOT_EXIST);
@@ -276,20 +286,21 @@ public class ChessCli {
   }
 
   private void promotePawn(String from, String desiredType, String gameID) {
-     try {
-       loadCurrentGameIfNecessary(gameID);
-       gameLogic.promotePiece(currentGame, from, desiredType);
-       out.println("Promoting pawn in game " + gameID + " from Position " + from + " to a " + desiredType);
-       printChessboard(gameID);
-     } catch (GameNotFoundException e) {
-       out.println(GAME_NOT_EXIST);
-       out.println(e.getMessage());
-     } catch (IllegalPromotionException e) {
-       out.println(e.getMessage());
-     }
+    try {
+      loadCurrentGameIfNecessary(gameID);
+      gameLogic.promotePiece(currentGame, from, desiredType);
+      out.println(
+          "Promoting pawn in game " + gameID + " from Position " + from + " to a " + desiredType);
+      printChessboard(gameID);
+    } catch (GameNotFoundException e) {
+      out.println(GAME_NOT_EXIST);
+      out.println(e.getMessage());
+    } catch (IllegalPromotionException e) {
+      out.println(e.getMessage());
+    }
   }
 
-  private void resign (String gameID) {
+  private void resign(String gameID) {
     try {
       loadCurrentGameIfNecessary(gameID);
       gameLogic.resign(currentGame);
@@ -300,7 +311,7 @@ public class ChessCli {
     }
   }
 
-  private void offerRemi (String gameID) {
+  private void offerRemi(String gameID) {
     try {
       loadCurrentGameIfNecessary(gameID);
       gameLogic.offerRemi(currentGame);
@@ -311,7 +322,7 @@ public class ChessCli {
     }
   }
 
-  private void acceptRemi (String gameID) {
+  private void acceptRemi(String gameID) {
     try {
       loadCurrentGameIfNecessary(gameID);
       gameLogic.acceptRemi(currentGame);
@@ -335,7 +346,8 @@ public class ChessCli {
     printChessboardHighlighted(gameID, new ArrayList<>(), new ArrayList<>());
   }
 
-  public void printChessboardHighlighted(String gameID, List<Position> highlightPositions, List<Position> capturePositions) {
+  public void printChessboardHighlighted(
+      String gameID, List<Position> highlightPositions, List<Position> capturePositions) {
     try {
       loadCurrentGameIfNecessary(gameID);
       out.println("    a b c d e f g h\n    ---------------");
@@ -351,7 +363,8 @@ public class ChessCli {
     }
   }
 
-  public void printChessboardRowWithHighlights(int row, List<Position> highlightPositions, List<Position> capturePositions) {
+  public void printChessboardRowWithHighlights(
+      int row, List<Position> highlightPositions, List<Position> capturePositions) {
     for (int column = 0; column < 8; column++) {
       Position pos = new Position(row, column);
       Piece piece = currentGame.getBoard().getBoard().get(row).get(column);

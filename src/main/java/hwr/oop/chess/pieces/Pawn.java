@@ -83,10 +83,9 @@ public class Pawn implements Piece, Serializable {
       }
     }
 
-    List<List<Integer>> captureOffsets = Arrays.asList(
-            Arrays.asList(direction, 1),
-            Arrays.asList(direction, -1)
-    );    for (List<Integer> offset : captureOffsets) {
+    List<List<Integer>> captureOffsets =
+        Arrays.asList(Arrays.asList(direction, 1), Arrays.asList(direction, -1));
+    for (List<Integer> offset : captureOffsets) {
       int newRow = position.row() + offset.get(0);
       int newCol = position.column() + offset.get(1);
       Position capturePosition = new Position(newRow, newCol);

@@ -85,13 +85,13 @@ public class GameLogic implements Domain {
   }
 
   @Override
-  public void promotePiece(Game game, String positionString, String type){
+  public void promotePiece(Game game, String positionString, String type) {
     Position position = convertInputToPosition(positionString);
     Piece currentPiece = game.getBoard().getPieceAtPosition(position);
-    if(currentPiece == null){
+    if (currentPiece == null) {
       throw new IllegalPromotionException("Promotion is not allowed. No piece at given position.");
     }
-    if(currentPiece.getType() != PieceType.PAWN){
+    if (currentPiece.getType() != PieceType.PAWN) {
       throw new IllegalPromotionException("Promotion is not allowed. You can only promote pawns");
     }
 
@@ -102,7 +102,9 @@ public class GameLogic implements Domain {
       case "B" -> newPiece = new Bishop(currentPiece.getColor(), position, game.getBoard());
       case "R" -> newPiece = new Rook(currentPiece.getColor(), position, game.getBoard());
       case "Q" -> newPiece = new Queen(currentPiece.getColor(), position, game.getBoard());
-      default -> throw new IllegalPromotionException("Promotion is not allowed: The specified type is invalid. Valid promotion types are 'Queen', 'Rook', 'Bishop', or 'Knight'.");
+      default ->
+          throw new IllegalPromotionException(
+              "Promotion is not allowed: The specified type is invalid. Valid promotion types are 'Queen', 'Rook', 'Bishop', or 'Knight'.");
     }
     game.getBoard().promoteTo(position, newPiece);
     saveGame(game);
@@ -138,7 +140,7 @@ public class GameLogic implements Domain {
     List<Position> possibleMoves = currentPiece.possibleMoves();
     if (!possibleMoves.contains(newPosition)) {
 
-      if (game.getBoard().getKingOfColor(game.getNextToMove()).isInCheck()){
+      if (game.getBoard().getKingOfColor(game.getNextToMove()).isInCheck()) {
         throw new IllegalMoveBecauseKingIsInCheckException();
       }
       String firstTwoPossibleMoves =
@@ -154,11 +156,11 @@ public class GameLogic implements Domain {
     game.offerRemi(false);
     game.toggleNextToMove();
     saveGame(game);
-    if(game.getBoard().isCheckMate()){
-      if(game.getNextToMove() == Color.WHITE){
+    if (game.getBoard().isCheckMate()) {
+      if (game.getNextToMove() == Color.WHITE) {
         game.declareWinner(GameOutcome.BLACK);
 
-      }else{
+      } else {
         game.declareWinner(GameOutcome.WHITE);
       }
       return true;
@@ -190,7 +192,6 @@ public class GameLogic implements Domain {
     }
     return captureMoves;
   }
-
 
   @Override
   public void offerRemi(Game game) {
@@ -274,7 +275,8 @@ public class GameLogic implements Domain {
                   + playerBlack.getElo()
                   + ")";
       case NOT_FINISHED_YET -> {
-        // this case is already checked (throws GameHasNotEndedException) within calculateAndSetEloForBothPlayers()
+        // this case is already checked (throws GameHasNotEndedException) within
+        // calculateAndSetEloForBothPlayers()
       }
     }
     deleteGame(game.getId());

@@ -105,14 +105,18 @@ class ChessBoardTest {
     Position position_tooLowAll = new Position(-1, -1);
     Position position_tooHighAll = new Position(8, 8);
 
-    assertThat(testBoard.isValidPosition(position_inBounds.row(), position_inBounds.column())).isTrue();
+    assertThat(testBoard.isValidPosition(position_inBounds.row(), position_inBounds.column()))
+        .isTrue();
     assertThat(testBoard.isValidPosition(position_tooLowRow.row(), position_tooLowRow.column()))
         .isFalse();
     assertThat(testBoard.isValidPosition(position_tooHighRow.row(), position_tooHighRow.column()))
         .isFalse();
-    assertThat(testBoard.isValidPosition(position_tooLowColumn.row(), position_tooLowColumn.column()))
+    assertThat(
+            testBoard.isValidPosition(position_tooLowColumn.row(), position_tooLowColumn.column()))
         .isFalse();
-    assertThat(testBoard.isValidPosition(position_tooHighColumn.row(), position_tooHighColumn.column()))
+    assertThat(
+            testBoard.isValidPosition(
+                position_tooHighColumn.row(), position_tooHighColumn.column()))
         .isFalse();
     assertThat(testBoard.isValidPosition(position_tooLowAll.row(), position_tooLowAll.column()))
         .isFalse();

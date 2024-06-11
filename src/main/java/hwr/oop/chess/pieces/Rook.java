@@ -88,12 +88,9 @@ public class Rook implements Piece, Serializable {
   public List<Position> visiblePositions() {
     List<Position> visiblePositions = new ArrayList<>();
 
-    List<List<Integer>> directions = Arrays.asList(
-            Arrays.asList(1, 0),
-            Arrays.asList(-1, 0),
-            Arrays.asList(0, 1),
-            Arrays.asList(0, -1)
-    );
+    List<List<Integer>> directions =
+        Arrays.asList(
+            Arrays.asList(1, 0), Arrays.asList(-1, 0), Arrays.asList(0, 1), Arrays.asList(0, -1));
     for (List<Integer> direction : directions) {
       int newRow = position.row();
       int newCol = position.column();
