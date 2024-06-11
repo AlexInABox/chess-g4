@@ -88,10 +88,8 @@ public class Pawn implements Piece, Serializable {
   }
 
   private void addCaptureMoves(List<Position> possibleMoves, int direction) {
-    List<List<Integer>> captureOffsets = Arrays.asList(
-            Arrays.asList(direction, 1),
-            Arrays.asList(direction, -1)
-    );
+    List<List<Integer>> captureOffsets =
+        Arrays.asList(Arrays.asList(direction, 1), Arrays.asList(direction, -1));
 
     for (List<Integer> offset : captureOffsets) {
       int newRow = position.row() + offset.get(0);
@@ -108,17 +106,16 @@ public class Pawn implements Piece, Serializable {
 
   private boolean isValidMove(Position position) {
     return chessBoard.isValidPosition(position.row(), position.column())
-            && chessBoard.getPieceAtPosition(position) == null
-            && wouldKingBeNOTInCheckAfterMoveTo(position);
+        && chessBoard.getPieceAtPosition(position) == null
+        && wouldKingBeNOTInCheckAfterMoveTo(position);
   }
 
   private boolean canCapturePiece(Piece piece, Position position) {
     return piece != null
-            && piece.getColor() != color
-            && piece.getType() != PieceType.KING
-            && wouldKingBeNOTInCheckAfterMoveTo(position);
+        && piece.getColor() != color
+        && piece.getType() != PieceType.KING
+        && wouldKingBeNOTInCheckAfterMoveTo(position);
   }
-
 
   private boolean wouldKingBeNOTInCheckAfterMoveTo(Position target) {
     Piece pieceAtTarget = chessBoard.getPieceAtPosition(target);
