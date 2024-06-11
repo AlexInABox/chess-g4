@@ -68,16 +68,14 @@ public class Bishop implements Piece, Serializable {
     for (Position visiblePosition : visiblePositions) {
       Piece pieceAtVisiblePosition = chessBoard.getPieceAtPosition(visiblePosition);
 
-      if (pieceAtVisiblePosition == null && !wouldKingBeInCheckAfterMoveTo(visiblePosition)) {
-        possibleMoves.add(visiblePosition);
-        continue;
-      }
-
-      if (pieceAtVisiblePosition != null) {
-        if (pieceAtVisiblePosition.getType() == PieceType.KING) continue;
-        if (pieceAtVisiblePosition.getColor() == color) continue;
-
+      if (pieceAtVisiblePosition == null) {
         if (!wouldKingBeInCheckAfterMoveTo(visiblePosition)) {
+          possibleMoves.add(visiblePosition);
+        }
+      } else {
+        if (pieceAtVisiblePosition.getType() != PieceType.KING
+                && pieceAtVisiblePosition.getColor() != color
+                && !wouldKingBeInCheckAfterMoveTo(visiblePosition)) {
           possibleMoves.add(visiblePosition);
         }
       }
@@ -85,37 +83,42 @@ public class Bishop implements Piece, Serializable {
     return possibleMoves;
   }
 
+
   public List<Position> visiblePositions() {
     List<Position> visiblePositions = new ArrayList<>();
 
-    List<List<Integer>> directions =
-        Arrays.asList(
-            Arrays.asList(1, 1), Arrays.asList(1, -1), Arrays.asList(-1, 1), Arrays.asList(-1, -1));
+    List<List<Integer>> directions = Arrays.asList(
+            Arrays.asList(1, 1),
+            Arrays.asList(1, -1),
+            Arrays.asList(-1, 1),
+            Arrays.asList(-1, -1)
+    );
 
     for (List<Integer> direction : directions) {
       int newRow = position.row();
       int newCol = position.column();
 
-      while (true) {
+      boolean valid = true;
+      while (valid) {
         newRow += direction.get(0);
         newCol += direction.get(1);
 
-        if (!chessBoard.isValidPosition(newRow, newCol)) {
-          break;
-        }
+        valid = chessBoard.isValidPosition(newRow, newCol);
+        if (valid) {
+          Position newPosition = new Position(newRow, newCol);
+          visiblePositions.add(newPosition);
+          Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
 
-        Position newPosition = new Position(newRow, newCol);
-        Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);
-
-        visiblePositions.add(newPosition);
-        if (pieceAtNewPosition != null) {
-          break;
+          if (pieceAtNewPosition != null) {
+            valid = false; // Exit the loop as there's a piece in the way
+          }
         }
       }
     }
 
     return visiblePositions;
   }
+
 
   private boolean wouldKingBeInCheckAfterMoveTo(Position target) {
     Piece pieceAtTarget = chessBoard.getPieceAtPosition(target);
