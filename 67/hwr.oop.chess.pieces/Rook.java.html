@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+
+
+<h1>Rook.java</h1>
+
+<table class="src">
+
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_1'/>
+1
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_1'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>package hwr.oop.chess.pieces;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_2'/>
+2
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_2'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_3'/>
+3
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_3'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import hwr.oop.chess.Color;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_4'/>
+4
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_4'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import hwr.oop.chess.Position;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_5'/>
+5
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_5'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import hwr.oop.chess.board.ChessBoard;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_6'/>
+6
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_6'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_7'/>
+7
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_7'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.io.Serializable;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_8'/>
+8
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_8'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.ArrayList;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_9'/>
+9
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_9'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Arrays;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_10'/>
+10
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_10'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.List;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_11'/>
+11
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_11'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>import java.util.Objects;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_12'/>
+12
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_12'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_13'/>
+13
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_13'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>public class Rook implements Piece, Serializable {</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_14'/>
+14
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_14'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  private final Color color;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_15'/>
+15
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_15'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  private final ChessBoard chessBoard;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_16'/>
+16
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_16'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  private final char symbol;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_17'/>
+17
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_17'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  private Position position;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_18'/>
+18
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_18'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_19'/>
+19
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_19'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>  public Rook(Color color, Position position, ChessBoard chessBoard) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_20'/>
+20
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_20'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    this.color = color;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_21'/>
+21
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_21'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    this.position = position;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_22'/>
+22
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_22'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    this.chessBoard = chessBoard;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_23'/>
+23
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_23'>1</a>
+<span>
+1. &#60;init&#62; : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    this.symbol = color == Color.WHITE ? &#39;R&#39; : &#39;r&#39;;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_24'/>
+24
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_24'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_25'/>
+25
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_25'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_26'/>
+26
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_26'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_27'/>
+27
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_27'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public Color getColor() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_28'/>
+28
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_28'>1</a>
+<span>
+1. getColor : replaced return value with null for hwr/oop/chess/pieces/Rook::getColor &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    return color;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_29'/>
+29
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_29'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_30'/>
+30
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_30'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_31'/>
+31
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_31'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_32'/>
+32
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_32'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public Position getPosition() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_33'/>
+33
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_33'>1</a>
+<span>
+1. getPosition : replaced return value with null for hwr/oop/chess/pieces/Rook::getPosition &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    return position;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_34'/>
+34
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_34'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_35'/>
+35
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_35'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_36'/>
+36
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_36'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_37'/>
+37
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_37'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public void setPosition(Position target) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_38'/>
+38
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_38'>1</a>
+<span>
+1. setPosition : removed call to hwr/oop/chess/board/ChessBoard::setPieceAtPosition &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    chessBoard.setPieceAtPosition(position, null);</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_39'/>
+39
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_39'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    this.position = target;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_40'/>
+40
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_40'>1</a>
+<span>
+1. setPosition : removed call to hwr/oop/chess/board/ChessBoard::setPieceAtPosition &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    chessBoard.setPieceAtPosition(target, this);</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_41'/>
+41
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_41'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_42'/>
+42
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_42'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_43'/>
+43
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_43'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_44'/>
+44
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_44'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public char getSymbol() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_45'/>
+45
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_45'>1</a>
+<span>
+1. getSymbol : replaced char return with 0 for hwr/oop/chess/pieces/Rook::getSymbol &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    return symbol;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_46'/>
+46
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_46'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_47'/>
+47
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_47'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_48'/>
+48
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_48'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_49'/>
+49
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_49'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public PieceType getType() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_50'/>
+50
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_50'>1</a>
+<span>
+1. getType : replaced return value with null for hwr/oop/chess/pieces/Rook::getType &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    return PieceType.ROOK;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_51'/>
+51
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_51'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_52'/>
+52
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_52'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_53'/>
+53
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_53'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_54'/>
+54
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_54'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public void moveTo(Position target) throws IllegalMoveException {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_55'/>
+55
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_55'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    List&#60;Position&#62; possibleMoves = possibleMoves();</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_56'/>
+56
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_56'>1</a>
+<span>
+1. moveTo : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    if (possibleMoves.contains(target)) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_57'/>
+57
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_57'>1</a>
+<span>
+1. moveTo : removed call to hwr/oop/chess/pieces/Rook::setPosition &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>      setPosition(target);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_58'/>
+58
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_58'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    } else {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_59'/>
+59
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_59'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>      throw new IllegalMoveException(&#34;Illegal move&#34;);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_60'/>
+60
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_60'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_61'/>
+61
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_61'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_62'/>
+62
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_62'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_63'/>
+63
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_63'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_64'/>
+64
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_64'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public List&#60;Position&#62; possibleMoves() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_65'/>
+65
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_65'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    List&#60;Position&#62; possibleMoves = new ArrayList&#60;&#62;();</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_66'/>
+66
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_66'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    List&#60;Position&#62; visiblePositions = visiblePositions();</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_67'/>
+67
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_67'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_68'/>
+68
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_68'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    for (Position visiblePosition : visiblePositions) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_69'/>
+69
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_69'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>      Piece pieceAtVisiblePosition = chessBoard.getPieceAtPosition(visiblePosition);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_70'/>
+70
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_70'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_71'/>
+71
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_71'>2</a>
+<span>
+1. possibleMoves : negated conditional &rarr; KILLED<br/>
+2. possibleMoves : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>      if (pieceAtVisiblePosition == null &#38;&#38; !wouldKingBeInCheckAfterMoveTo(visiblePosition)) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_72'/>
+72
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_72'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        possibleMoves.add(visiblePosition);</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_73'/>
+73
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_73'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        continue;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_74'/>
+74
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_74'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>      }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_75'/>
+75
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_75'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_76'/>
+76
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_76'>1</a>
+<span>
+1. possibleMoves : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>      if (pieceAtVisiblePosition != null) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_77'/>
+77
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_77'>1</a>
+<span>
+1. possibleMoves : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (pieceAtVisiblePosition.getType() == PieceType.KING) continue;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_78'/>
+78
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_78'>1</a>
+<span>
+1. possibleMoves : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (pieceAtVisiblePosition.getColor() == color) continue;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_79'/>
+79
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_79'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_80'/>
+80
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_80'>1</a>
+<span>
+1. possibleMoves : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (!wouldKingBeInCheckAfterMoveTo(visiblePosition)) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_81'/>
+81
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_81'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>          possibleMoves.add(visiblePosition);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_82'/>
+82
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_82'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_83'/>
+83
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_83'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>      }</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_84'/>
+84
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_84'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_85'/>
+85
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_85'>1</a>
+<span>
+1. possibleMoves : replaced return value with Collections.emptyList for hwr/oop/chess/pieces/Rook::possibleMoves &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    return possibleMoves;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_86'/>
+86
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_86'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_87'/>
+87
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_87'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_88'/>
+88
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_88'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public List&#60;Position&#62; visiblePositions() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_89'/>
+89
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_89'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    List&#60;Position&#62; visiblePositions = new ArrayList&#60;&#62;();</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_90'/>
+90
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_90'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_91'/>
+91
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_91'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    List&#60;List&#60;Integer&#62;&#62; directions =</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_92'/>
+92
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_92'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        Arrays.asList(</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_93'/>
+93
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_93'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>            Arrays.asList(1, 0), Arrays.asList(-1, 0), Arrays.asList(0, 1), Arrays.asList(0, -1));</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_94'/>
+94
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_94'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    for (List&#60;Integer&#62; direction : directions) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_95'/>
+95
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_95'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>      int newRow = position.row();</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_96'/>
+96
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_96'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>      int newCol = position.column();</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_97'/>
+97
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_97'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_98'/>
+98
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_98'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>      while (true) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_99'/>
+99
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_99'>1</a>
+<span>
+1. visiblePositions : Replaced integer addition with subtraction &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        newRow += direction.get(0);</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_100'/>
+100
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_100'>1</a>
+<span>
+1. visiblePositions : Replaced integer addition with subtraction &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        newCol += direction.get(1);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_101'/>
+101
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_101'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_102'/>
+102
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_102'>1</a>
+<span>
+1. visiblePositions : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (!chessBoard.isValidPosition(newRow, newCol)) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_103'/>
+103
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_103'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>          break;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_104'/>
+104
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_104'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_105'/>
+105
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_105'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_106'/>
+106
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_106'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        Position newPosition = new Position(newRow, newCol);</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_107'/>
+107
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_107'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        Piece pieceAtNewPosition = chessBoard.getPieceAtPosition(newPosition);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_108'/>
+108
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_108'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_109'/>
+109
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_109'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>        visiblePositions.add(newPosition);</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_110'/>
+110
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_110'>1</a>
+<span>
+1. visiblePositions : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>        if (pieceAtNewPosition != null) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_111'/>
+111
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_111'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>          break;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_112'/>
+112
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_112'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>        }</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_113'/>
+113
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_113'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>      }</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_114'/>
+114
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_114'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_115'/>
+115
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_115'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_116'/>
+116
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_116'>1</a>
+<span>
+1. visiblePositions : replaced return value with Collections.emptyList for hwr/oop/chess/pieces/Rook::visiblePositions &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    return visiblePositions;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_117'/>
+117
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_117'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_118'/>
+118
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_118'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_119'/>
+119
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_119'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  private boolean wouldKingBeInCheckAfterMoveTo(Position target) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_120'/>
+120
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_120'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    Piece pieceAtTarget = chessBoard.getPieceAtPosition(target);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_121'/>
+121
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_121'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_122'/>
+122
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_122'>1</a>
+<span>
+1. wouldKingBeInCheckAfterMoveTo : removed call to hwr/oop/chess/board/ChessBoard::setPieceAtPosition &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    chessBoard.setPieceAtPosition(position, null);</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_123'/>
+123
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_123'>1</a>
+<span>
+1. wouldKingBeInCheckAfterMoveTo : removed call to hwr/oop/chess/board/ChessBoard::setPieceAtPosition &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    chessBoard.setPieceAtPosition(target, this);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_124'/>
+124
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_124'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_125'/>
+125
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_125'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    boolean isKingInCheckNow = chessBoard.getKingOfColor(color).isInCheck();</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_126'/>
+126
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_126'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_127'/>
+127
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_127'>1</a>
+<span>
+1. wouldKingBeInCheckAfterMoveTo : removed call to hwr/oop/chess/board/ChessBoard::setPieceAtPosition &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    chessBoard.setPieceAtPosition(target, pieceAtTarget);</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_128'/>
+128
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_128'>1</a>
+<span>
+1. wouldKingBeInCheckAfterMoveTo : removed call to hwr/oop/chess/board/ChessBoard::setPieceAtPosition &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    chessBoard.setPieceAtPosition(position, this);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_129'/>
+129
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_129'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_130'/>
+130
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_130'>2</a>
+<span>
+1. wouldKingBeInCheckAfterMoveTo : replaced boolean return with true for hwr/oop/chess/pieces/Rook::wouldKingBeInCheckAfterMoveTo &rarr; KILLED<br/>
+2. wouldKingBeInCheckAfterMoveTo : replaced boolean return with false for hwr/oop/chess/pieces/Rook::wouldKingBeInCheckAfterMoveTo &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    return isKingInCheckNow;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_131'/>
+131
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_131'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_132'/>
+132
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_132'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_133'/>
+133
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_133'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_134'/>
+134
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_134'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public boolean equals(Object o) {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_135'/>
+135
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_135'>2</a>
+<span>
+1. equals : negated conditional &rarr; KILLED<br/>
+2. equals : replaced boolean return with false for hwr/oop/chess/pieces/Rook::equals &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    if (this == o) return true;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_136'/>
+136
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_136'>3</a>
+<span>
+1. equals : replaced boolean return with true for hwr/oop/chess/pieces/Rook::equals &rarr; KILLED<br/>
+2. equals : negated conditional &rarr; KILLED<br/>
+3. equals : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    if (o == null || getClass() != o.getClass()) return false;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_137'/>
+137
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_137'></a>
+<span>
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class=''>    Rook rook = (Rook) o;</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_138'/>
+138
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_138'>4</a>
+<span>
+1. equals : negated conditional &rarr; KILLED<br/>
+2. equals : replaced boolean return with true for hwr/oop/chess/pieces/Rook::equals &rarr; KILLED<br/>
+3. equals : negated conditional &rarr; KILLED<br/>
+4. equals : negated conditional &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    return symbol == rook.symbol &#38;&#38; color == rook.color &#38;&#38; Objects.equals(position, rook.position);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_139'/>
+139
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_139'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_140'/>
+140
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_140'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_141'/>
+141
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_141'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_142'/>
+142
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_142'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public int hashCode() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_143'/>
+143
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_143'>1</a>
+<span>
+1. hashCode : replaced int return with 0 for hwr/oop/chess/pieces/Rook::hashCode &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    return Objects.hash(color, position, symbol);</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_144'/>
+144
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_144'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_145'/>
+145
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_145'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''></span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_146'/>
+146
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_146'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  @Override</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_147'/>
+147
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_147'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  public String toString() {</span></pre></td></tr>
+
+
+<tr>
+<td class='covered'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_148'/>
+148
+</td>
+<td class='killed'>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_148'>1</a>
+<span>
+1. toString : replaced return value with &#34;&#34; for hwr/oop/chess/pieces/Rook::toString &rarr; KILLED<br/>
+
+</span>
+</span>
+</td>
+<td class='covered'><pre><span  class='killed'>    return &#34;Rook{&#34; + &#34;color=&#34; + color + &#34;, position=&#34; + position + &#34;, symbol=&#34; + symbol + &#39;}&#39;;</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_149'/>
+149
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_149'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>  }</span></pre></td></tr>
+
+
+<tr>
+<td class='na'>
+<a name='org.pitest.mutationtest.report.html.SourceFile@5d19197a_150'/>
+150
+</td>
+<td class=''>
+<span class='pop'>
+<a href='#grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_150'></a>
+<span>
+</span>
+</span>
+</td>
+<td class=''><pre><span  class=''>}</span></pre></td></tr>
+
+
+
+<tr><td></td><td></td><td><h2>Mutations</h2></td></tr>
+
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_23'>23</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_23'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>&#60;init&#62;<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testToString()]</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_28'>28</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_28'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getColor<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testBlackRookConstructor()]</span></span> replaced return value with null for hwr/oop/chess/pieces/Rook::getColor &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_33'>33</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_33'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getPosition<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testBlackRookConstructor()]</span></span> replaced return value with null for hwr/oop/chess/pieces/Rook::getPosition &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_38'>38</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_38'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>setPosition<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testPieceSetPosition()]</span></span> removed call to hwr/oop/chess/board/ChessBoard::setPieceAtPosition &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_40'>40</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_40'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>setPosition<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testPieceSetPosition()]</span></span> removed call to hwr/oop/chess/board/ChessBoard::setPieceAtPosition &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_45'>45</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_45'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getSymbol<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testBlackRookConstructor()]</span></span> replaced char return with 0 for hwr/oop/chess/pieces/Rook::getSymbol &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_50'>50</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_50'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>getType<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:getType()]</span></span> replaced return value with null for hwr/oop/chess/pieces/Rook::getType &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_56'>56</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_56'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>moveTo<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookMove_failObstacle()]</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_57'>57</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_57'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>moveTo<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookBlockCheck_successful()]</span></span> removed call to hwr/oop/chess/pieces/Rook::setPosition &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_71'>71</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_71'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>possibleMoves<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookTakeFriendlyKing_fail()]</span></span> negated conditional &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>possibleMoves<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookBlockCheck_successful()]</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_76'>76</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_76'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>possibleMoves<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookBlockCheck_successful()]</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_77'>77</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_77'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>possibleMoves<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookTakeEnemyKing_fail()]</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_78'>78</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_78'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>possibleMoves<br/><b>Killed by : </b>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testMoveTo_InvalidMove_BlockingPieceInPath()]</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_80'>80</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_80'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>possibleMoves<br/><b>Killed by : </b>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testMoveTo_InvalidMove_BlockingPieceInPath()]</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_85'>85</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_85'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>possibleMoves<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookMove_successful()]</span></span> replaced return value with Collections.emptyList for hwr/oop/chess/pieces/Rook::possibleMoves &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_99'>99</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_99'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>visiblePositions<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookPossibleMovesMutationInList_successful()]</span></span> Replaced integer addition with subtraction &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_100'>100</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_100'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>visiblePositions<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookPossibleMovesMutationInList_successful()]</span></span> Replaced integer addition with subtraction &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_102'>102</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_102'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>visiblePositions<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookBlockCheck_successful()]</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_110'>110</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_110'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>visiblePositions<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookBlockCheck_successful()]</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_116'>116</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_116'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>visiblePositions<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookBlockCheck_successful()]</span></span> replaced return value with Collections.emptyList for hwr/oop/chess/pieces/Rook::visiblePositions &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_122'>122</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_122'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>wouldKingBeInCheckAfterMoveTo<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookUnblockCheck_fail()]</span></span> removed call to hwr/oop/chess/board/ChessBoard::setPieceAtPosition &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_123'>123</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_123'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>wouldKingBeInCheckAfterMoveTo<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookBlockCheck_successful()]</span></span> removed call to hwr/oop/chess/board/ChessBoard::setPieceAtPosition &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_127'>127</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_127'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>wouldKingBeInCheckAfterMoveTo<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookMove_successful()]</span></span> removed call to hwr/oop/chess/board/ChessBoard::setPieceAtPosition &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_128'>128</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_128'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>wouldKingBeInCheckAfterMoveTo<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookMove_fail()]</span></span> removed call to hwr/oop/chess/board/ChessBoard::setPieceAtPosition &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_130'>130</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_130'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>wouldKingBeInCheckAfterMoveTo<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookBlockCheck_successful()]</span></span> replaced boolean return with true for hwr/oop/chess/pieces/Rook::wouldKingBeInCheckAfterMoveTo &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>wouldKingBeInCheckAfterMoveTo<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookBlockCheck_fail()]</span></span> replaced boolean return with false for hwr/oop/chess/pieces/Rook::wouldKingBeInCheckAfterMoveTo &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_135'>135</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_135'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:equals_InstanceNull()]</span></span> negated conditional &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:equals_sameInstance()]</span></span> replaced boolean return with false for hwr/oop/chess/pieces/Rook::equals &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_136'>136</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_136'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:equals_InstanceNull()]</span></span> replaced boolean return with true for hwr/oop/chess/pieces/Rook::equals &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:equals_DifferentClass()]</span></span> negated conditional &rarr; KILLED</p> <p class='KILLED'><span class='pop'>3.<span><b>3</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:equals_InstanceNull()]</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_138'>138</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_138'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:equals_IdenticalPieces()]</span></span> negated conditional &rarr; KILLED</p> <p class='KILLED'><span class='pop'>2.<span><b>2</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:equals_DifferentRooks()]</span></span> replaced boolean return with true for hwr/oop/chess/pieces/Rook::equals &rarr; KILLED</p> <p class='KILLED'><span class='pop'>3.<span><b>3</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:equals_IdenticalPieces()]</span></span> negated conditional &rarr; KILLED</p> <p class='KILLED'><span class='pop'>4.<span><b>4</b><br/><b>Location : </b>equals<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:equals_IdenticalPieces()]</span></span> negated conditional &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_143'>143</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_143'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>hashCode<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:hashCode_DifferentHashCode()]</span></span> replaced int return with 0 for hwr/oop/chess/pieces/Rook::hashCode &rarr; KILLED</p> 
+</td>
+</tr>
+<tr>
+<td><a href='#org.pitest.mutationtest.report.html.SourceFile@5d19197a_148'>148</a></td> 
+<td></td>
+<td>
+
+<a name='grouporg.pitest.mutationtest.report.html.SourceFile@5d19197a_148'/> 
+
+<p class='KILLED'><span class='pop'>1.<span><b>1</b><br/><b>Location : </b>toString<br/><b>Killed by : </b>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testToString()]</span></span> replaced return value with &#34;&#34; for hwr/oop/chess/pieces/Rook::toString &rarr; KILLED</p> 
+</td>
+</tr>
+
+</table>
+
+
+<h2>Active mutators</h2>
+<ul>
+<li class='mutator'>CONDITIONALS_BOUNDARY</li>
+<li class='mutator'>EMPTY_RETURNS</li>
+<li class='mutator'>FALSE_RETURNS</li>
+<li class='mutator'>INCREMENTS</li>
+<li class='mutator'>INVERT_NEGS</li>
+<li class='mutator'>MATH</li>
+<li class='mutator'>NEGATE_CONDITIONALS</li>
+<li class='mutator'>NULL_RETURNS</li>
+<li class='mutator'>PRIMITIVE_RETURNS</li>
+<li class='mutator'>TRUE_RETURNS</li>
+<li class='mutator'>VOID_METHOD_CALLS</li>
+
+</ul>
+
+<h2>Tests examined</h2>
+<ul>
+<li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookMove_failObstacle()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookBlockCheck_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookTakeFriendlyKing_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookBlockCheck_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookMove_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookMove_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookTakeEnemyKing_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookUnblockCheck_fail()] (0 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testMoveTo_InvalidMove_BlockingPieceInPath()] (4 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testIllegalMoveBecauseKingInCheck()] (17 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testShortestGame()] (20 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testShortGameWhiteWins()] (26 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testRookPossibleMovesMutationInList_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:equals_InstanceNull()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:equals_DifferentClass()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:equals_DifferentPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testKingMove_contestedByRook()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testKingMoveToContestedPositionWhileInLineOfSight_fail()] (1 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:testKnightUnblockCheck_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testKingMove_contestedByBishop()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testKingMove_contestedByQueen()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testPawnUnblockCheck_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:testBishopUnblockCheck_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testKingMove_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testKingMove_contestedByFriendlyRook()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testKingMove_contestedByKing()] (0 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:whiteInCheckMate()] (1 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:noCheckMate()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testKingPossibleMovesMutationInList_successful()] (2 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testKingMove_contestedByFriendlyBishop()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:testKnightMove_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:testKnightTakeFriendlyKing_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:testBishopTake_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:testQueenMove_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:testKnightBlockCheck_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:testKnightBlockCheck_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:testBishopTakeEnemyKing_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testKingMove_fail()] (3 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:testBishopMove_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:testBishopBlockCheck_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:testKnightTake_successful()] (1 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:testKnightMove_fail()] (1 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:testBishopTakeFriendlyKing_fail()] (2 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:testBishopBlockCheck_successful()] (1 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:testKnightTakeEnemyKing_fail()] (1 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:testQueenMoveRestricted_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:testQueenCapture_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testWhitePawnCapture_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:testQueenPossibleMovesMutationInList_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testBlackPawnMove_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:testQueenMoveRestricted_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testPawnMove_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testWhitePawnCapture_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testWhitePawnMove_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testWhitePawnMove_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testKingMove_contestedByFriendlyKing()] (5 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:testQueenBlockCheck_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testBlackPawnMoveDoubleAdvance_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:testBishopPossibleMovesMutationInList_successful()] (3 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testWhitePawnMoveDoubleAdvance_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:testQueenUnblockCheck_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:testQueenBlockCheck_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:testQueenMove_fail()] (1 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:whiteInCheckButNotMate()] (1 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testBlackPawnCapture_fail()] (1 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testBlackPawnCapture_successful()] (0 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:blackInCheckMate()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testPawnPossibleMovesMutationInList_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testPawnBlockCheck_successful()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testPawnBlockCheck_fail()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:testBishopMove_fail()] (5 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:testKnightPossibleMovesMutationInList_successful()] (7 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testShowCaptureMovesCommand()] (0 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testGetPossibleMoves_PieceAtPosition()] (3 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testGetFenNotationAfterOneMove()] (6 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testMoveTo_ValidMove1()] (9 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testMoveToNotCheckMate()] (11 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testOfferRemi_TakeBackAfterMoveTo()] (10 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testMoveTo_InvalidMove_InvalidDirectionForPiece()] (27 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:getType()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testBlackRookConstructor()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testWhiteRookConstructor()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testPieceSetPosition()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:hashCode_IdenticalHashCode()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:hashCode_DifferentPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:hashCode_DifferentHashCode()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:hashCode_IdenticalPieces()] (0 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:hashCode_IdenticalHashCode()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testHashCode_DifferentHashCode()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testHashCode_IdenticalHashCode()] (2 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testToString()] (5 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:hashCode_DifferentHashCode()] (20 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:equals_IdenticalPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:equals_DifferentRooks()] (0 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:equals_IdenticalInstances()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testGetBoard()] (0 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:equals_DifferentInstances()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testEquals_IdenticalInstances()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testEquals_SameAttributes()] (0 ms)</li><li>hwr.oop.chess.persistence.FileBasedPersistenceTest.[engine:junit-jupiter]/[class:hwr.oop.chess.persistence.FileBasedPersistenceTest]/[method:testPersistenceReadWriteGameWithFenNotation()] (2 ms)</li><li>hwr.oop.chess.persistence.FileBasedPersistenceTest.[engine:junit-jupiter]/[class:hwr.oop.chess.persistence.FileBasedPersistenceTest]/[method:testPersistenceReadWriteGame()] (4 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testSaveGame_NewGame()] (3 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testLoadGame_GameFound()] (3 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testSaveGame_AddNewGameWhenNotExists()] (5 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testCreateGame_Successful()] (4 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testSaveGame_OverwriteExistingGame()] (5 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testPromoteBlackPawnToRook()] (4 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testSaveGame_onlyOverwritesOneGame()] (5 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:testInitialBoardSetup()] (625 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:equals_sameInstance()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testToString()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testToStringWithDifferentPosition()] (0 ms)</li><li>hwr.oop.chess.pieces.RookTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.RookTest]/[method:testToStringWithDifferentPieceType()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testEquals_SameInstance()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testIsGameEnded_initiallyFalse()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:equals_sameInstance()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:testToStringWithDifferentPieceType()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:equals_sameInstance()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:getType()] (0 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:equals_sameInstance()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:equals_InstanceNull()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:equals_DifferentClass()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testToStringWithDifferentPieceType()] (0 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:equals_InstanceNull()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:equals_DifferentClass()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:testToString()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:getType()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:testToStringWithDifferentPieceType()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testGetMoveCount_initiallyZero()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:getType()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:equals_sameInstance()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:testToString()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:equals_sameInstance()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:testToStringWithDifferentPosition()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:equals_InstanceNull()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:testToStringWithDifferentPosition()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:equals_InstanceNull()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:equals_InstanceNull()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testToString()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testToStringWithDifferentPieceType()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testToStringWithDifferentPosition()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:equals_InstanceNull()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testToStringWithDifferentPosition()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:getType()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:testToStringWithDifferentPieceType()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:equals_DifferentClass()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:equals_sameInstance()] (1 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testEquals_DifferentClass()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:equals_IdenticalPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:hashCode_IdenticalHashCode()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:equals_DifferentKings()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:equals_IdenticalPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:equals_DifferentClass()] (1 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:equals_IdenticalPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:hashCode_IdenticalHashCode()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testWhitePawnConstructor()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:hashCode_DifferentPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:equals_DifferentKnights()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:hashCode_DifferentPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:equals_IdenticalPieces()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testEquals_InstanceNull()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:equals_DifferentPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:hashCode_IdenticalPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:hashCode_IdenticalPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testBlackPawnConstructor()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:hashCode_IdenticalHashCode()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:equals_DifferentPawns()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:hashCode_DifferentHashCode()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testOnlyPlayerConstructors()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:equals_DifferentClass()] (1 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:equals_DifferentPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:hashCode_DifferentPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:testToStringWithDifferentPosition()] (1 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:equals_IdenticalPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:testBlackKnightConstructor()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:hashCode_DifferentHashCode()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:equals_DifferentBishops()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:hashCode_IdenticalPieces()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testEquals_DifferentNextToMove()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:equals_DifferentPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:hashCode_DifferentHashCode()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:equals_DifferentPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testBlackKingConstructor()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:hashCode_DifferentPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:equals_DifferentQueens()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testWhiteKingConstructor()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testEquals_DifferentBoard()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testGetMoveCount_afterTogglingNextToMove()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:hashCode_IdenticalPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:hashCode_IdenticalPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:hashCode_IdenticalHashCode()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:hashCode_DifferentHashCode()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:equals_DifferentPieces()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:hashCode_DifferentHashCode()] (1 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testPlayerAndBoardConstructors()] (1 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:testWhiteKnightConstructor()] (1 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:getType()] (2 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:hashCode_IdenticalHashCode()] (1 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:hashCode_DifferentPieces()] (1 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testEquals_DifferentPlayers()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testToString()] (3 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:testWhiteBishopConstructor()] (2 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:getKingOfColorReturnsNull()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testBuildFromFEN_InvalidFEN()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:testPieceSetPosition()] (0 ms)</li><li>hwr.oop.chess.pieces.PawnTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.PawnTest]/[method:testPieceSetPosition()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testToggleNextToMove()] (1 ms)</li><li>hwr.oop.chess.persistence.FileBasedPersistenceTest.[engine:junit-jupiter]/[class:hwr.oop.chess.persistence.FileBasedPersistenceTest]/[method:testPersistenceCannotWriteGame_NotExistingDirectory()] (1 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testPieceSetPosition()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:testPieceSetPosition()] (0 ms)</li><li>hwr.oop.chess.pieces.KnightTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KnightTest]/[method:testPieceSetPosition()] (0 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:testToString()] (4 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:testPromoteBlackPawnToQueen()] (0 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testIsEnemyPiece()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:testBlackQueenConstructor()] (4 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:testPromoteFailWrongRow()] (0 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:testPromoteWhitePawnToQueen()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testBuildFromFEN_InvalidRowCount()] (1 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testToFEN_InitialSetUp()] (0 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:testPromoteFailNotPawn()] (1 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testBuildFromFEN_InvalidPiece()] (0 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:testIsPositionValid()] (1 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testBuildFromFEN_InvalidNumberOfParts()] (5 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testMoveCountInitialization()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testInvalidMoveCountInFEN()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testMoveCountIncrementation()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testPlayerAndFENConstructors()] (1 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testKingMove_contestedByKnight()] (0 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testToFEN_CustomPosition()] (0 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:testPromoteFailNoPiece()] (7 ms)</li><li>hwr.oop.chess.cli.ChessCliTest.[engine:junit-jupiter]/[class:hwr.oop.chess.cli.ChessCliTest]/[method:testThrowsIllegalPromotionException()] (7 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testCreateGame_GameAlreadyExists()] (5 ms)</li><li>hwr.oop.chess.cli.ChessCliTest.[engine:junit-jupiter]/[class:hwr.oop.chess.cli.ChessCliTest]/[method:testLoadCommand()] (3 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testBuildFromFEN_ValidFEN()] (0 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testAcceptRemiWithoutOffering()] (3 ms)</li><li>hwr.oop.chess.game.GameTest.[engine:junit-jupiter]/[class:hwr.oop.chess.game.GameTest]/[method:testMoveCountInFEN()] (0 ms)</li><li>hwr.oop.chess.pieces.KingTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.KingTest]/[method:testKingMove_contestedByPawn()] (0 ms)</li><li>hwr.oop.chess.pieces.QueenTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.QueenTest]/[method:testWhiteQueenConstructor()] (14 ms)</li><li>hwr.oop.chess.cli.ChessCliTest.[engine:junit-jupiter]/[class:hwr.oop.chess.cli.ChessCliTest]/[method:testMovePieceThrowsIllegalMoveException()] (2 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testMoveTo_InvalidMove_NoPieceAtStartPosition()] (2 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testMoveTo_InvalidMove_TargetPositionOutOfBounds()] (4 ms)</li><li>hwr.oop.chess.cli.ChessCliTest.[engine:junit-jupiter]/[class:hwr.oop.chess.cli.ChessCliTest]/[method:createGameCommand()] (6 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testMoveTo_InvalidMove_SameStartAndEndPosition()] (3 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testDeleteGame_GameExists()] (5 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testGetFenNotation()] (2 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testEndGame_DeclareOfferRemi()] (6 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testLoadGame_UpdatePlayers()] (4 ms)</li><li>hwr.oop.chess.cli.ChessCliTest.[engine:junit-jupiter]/[class:hwr.oop.chess.cli.ChessCliTest]/[method:testPromotePawnCommand()] (8 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testPromoteFailNoPiece()] (4 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testMoveTo_InvalidMove_WrongPlayerTurn()] (4 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testPromoteFailNoPawnAtPosition()] (3 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testPromoteBlackPawnToKingInvalid()] (4 ms)</li><li>hwr.oop.chess.cli.ChessCliTest.[engine:junit-jupiter]/[class:hwr.oop.chess.cli.ChessCliTest]/[method:testShowCaptureMovesCommand()] (5 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testEndGame_DeclareWinnerWhite()] (4 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testEndGame_DeclareWinnerBlack()] (5 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testResign_WhitePlayerResigns()] (5 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testPromoteBlackPawnToKnight()] (6 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testResign_BlackPlayerResigns()] (7 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testPromoteBlackPawnToBishop()] (7 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testEndGame_DeclareWinnerRemi()] (8 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testEndGame_DeleteGameAfterEnding()] (10 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testPromoteBlackPawnToQueen()] (6 ms)</li><li>hwr.oop.chess.cli.ChessCliTest.[engine:junit-jupiter]/[class:hwr.oop.chess.cli.ChessCliTest]/[method:testMovePieceCommand()] (9 ms)</li><li>hwr.oop.chess.cli.ChessCliTest.[engine:junit-jupiter]/[class:hwr.oop.chess.cli.ChessCliTest]/[method:testShowMovesCommand()] (21 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testDeleteGame_OnlyDeletesOneGame()] (16 ms)</li><li>hwr.oop.chess.board.ChessBoardTest.[engine:junit-jupiter]/[class:hwr.oop.chess.board.ChessBoardTest]/[method:equals_DifferentClass()] (47 ms)</li><li>hwr.oop.chess.pieces.BishopTest.[engine:junit-jupiter]/[class:hwr.oop.chess.pieces.BishopTest]/[method:testBlackBishopConstructor()] (85 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testGetPossibleMoves_NoPieceAtPosition()] (199 ms)</li><li>hwr.oop.chess.domain.GameLogicTest.[engine:junit-jupiter]/[class:hwr.oop.chess.domain.GameLogicTest]/[method:testAcceptRemi()] (354 ms)</li>
+</ul>
+
+<br/>
+
+Report generated by <a href='https://pitest.org'>PIT</a> 1.15.8
+
+</body>
+</html>
