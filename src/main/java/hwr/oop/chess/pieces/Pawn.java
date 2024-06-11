@@ -109,18 +109,18 @@ public class Pawn implements Piece, Serializable {
   private boolean isValidMove(Position position) {
     return chessBoard.isValidPosition(position.row(), position.column())
             && chessBoard.getPieceAtPosition(position) == null
-            && !wouldKingBeInCheckAfterMoveTo(position);
+            && wouldKingBeNOTInCheckAfterMoveTo(position);
   }
 
   private boolean canCapturePiece(Piece piece, Position position) {
     return piece != null
             && piece.getColor() != color
             && piece.getType() != PieceType.KING
-            && !wouldKingBeInCheckAfterMoveTo(position);
+            && wouldKingBeNOTInCheckAfterMoveTo(position);
   }
 
 
-  private boolean wouldKingBeInCheckAfterMoveTo(Position target) {
+  private boolean wouldKingBeNOTInCheckAfterMoveTo(Position target) {
     Piece pieceAtTarget = chessBoard.getPieceAtPosition(target);
 
     chessBoard.setPieceAtPosition(position, null);
@@ -131,7 +131,7 @@ public class Pawn implements Piece, Serializable {
     chessBoard.setPieceAtPosition(target, pieceAtTarget);
     chessBoard.setPieceAtPosition(position, this);
 
-    return isKingInCheckNow;
+    return !isKingInCheckNow;
   }
 
   @Override

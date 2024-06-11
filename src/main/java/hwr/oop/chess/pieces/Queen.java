@@ -52,7 +52,7 @@ public class Queen implements Piece, Serializable {
   @Override
   public void moveTo(Position target) throws IllegalMoveException {
     List<Position> possibleMoves = possibleMoves();
-    if (possibleMoves.contains(target) && !wouldKingBeInCheckAfterMoveTo(target)) {
+    if (possibleMoves.contains(target) && wouldKingBeNOTInCheckAfterMoveTo(target)) {
       setPosition(target);
     } else {
       throw new IllegalMoveException("Illegal move");
@@ -68,13 +68,13 @@ public class Queen implements Piece, Serializable {
       Piece pieceAtVisiblePosition = chessBoard.getPieceAtPosition(visiblePosition);
 
       if (pieceAtVisiblePosition == null) {
-        if (!wouldKingBeInCheckAfterMoveTo(visiblePosition)) {
+        if (wouldKingBeNOTInCheckAfterMoveTo(visiblePosition)) {
           possibleMoves.add(visiblePosition);
         }
       } else {
         if (pieceAtVisiblePosition.getType() != PieceType.KING
                 && pieceAtVisiblePosition.getColor() != color
-                && !wouldKingBeInCheckAfterMoveTo(visiblePosition)) {
+                && wouldKingBeNOTInCheckAfterMoveTo(visiblePosition)) {
           possibleMoves.add(visiblePosition);
         }
       }
@@ -96,7 +96,7 @@ public class Queen implements Piece, Serializable {
     return visiblePositions;
   }
 
-  private boolean wouldKingBeInCheckAfterMoveTo(Position target) {
+  private boolean wouldKingBeNOTInCheckAfterMoveTo(Position target) {
     Piece pieceAtTarget = chessBoard.getPieceAtPosition(target);
 
     chessBoard.setPieceAtPosition(position, null);
@@ -107,7 +107,7 @@ public class Queen implements Piece, Serializable {
     chessBoard.setPieceAtPosition(target, pieceAtTarget);
     chessBoard.setPieceAtPosition(position, this);
 
-    return isKingInCheckNow;
+    return !isKingInCheckNow;
   }
 
   @Override
